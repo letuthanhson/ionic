@@ -7,6 +7,16 @@
 // By default each design mode includes these shared imports.
 // App Shared Sass variables belong in app.variables.scss.
 
-@import "../pages/hello-ionic/hello-ionic";
+@import "../app";
+
+@import "../pages/home/home";
 
 @import "../pages/item-details/item-details";
+
+//InstaCredit common
+.logo-sm-insta {
+    color: $bp-green;
+};
+.logo-sm-credit {
+    color: $bp-orange;
+};
