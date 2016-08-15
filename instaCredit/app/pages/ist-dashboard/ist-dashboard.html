@@ -1,0 +1,42 @@
+<!--
+  Generated template for the IstDashboardPage page.
+
+  See http://ionicframework.com/docs/v2/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title><span class="logo-sm-insta">Insta</span><span class="logo-sm-credit">Credit</span></ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding class="getting-started">  
+    <ion-grid> 
+      <ion-row responsive-sm>
+        <ion-col width-33>
+          <table>
+            <tr>
+                <th>Rating Band</th>
+                <th>Exposure</th>
+                <th>Expected Loss</th>
+            </tr>
+            <tr *ngFor="let item of ratingBandList[0].ratingBands">              
+                <td >{{ item.ratingBand }}</td>
+                <td style='text-align: right; padding-right: 2px;'>{{ (item.exposure/1000000).toFixed(2) }}</td>
+                <td style='text-align: right; padding-right: 2px;'>{{ (item.expectedLoss/1000000).toFixed(2) }}</td>
+            </tr>          
+          </table>
+        </ion-col>
+        <ion-col width-33>
+          <app-chart-js #historicalExpChart></app-chart-js>
+        </ion-col> 
+        <ion-col width-33>
+          <app-chart-js #historicalElChart></app-chart-js>
+        </ion-col>         
+      </ion-row>
+    </ion-grid>
+</ion-content>

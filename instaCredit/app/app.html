@@ -1,15 +1,14 @@
-<ion-menu [content]="content" 
-  <ion-toolbar Primary>
-    <ion-title><span bp-green>Insta</span><span class="logo-sm-credit">Credit</span></ion-title>
+<ion-menu [content]="content" primary>
+  <ion-toolbar primary>
+    <ion-title><span dark>Insta</span><span secondary>Credit</span></ion-title>
   </ion-toolbar>
 
-  <div Primary > 
-    <ion-list>
-      <button  ion-item *ngFor="let p of pages" (click)="openPage(p)">
+  <div class="fullscreen"> 
+    <ion-list no-lines inset>
+      <button style="background-color: transparent; color: white;" ion-item *ngFor="let p of pages" (click)="openPage(p)">
         {{p.title}}
       </button>
     </ion-list>
   </div>
 </ion-menu>
-
 <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

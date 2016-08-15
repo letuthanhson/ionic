@@ -25,13 +25,33 @@
 // Both iOS and MD colors can be further customized if colors
 // are different per mode.
 
+
+$primary:     #387ef5;
+$secondary:   #32db64;
+$danger1:     #f53d3d;
+$light1:      #f4f4f4;
+$dark:        #222;
+$favorite:    #006633;
+$bp-green:         #009900;
+$bp-light-green:   #99CC00;
+$bp-yellow:        #FFE600;
+$bp-dark-green:    #006633;
+$bp-bright-green:  #CCFF00;
+$bp-dark-blue:     #000099;
+$bp-dark-grey:     #666666;
+$bp-light-grey:    #999999;
+$bp-white:         #FFFFFF;
+$bp-orange:        #FF6600;
+$clear:            rgba(255, 255, 255, 1);
+
 $colors: (
-  primary:    #009900,
-  secondary:  #FFE600,
+  primary:    $bp-light-green,
+  secondary:  $bp-yellow,
   danger:     #f53d3d,
   light:      #f4f4f4,
-  dark:       #222,
-  favorite:   #69BB7B
+  dark:       $bp-dark-green,
+  favorite:   #69BB7B,
+  clear:      $clear
 );
 
 /*

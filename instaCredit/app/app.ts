@@ -2,6 +2,7 @@ import {Component, ViewChild} from '@angular/core';
 import {ionicBootstrap, Platform, MenuController, Nav} from 'ionic-angular';
 import {StatusBar} from 'ionic-native';
 import {HomePage} from './pages/home/home';
+import {IstDashboardPage} from './pages/ist-dashboard/ist-dashboard';
 import {ListPage} from './pages/list/list';
 
 
@@ -23,8 +24,9 @@ class MyApp {
 
     // set our app's pages
     this.pages = [
-      { title: 'InstaCredit', component: HomePage },
-      { title: 'My First List', component: ListPage }
+      { title: 'Dashboards', component: IstDashboardPage },
+      { title: 'Counterparty Info', component: ListPage },
+      { title: 'Exposure By Rating', component:ListPage }
     ];
   }
 
@@ -43,5 +45,4 @@ class MyApp {
     this.nav.setRoot(page.component);
   }
 }
-
 ionicBootstrap(MyApp);

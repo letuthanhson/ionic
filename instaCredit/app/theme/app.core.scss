@@ -13,10 +13,16 @@
 
 @import "../pages/item-details/item-details";
 
+@import "../pages/ist-dashboard/ist-dashboard";
+
+//@import "../components/table-exp-el-by-rating/table-exp-el-by-rating";
+
+//@import "../pages/app-chart-js/app-chart-js";
+
 //InstaCredit common
 .logo-sm-insta {
-    color: $colors.bp-green;
+    color: green;
 };
 .logo-sm-credit {
-    color: green;
+    color: yellow;
 };

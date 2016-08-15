@@ -1,0 +1,48 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      {{cpInfo.name}}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content >  
+    <ion-grid> 
+      <ion-row>
+        <ion-col width-50>
+          <table>
+            <tr><th>Jurisdiction</th></tr><tr><td>{{ cpInfo.jurisdiction }}</td></tr>   
+            <tr><th>Country of Risk</th></tr><tr><td>{{ cpInfo.countryOfRisk }}</td></tr>    
+            <tr><th>Appraisal Completion</th></tr><tr><td>{{ cpInfo.appraisalCompletionDate }}</td></tr> 
+            <tr><th>Fiscal Year-End</th></tr><tr><td>{{ cpInfo.fiscalYearEndDate }}</td></tr> 
+            <tr><th>GCR Analyst</th></tr><tr><td>{{ cpInfo.gcrAnalyst }}</td></tr> 
+            <tr><th>Alert</th></tr><tr><td>{{ cpInfo.alertNotes }}</td></tr> 
+          </table>
+        </ion-col>   
+        <ion-col width-50>
+          <table>
+            <tr><th>Industry</th></tr><tr><td>{{ cpInfo.industryClass}}</td></tr>   
+            <tr><th>RBU Owner</th></tr><tr><td>{{ cpInfo.rbuOwner}}</td></tr>    
+            <tr><th>Next Appraisal</th></tr><tr><td>{{ cpInfo.nextAppraisalDueDate }}</td></tr> 
+            <tr><th>Collateral Provider?</th></tr><tr><td>{{ cpInfo.canProvideCollateral }}</td></tr> 
+            <tr><th>Strategic Credit Analyst</th></tr><tr><td>{{ cpInfo.strategicCreditAnalyst }}</td></tr> 
+            <tr><th>Watch comments</th></tr><tr><td>{{ cpInfo.watchComments }}</td></tr> 
+          </table>
+        </ion-col> 
+      </ion-row>
+    </ion-grid>
+</ion-content>
+<!--
+
+"isOnAlert": "N","alertNotes": "",
+
+
+
+"gcrAnalyst": "Alvarado,Randy","strategicCreditAnalyst": "Plotnikov,Artem",
+
+"": "31-DEC-08",
+"isWatched": "N","watchComments": "","canProvideCollateral": "N","isBankLoiRequired": "N",
+"istBusinessPartyId": "5320","createUser": "SEED_LOAD",
+"updateUser": "ICOS DATA MIGRATION","createDate": "22-SEP-07","lastUpdateDate": "05-FEB-16" },
+{ 
+-->
