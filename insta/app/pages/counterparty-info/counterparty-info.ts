@@ -1,6 +1,12 @@
+<<<<<<< Updated upstream
 import { Component, OnInit } from '@angular/core';
 import { NavController, PopoverController, ViewController, NavParams } from 'ionic-angular';
 import { AutoComplete } from 'primeng/primeng';
+=======
+import {Component, OnInit} from '@angular/core';
+import {NavController, NavParams } from 'ionic-angular';
+import { RankedCounterparty } from '../../models/ranked-counterparty';
+>>>>>>> Stashed changes
 import { CounterpartyService } from '../../services/counterparty-service';
 
 //for mocked data

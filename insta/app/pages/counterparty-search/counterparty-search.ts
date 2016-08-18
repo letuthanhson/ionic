@@ -1,6 +1,10 @@
 import { Component } from '@angular/core';
+<<<<<<< Updated upstream
 import { NavController, Page, AlertController, ToastController } from 'ionic-angular';
 import { AutoComplete} from 'primeng/primeng';
+=======
+import { NavController, Page, Alert } from 'ionic-angular';
+>>>>>>> Stashed changes
 import { RankedCounterparty } from '../../models/ranked-counterparty';
 import { CounterpartyService } from '../../services/counterparty-service';
 import { CounterpartyInfoPage } from '../counterparty-info/counterparty-info';

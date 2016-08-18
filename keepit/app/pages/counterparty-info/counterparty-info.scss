@@ -1,0 +1,11 @@
+
+th {  border: 0 none; height: 20px; }
+td { height: 100% }
+tr,  th { 
+  border-radius: 5px 5px 0 0; 
+} 
+td { background: none; text-align: left; }
+/* override global Zebra Stripe Rows */
+		
+tr:nth-child(even) td { background: none; } 
+tr:nth-child(odd) td { background: none; }
