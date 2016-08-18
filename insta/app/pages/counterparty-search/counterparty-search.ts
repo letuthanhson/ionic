@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, Page, Alert } from 'ionic-angular';
+import { NavController, Page, AlertController, ToastController } from 'ionic-angular';
 import { AutoComplete} from 'primeng/primeng';
 import { RankedCounterparty } from '../../models/ranked-counterparty';
 import { CounterpartyService } from '../../services/counterparty-service';
@@ -15,7 +15,9 @@ export class CounterpartySearchPage {
   filteredCounterparties: RankedCounterparty[];
 
   constructor(private navCtrl: NavController,
-              private counterpartyService: CounterpartyService) {
+              private counterpartyService: CounterpartyService,
+              private alertController: AlertController,
+              private toastController: ToastController) {
   }
   searchCounterparties(event) {
         let query = event.target.value;      
@@ -40,13 +42,14 @@ export class CounterpartySearchPage {
   itemTapped(event, counterparty) {
     //get counterparty details
     this.counterpartyService.getCounterparty(counterparty).then(item=>{
+
       if (item == null) {
-        let alert = Alert.create({
-            title: 'New Friend!',
-            subTitle: 'Your friend, Obi wan Kenobi, just accepted your friend request!',
-            buttons: ['Ok']
+        let toast = this.toastController.create({
+          message: 'The selected counterparty info is not available',
+          duration: 3000,
+          position: 'middle'
         });
-        this.navCtrl.present(alert);
+        toast.present();
       }
       else
         this.navCtrl.push(CounterpartyInfoPage, { "counterpartyInfo": item });
