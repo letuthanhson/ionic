@@ -1,0 +1,56 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      <span class="logo-sm-insta">Insta</span><span class="logo-sm-credit">Credit</span>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content class="getting-started">  
+    <ion-grid> 
+      <ion-row responsive-sm>
+
+
+        <ion-col width-25>
+          <div id="exp-chart" class="chart-style"></div>
+          <!--<app-chart-js #historicalElChart></app-chart-js>-->
+         <!-- <chart [options]="options" (load)="saveInstance($event.context)"></chart>-->
+         
+          <!--<app-chart-js #historicalExpChart></app-chart-js>-->
+        </ion-col>   
+        <ion-col width-25>
+          <div id="el-chart" class="chart-style"></div>
+          <!--<app-chart-js #historicalElChart></app-chart-js>-->
+         <!-- <chart [options]="options" (load)="saveInstance($event.context)"></chart>-->
+         
+          <!--<app-chart-js #historicalExpChart></app-chart-js>-->
+        </ion-col>        
+        <ion-col width-25>
+          <div id="hc"></div>
+          
+        </ion-col>
+        <ion-col width-25>
+            <div class="db-exp-el">
+              <h4>EXPOSURE & EXPECTED LOSS</h4>
+              <table class="db-table-detail">
+                <tr>
+                    <td></td>
+                    <td colspan="2">Millions (USD)</td>
+                </tr>
+                <tr>
+                    <td>Rating Band</td>
+                    <td>Exposure</td>
+                    <td>Expected Loss</td>
+                </tr>
+                <tr *ngFor="let item of ratingBandList[0].ratingBands">              
+                    <td >{{ item.ratingBand }}</td>
+                    <td>{{ (item.exposure/1000000).toFixed(0) }}</td>
+                    <td>{{ (item.expectedLoss/1000000).toFixed(0) }}</td>
+                </tr>          
+              </table>
+          </div>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+</ion-content>

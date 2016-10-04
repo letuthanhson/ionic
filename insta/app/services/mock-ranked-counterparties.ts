@@ -1,6 +1,6 @@
 import { RankedCounterparty } from '../models/ranked-counterparty';
 
-export const RANKED_COUNTERPARTIES: RankedCounterparty[] =
+export const RANKED_COUNTERPARTIES: any[] =
 [
 { level:1, id:29, parentId:null, name:"ENI_GROUP" },
 { level:2, id:50779, parentId:29, name:"ENI Petroleum US LLC" },

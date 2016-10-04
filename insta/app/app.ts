@@ -22,4 +22,11 @@ export class MyApp {
   }
 }
 
-ionicBootstrap(MyApp);
+//ionicBootstrap(MyApp);
+ionicBootstrap(MyApp, null, {
+  platforms: {
+    ios: {
+      statusBarPadding: true
+    }
+  }
+});

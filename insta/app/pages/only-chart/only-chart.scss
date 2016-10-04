@@ -1,0 +1,11 @@
+.only-chart {
+    div:nth-child(1) {
+        width: 100%;
+        text-align: right;
+        padding-right: 10px;
+    }
+    div:nth-child(2) { //the .chart
+        width: 100%;
+        margin-top: -50;
+    }
+}

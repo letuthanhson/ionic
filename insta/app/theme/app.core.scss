@@ -13,45 +13,65 @@
 
 @import "../pages/counterparty-info/counterparty-info";
 
+@import "../pages/dashboard/dashboard";
+
 @import "../pages/home/home";
 
 .logo-sm-credit {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    color: $bp-light-green;
+    color: $bp-green;
+    font-size: 24px;
+    font-weight: bold;
 };
 .logo-sm-insta {
     font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;    
     color: $bp-yellow; 
+    font-size: 24px;
+    font-weight: bold;
 };
 body {
-    font-family: Arial, Helvetica, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 16px;
 }
+h4 {
+  font-family: 'Verdana', AriaL, sans-serif;
+  font-size: 120%;
+}
+table {
+  font-size: 100%;
+  th {
+    font-family: 'Verdana', AriaL, sans-serif;
+  }
+}
+
 //app tables
-table { 
+//table { 
   /*color: #333;
   font-family: Helvetica, Arial, sans-serif;*/
   /*width: 640px;*/
-  width: 100%;
+//  width: 100%;
   /* Table reset stuff */
-  border-collapse: collapse; border-spacing: 0; 
-}
-		
-td, th {  border: 0 none; height: 20px; }
-			
-th {
+//  border-collapse: collapse; border-spacing: 0; 
+//}
+	
+//td, th {  border: 0 none; height: 20px; }
+
+//th {
   /* Gradient Background */
 	/*background: linear-gradient(#333 0%,#444 100%);*/
-    background: linear-gradient($bp-green 0%,$bp-light-green 100%);
-	color: #FFF; font-weight: bold;
-}
-		
-td { background: #FAFAFA; text-align: center; }
+  /*background: linear-gradient($bp-green 0%,$bp-light-green 100%);*/
+ // background: $bp-light-green;
+//	color: #FFF; font-weight: bold;
+//}
 
+/*
+td { background: #FAFAFA; text-align: center; }
+*/
 /* Zebra Stripe Rows */
-		
+/*
 tr:nth-child(even) td { background: #EEE; } 
 tr:nth-child(odd) td { background: #FDFDFD; }
-
+*/
 /* First-child blank cells! */
 /*
 tr td:first-child, tr th:first-child { 
@@ -74,3 +94,54 @@ tr:first-child th:last-child {
   border-radius: 0 5px 0 0; 
 }
 */
+//Checkbox
+/* .roundedTwo */
+.roundedTwo {
+  width: 28px;
+  height: 28px;
+  position: relative;
+  margin: 20px auto;
+  background: #fcfff4;
+  background: -webkit-linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+  background: linear-gradient(to bottom, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+  border-radius: 50px;
+  box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0, 0, 0, 0.5);
+}
+.roundedTwo label {
+  width: 20px;
+  height: 20px;
+  position: absolute;
+  top: 4px;
+  left: 4px;
+  cursor: pointer;
+  background: -webkit-linear-gradient(top, #222222 0%, #45484d 100%);
+  background: linear-gradient(to bottom, #222222 0%, #45484d 100%);
+  border-radius: 50px;
+  box-shadow: inset 0px 1px 1px rgba(0, 0, 0, 0.5), 0px 1px 0px white;
+}
+.roundedTwo label:after {
+  content: '';
+  width: 9px;
+  height: 5px;
+  position: absolute;
+  top: 5px;
+  left: 4px;
+  border: 3px solid #fcfff4;
+  border-top: none;
+  border-right: none;
+  background: transparent;
+  opacity: 0;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+.roundedTwo label:hover::after {
+  opacity: 0.3;
+}
+.roundedTwo input[type=checkbox] {
+  visibility: hidden;
+}
+.roundedTwo input[type=checkbox]:checked + label:after {
+  opacity: 1;
+}
+
+/* end .roundedTwo */

@@ -2,6 +2,7 @@ import { Counterparty } from './counterparty';
 
 export class RankedCounterparty
         extends Counterparty {
-    level: number;
+    rank: number;
     parentId: number;
+    rootId: number;
 }

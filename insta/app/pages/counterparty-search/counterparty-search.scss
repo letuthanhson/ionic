@@ -1,6 +1,6 @@
 .search-bar {
-    background-color: $bp-light-green;
+   /* background-color: $bp-light-green;*/
 }
 .ultimate-parent {
-    color: $bp-light-green;
+    color: color($colors, primary, base);
 }

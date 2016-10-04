@@ -1,0 +1,110 @@
+
+.db-table1 {
+  width: 100%;
+  border-radius: 10px 10px 0 0; 
+  //background: linear-gradient(top,  color($colors, primary, base)0%, color($colors, clear, base) 100%);
+  background: color($colors, primary, base);
+  th {
+    //background: color($colors, primary, base);
+    //color: color($colors, clear, base);
+    height: 40px;
+  }
+  tr:first-child th:last-child { 
+    border-radius: 0 10px 0 0; 
+  }
+  tr:first-child th:first-child { 
+    border-radius: 10px 0 0 0; 
+  }
+}
+.db-table-detail1 {
+  tr {
+    padding-left: 30px;
+    border-bottom: 1px solid white;
+  }
+  td:first-child {
+    text-align: center;
+  }
+  td:nth-child(2), td:nth-child(3) {
+    padding-right: 5px;
+    text-align: right;
+  }
+}
+.db-exp-el {
+  width: 100%;
+  text-align: center;
+}
+.db-table-detail {
+  background: color($colors, primary, base);
+  border-radius: 10px 10px 10px 10px; 
+  width: 100%;
+  tr:not(:first-child) { 
+      border-bottom: 1px solid white;
+  }
+  tr {
+      height: 25px;
+  }
+  tr:nth-child(1) td:nth-child(2) {
+    text-align: center;
+    border-bottom: 1px solid white;
+  }
+  tr:nth-child(1), tr:nth-child(2) {
+      font-family: 'Verdana', Arial, Helvetica, sans-serif;
+      color: white;
+  }
+  td:nth-child(1) {
+    padding-left: 3px;
+  }
+  td:nth-child(2), td:nth-child(3) {
+    text-align: right;
+    padding-right: 3px;
+  }
+}
+
+/*
+table { 
+
+  font-family: Helvetica, Arial, sans-serif;
+
+  font-family: Arial, sans-serif;
+  width: 100%;
+  // Table reset stuff 
+  //border-collapse: collapse; border-spacing: 0; 
+}
+		*/
+//td, th {  border: 0 none; height: 30px; }
+.chart-style {
+  width: 100%;
+}	
+chart {
+  display: block;
+}
+/*
+td { background: #FAFAFA; text-align: center; }
+*/
+/* Zebra Stripe Rows */
+/*
+tr:nth-child(even) td { background: #EEE; } 
+tr:nth-child(odd) td { background: #FDFDFD; }
+*/
+/* First-child blank cells! */
+/*
+tr td:first-child, tr th:first-child { 
+	background: none; 
+	font-style: italic;
+	font-weight: bold;
+	font-size: 14px;
+	text-align: right;
+	padding-right: 10px;
+	width: 80px; 
+}
+*/
+/* Add border-radius to specific cells! */
+/*
+tr:first-child th:nth-child(1) { 
+  border-radius: 5px 0 0 0; 
+} 
+
+tr:first-child th:last-child { 
+  border-radius: 0 5px 0 0; 
+}
+*/

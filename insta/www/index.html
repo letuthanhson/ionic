@@ -20,7 +20,7 @@
 
   <!-- This is Ionic's root component, where the app will load -->
   <ion-app></ion-app>
-
+  <script src="js/jquery-3.1.0.min.js"></script>
   <!-- cordova.js required for cordova apps -->
   <script src="cordova.js"></script>
   <!-- Polyfill needed for platforms without Promise and Collection support -->
@@ -30,5 +30,12 @@
   <script src="build/js/zone.js"></script>
   <!-- The bundle which is built from the app's source code -->
   <script src="build/js/app.bundle.js"></script>
-</body>
+  <script src="js/Chart.bundle.min.js"></script>
+  <script src="js/DocumentHandler.js"></script>
+
+  <script src="js/highcharts.js"></script>
+  <!--below is required for pipe date/currency to work-->
+  <script src="https://cdn.polyfill.io/v2/polyfill.min.js?features=Intl.~locale.en"></script> 
+
+  
 </html>
