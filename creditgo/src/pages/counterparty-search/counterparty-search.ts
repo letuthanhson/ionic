@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
-import { NavController, Page, AlertController, ToastController } from 'ionic-angular';
+import { NavController, AlertController, ToastController } from 'ionic-angular';
 import { RankedCounterparty } from '../../models/ranked-counterparty';
 import { CounterpartyService } from '../../services/counterparty-service';
 import { CounterpartyInfoPage } from '../counterparty-info/counterparty-info';
-import {Http, Response} from '@angular/http';
+import { Http, Response } from '@angular/http';
 
 @Component({
-  templateUrl: 'build/pages/counterparty-search/counterparty-search.html',
+  templateUrl: 'counterparty-search.html',
   providers: [CounterpartyService]
 })
 export class CounterpartySearchPage {
@@ -61,9 +61,9 @@ export class CounterpartySearchPage {
   itemTapped(event, counterparty) {
     //get counterparty details
     /*
-    this.counterpartyService.getCounterparty(counterparty).then(item=>{
-
-      if (item == null) {
+    this.counterpartyService.getCounterparty(counterparty.id)
+    .subscribe(item=>{
+      if (item == undefined) {
         let toast = this.toastController.create({
           message: 'The selected counterparty info is not available',
           duration: 3000,
@@ -71,9 +71,13 @@ export class CounterpartySearchPage {
         });
         toast.present();
       }
-      else
+      else {
         this.navCtrl.push(CounterpartyInfoPage, { "counterpartyInfo": item });
+      }
     });
+    
+  }
+  
     */
     let cp = this.getMockedCp();
     this.navCtrl.push(CounterpartyInfoPage, { "counterpartyInfo": cp });
@@ -129,3 +133,4 @@ export class CounterpartySearchPage {
   return a;
   }
 }
+

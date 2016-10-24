@@ -1,0 +1,18 @@
+<!--<ion-header>
+  <ion-navbar>
+    <ion-title>
+      <span class="logo-sm-insta">Insta</span><span class="logo-sm-credit">Credit</span>
+    </ion-title>
+  </ion-navbar>
+</ion-header>-->
+
+<ion-content>
+<ion-searchbar class="search-bar" (ionInput)="searchCounterparties($event)" autocomplete="on"></ion-searchbar>
+  <ion-list>
+    <ion-item [style.margin-left]= "(counterparty.rank - 1) + 'em'"
+       [ngClass]="{'ultimate-parent': counterparty.rank === 1}"
+       *ngFor="let counterparty of filteredCounterparties" (click)="itemTapped($event, counterparty)">
+          {{ counterparty.name }}
+    </ion-item>
+  </ion-list>
+</ion-content>

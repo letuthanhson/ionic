@@ -1,0 +1,262 @@
+.cp-table, .cp-table-header, .cp-primary-detail, .cp-table-check, .cp-sliding-scale  {
+    width: 100%;
+    text-align: center;
+}
+.cp-table .cp-table-header {
+    width: 100%;
+    //margin-top: -10px;
+    text-align: center;
+    vertical-align: center;
+    color: color($colors, clear, base);
+    background: color($colors, primary, base);
+    //background: linear-gradient(top,  color($colors, primary, base)0%, color($colors, clear, base) 100%);
+    border-radius: 5px; 
+}
+.cp-table .cp-table-header tr:nth-child(1) th {
+    //font-size: 18px;   
+    padding-top: 10px;
+}
+//parent cp
+.cp-table .cp-table-header tr:nth-child(2) th {
+    font-size: 13px;
+    font-weight: normal;
+    vertical-align: top;
+    color: black;
+}
+.cp-table .cp-table-header tr:nth-child(3) th span {
+    //padding-top: 10px;
+    display: block;
+    font: bold 18px/30px Verdana, Serif;
+    text-align: center;
+    color: color($colors, clear, base);
+    background: #fff;
+    border: 2px solid color($colors, clear, base);
+    height: 34px;
+    width: 140px;
+    margin: auto;
+    background-color: color($colors, primary, base);
+    //background: linear-gradient(top,  color($colors, primary, base)0%, color($colors, clear, base) 100%);
+    border-radius: 50px;
+    box-shadow: 0 1px 1px color($colors, dark, base) inset, 0 1px 0 color($colors, clear, base) inset;
+}
+//inferred
+.cp-table .cp-table-header tr:nth-child(4) th {
+    font-size: 13px;  
+    font-weight: normal;
+    vertical-align: top;
+    color: black;
+    padding-bottom: 10px;
+}
+/*
+.cp-table .cp-table-header table tr:nth-child(1) td
+{
+    border: solid red;
+}
+*/
+
+
+.cp-table .cp-table-check {
+    margin-top: -30px;
+    color: color($colors, clear, base);
+}
+.cp-table .cp-table-check tr:nth-child(1) td:nth-child(1) {
+    text-align: left;
+    vertical-align: middle;
+    padding-left: 10px;
+}
+
+.cp-table .cp-table-check tr:nth-child(1) td:nth-child(2) {
+    text-align: right;
+    vertical-align: middle;
+    padding-right: 10px;
+}
+
+.cp-primary-detail {
+    tr {
+        height: 25px;
+    }
+    th {
+        text-align: right;
+        vertical-align: middle;
+        color: color($colors, primary, base);
+    }
+    tr td:nth-child(1) {
+        text-align: right;
+        vertical-align: middle;
+        padding-left: 5px;
+        word-break: break-word;
+        color: color($colors, primary, base);
+    }
+    tr td:nth-child(2) {
+        text-align: left;
+        vertical-align: middle;
+        padding-left: 5px;
+        word-break: break-word;
+
+    }
+}
+.cp-primary-detail button {
+    width: 100px;
+}
+.clear:before, .clear:after {
+  content:"";
+  display:table
+}
+
+.clear:after {
+  clear:both
+}
+
+.clear {
+  zoom:1
+}    
+
+// Sliding scale
+.sub-header {
+    font-family: "Copperplate", Arial, Serif;
+    width: 100%;
+    margin-top: 20px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    vertical-align: center;
+    //color: color($colors, dark, base);
+    color: black;
+}
+.cp-sliding-scale2 {
+    color: color($colors, clear, base);
+    background-color: color($colors, primary, base);
+    border-radius: 5px; 
+    tr th:nth-child(1) {
+        text-align: right;
+        padding-right: 5px;
+    }
+    tr:nth-child(1) th, tr:nth-child(2), tr:nth-child(3) {
+        border-bottom: 1px solid color($colors, clear, base);
+    }
+    td {
+        text-align: center;
+    }
+}
+.ss-table {
+  width: 100%;
+  border-radius: 10px 10px 10px 10px; 
+  background: color($colors, secondary, base);
+  //background: linear-gradient(top,  color($colors, primary, base)0%, color($colors, clear, base) 100%);
+  th {
+    //background: color($colors, primary, base);
+    //color: color($colors, dark, base);
+    //color: black;
+    color: color($colors, primary, base);
+    height: 25px;
+  }
+  tr:first-child th:last-child { 
+    border-radius: 0 10px 0 0; 
+  }
+  tr:first-child th:first-child { 
+    border-radius: 10px 0 0 0; 
+  }
+}
+.ss-table-detail {
+  tr:first-child td:nth-child(2),
+  tr:first-child td:nth-child(3),
+  tr:first-child td:nth-child(4) {
+      border-bottom: 1px solid white;
+  }
+  tr {
+      height: 25px;
+  }
+  tr:nth-child(1) {
+      font-family: 'Verdana', Arial, Helvetica, sans-serif;
+      font-style: oblique;
+  }
+  tr:nth-child(2), tr:nth-child(3) {
+    border-bottom: 1px solid white;
+  }
+  td:first-child {
+    text-align: right;
+      font-family: 'Verdana', Arial, Helvetica, sans-serif;
+      font-style: oblique;
+  }
+  td {
+    text-align: center;
+  }
+}
+//chart
+
+.chart {
+    div:nth-child(1) {
+        width: 100%;
+        text-align: right;
+        padding-right: 10px;
+        button {
+            width: 30px;
+            height: 30px;
+            ion-icon {
+                font-size: 18px;
+            }
+        }
+    }
+    div:nth-child(2) { //the .chart
+        width: 100%;
+        margin-top: -50;
+    }
+}
+
+//app checkbox
+.app-checkbox-label span {
+    display: inline-flex;
+    height: 30px; //match app-checkbox below
+    vertical-align: middle;
+    padding-left: 5px;
+    //padding-right: 5px;
+}
+.app-checkbox input[type=checkbox] {
+    position: absolute;
+    left: -9999px;
+}
+.app-checkbox input[type=checkbox]+label {
+    display: inline-flex;
+    width: 24px;
+    height: 24px;
+    position: relative;
+    //margin: auto;
+    background: #fcfff4;
+    background: linear-gradient(top, #fcfff4 0%, #dfe5d7 40%, #b3bead 100%);
+    border-radius: 50px;
+    box-shadow: inset 0px 1px 1px white, 0px 1px 3px rgba(0,0,0,0.5);
+    &:before {
+        content: '';
+        width: 18px;
+        height: 18px;
+        position: absolute;
+        top: 3px;
+        left: 3px;
+        cursor: pointer;
+        //background: linear-gradient(top, #222 0%, #45484d 100%);
+        background: linear-gradient(top,  color($colors, favorite, base)0%, color($colors, primary, base) 100%);
+        border-radius: 50px;
+        box-shadow: inset 0px 1px 1px rgba(0,0,0,0.5), 0px 1px 0px rgba(255,255,255,1);
+    }
+    &:after {
+        content: '';
+        width: 9px;
+        height: 5px;
+        position: absolute;
+        top: 7px;
+        left: 6px;
+        border: 3px solid #fcfff4;
+        border-top: none;
+        border-right: none;
+        background: transparent;
+        opacity: 0;
+        transform: rotate(-45deg);
+    }
+    //&:hover::after {
+     //   opacity: 0.3;
+    //}
+}
+.app-checkbox input[type=checkbox]:checked + label::after {
+  opacity: 1;
+}
+
