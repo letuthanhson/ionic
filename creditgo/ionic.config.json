@@ -2,5 +2,10 @@
   "name": "creditgo",
   "app_id": "",
   "v2": true,
-  "typescript": true
+  "typescript": true,
+  "proxies":[{
+    "path":"/api",
+    "proxyUrl":"https://devtest-istesb.bpglobal.com:25202",
+    "rejectUnauthorized":false
+  }]
 }

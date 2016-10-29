@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { App, NavController, PopoverController, ViewController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
+import { App, NavController, AlertController, ToastController, PopoverController, LoadingController, ViewController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
 import { CounterpartyService } from '../../services/counterparty-service';
 import { InAppBrowser, ScreenOrientation } from 'ionic-native';
 import {Http, Response} from '@angular/http';
 //for mocked data
+import { InstaService } from '../../services/insta-service';
 import { RankedCounterparty } from '../../models/ranked-counterparty';
 import { CounterpartyCaPage } from '../counterparty-ca/counterparty-ca';
 //import { DashboardPage } from '../dashboard/dashboard';
@@ -21,22 +22,27 @@ declare var $: any;
 })
 export class CounterpartyInfoPage implements OnInit {
   cpInfo: CounterpartyEntity;
+  caFileList: any[];
+
   chartLimitsAndExposureData: any;
 
   constructor(private navCtrl: NavController,
               private app: App,
-              private http: Http,
+              private instaService: InstaService,
               private popoverCtrl: PopoverController,
               private actionSheetCtrl: ActionSheetController,
               public modalCtrl: ModalController,
               private counterpartyService: CounterpartyService,
+               private alertCtrl: AlertController,
+              private loadingCtrl: LoadingController,
+              private toastController: ToastController,
               navParams: NavParams) {
 
     // If we navigated to this page, we will have an item available as a nav param
     this.cpInfo = navParams.get('counterpartyInfo');    
   }
   ngOnInit() {
-
+/*
       this.http.get('mock/limit-exposure.json')
             .map(res => res.json())
             .subscribe(data => {
@@ -58,9 +64,48 @@ export class CounterpartyInfoPage implements OnInit {
               this.chartLimitsAndExposures();
 
             });
+            */
   }
-  showActionSheet()
+  showCaFiles()
   {
+    console.log("Getting CA files...");
+    this.caFileList = undefined;
+    let loading = this.loadingCtrl.create({
+      content: 'please wait'
+    });
+    loading.present();
+    this.instaService.getCounterpartyCaFiles(this.cpInfo.id)
+      .subscribe(
+        data => {
+          loading.dismissAll();
+          this.caFileList = data;
+          if (this.caFileList === undefined && this.caFileList.length === 0) {
+            let toast = this.toastController.create({
+                            message: 'Credit Review document is not available for the counterparty',
+                            duration: 3000,
+                            position: 'middle'
+                          });
+            toast.present();
+          }
+          else {
+            this.showCaActionSheet();
+          }
+      },
+      error=>{
+        loading.dismissAll();
+        console.log(error);
+        let alert = this.alertCtrl.create({
+                title: 'Loading Error!',
+                subTitle: 'Failed to load data',
+                buttons: ['OK']
+              });
+        alert.present();
+      });
+  }
+  showCaActionSheet() {
+    if (this.caFileList === undefined && this.caFileList.length == 0)
+      return;
+
     let actionSheet = this.actionSheetCtrl.create({
       title: this.cpInfo.name,
       buttons: [{
@@ -69,14 +114,14 @@ export class CounterpartyInfoPage implements OnInit {
           let navTransition = actionSheet.dismiss();
 
           //mock data
-          let documents = [{"docName": "appraisal_sample1.docx", "docUrl": "www/mock/appraisal_sample1.docx"},
-                          {"docName": "appraisal_sample2.pdf", "docUrl": "www/mock/appraisal_sample2.pdf"},
-                          {"docName": "appraisal_sample3.xlsx", "docUrl": "www/mock/appraisal_sample3.xlsx"}];
+          //let documents = [{"docName": "appraisal_sample1.docx", "docUrl": "www/mock/appraisal_sample1.docx"},
+          //                {"docName": "appraisal_sample2.pdf", "docUrl": "www/mock/appraisal_sample2.pdf"},
+          //                {"docName": "appraisal_sample3.xlsx", "docUrl": "www/mock/appraisal_sample3.xlsx"}];
 
           navTransition.then(()=>{
             //open the list of documents for the cp
             this.navCtrl.push(CounterpartyCaPage,
-                { "counterpartyName": this.cpInfo.name, "documents": documents });
+                { "counterpartyName": this.cpInfo.name, "documents": this.caFileList });
           });
 
           return false;
@@ -92,27 +137,6 @@ export class CounterpartyInfoPage implements OnInit {
 
     actionSheet.present();
   }
-  test(){
-//this.navCtrl.push(DashboardPage)
-    //console.log("test.here");
-    //open(cordova.file.applicationDirectory + 'www/mock/sample.pdf', '_blank', 'location=no');
-  }
-  presentPopover(myEvent) {//mock documents for now
-
-    this.showActionSheet();
-    /*
-    var documents = [{"docName": "appraisal_sample1.docx", "docUrl": "www/mock/appraisal_sample1.docx"},
-                     {"docName": "appraisal_sample2.pdf", "docUrl": "www/mock/appraisal_sample2.pdf"},
-                     {"docName": "appraisal_sample3.xlsx", "docUrl": "www/mock/appraisal_sample3.xlsx"}];
-                     
-    let popover = this.popoverCtrl.create(PopoverMenu,
-       { "counterpartyName": this.cpInfo.name, "documents": documents });
-    popover.present({
-      ev: myEvent
-    });
-    */
-  }  
-
 	getLimitsExposureChartData(limits: any[][], exposures: any[][]):any {
     return {
           title: {

@@ -1,0 +1,28 @@
+.login {
+    background-color: $bp-green;
+    background-image: linear-gradient($bp-dark-green 0%,$bp-bright-green 100%);
+    margin: 0; height: 100%; width: 100%;
+}
+.header-centered {
+    margin: auto;
+}
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  /* bring your own prefixes */
+  transform: translate(-50%, -50%);
+}
+.logo-centered {
+    width: 100px;
+    height: 100px;
+    margin: auto;
+}
+.brand-centered {
+    margin: auto;
+    text-align: center;
+}
+::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none;
+}

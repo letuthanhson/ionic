@@ -1,11 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Http, Response } from '@angular/http';
 import { RankedCounterparty } from '../models/ranked-counterparty';
+import { CounterpartyFile } from '../models/counterparty-file';
 //import { RANKED_COUNTERPARTIES } from './mock-ranked-counterparties';
 import { File } from 'ionic-native';
 import { SQLite } from 'ionic-native';
 import {Observable} from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
+
 import {CounterpartyEntity} from '../models/counterparty-entity'
 
 @Injectable()
@@ -15,6 +19,8 @@ export class CounterpartyService {
   //getRankedCounterparties1() {
    // return Promise.resolve(RANKED_COUNTERPARTIES);
   //}
+  constructor(private http: Http){}
+
   getRankedCounterparties(http: Http):any {
     return Promise.resolve(http.get('mock/rankedcps.json')
           .map(res => res.json())
@@ -99,5 +105,21 @@ export class CounterpartyService {
           observer.error(new Error("Error" + JSON.stringify(e)));
         })
       });
+
+  }
+  // get all the Credit reviews mapped to a counterparty
+  getCounterpartyCaFiles(counterpartyId: number): Observable<CounterpartyFile[]> {
+    return this.http.get('mock/cafiles.json')
+              .map(res => res.json())
+              .catch(this.handleError);
+  }
+
+  handleError(error: any): any {
+    if (error instanceof Response) {
+      return Observable.throw(error.json().error || 'Backend server error');
+    }
+    else {
+      return Observable.throw(error || "Bankend serve error");
+    }
   }
 }

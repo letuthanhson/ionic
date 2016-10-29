@@ -4,15 +4,17 @@ import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
-
+import { LoginPage } from '../pages/login/login';
 import { CounterpartySearchPage } from '../pages/counterparty-search/counterparty-search';
 import { CounterpartyInfoPage } from '../pages/counterparty-info/counterparty-info';
 import { CounterpartyCaPage } from '../pages/counterparty-ca/counterparty-ca';
+import { InstaService } from '../services/insta-service';
 
 import { TabsPage } from '../pages/tabs/tabs';
 @NgModule({
   declarations: [
     MyApp,
+    LoginPage,
     AboutPage,
     ContactPage,
     HomePage,
@@ -27,6 +29,7 @@ import { TabsPage } from '../pages/tabs/tabs';
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
+    LoginPage,
     AboutPage,
     ContactPage,
     HomePage,
@@ -35,6 +38,6 @@ import { TabsPage } from '../pages/tabs/tabs';
     CounterpartyCaPage,
     TabsPage
   ],
-  providers: []
+  providers: [InstaService]
 })
 export class AppModule {}

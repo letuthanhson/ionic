@@ -31,6 +31,7 @@
   },
   "devDependencies": {
     "@ionic/app-scripts": "^0.0.36",
+    "polarcape-cordova-plugin-document-handler": "^1.0.5",
     "typescript": "^2.0.3"
   },
   "cordovaPlugins": [
@@ -39,7 +40,11 @@
     "cordova-plugin-whitelist",
     "cordova-plugin-splashscreen",
     "cordova-plugin-statusbar",
-    "ionic-plugin-keyboard"
+    "ionic-plugin-keyboard",
+    "cordova-plugin-file",
+    "cordova-plugin-secure-storage",
+    "cordova-plugin-nativestorage",
+    "polarcape-cordova-plugin-document-handler"
   ],
   "cordovaPlatforms": [
     "ios",

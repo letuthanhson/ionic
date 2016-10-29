@@ -1,9 +1,14 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, ToastController } from 'ionic-angular';
+import { NavController, AlertController, ToastController, LoadingController } from 'ionic-angular';
 import { RankedCounterparty } from '../../models/ranked-counterparty';
 import { CounterpartyService } from '../../services/counterparty-service';
 import { CounterpartyInfoPage } from '../counterparty-info/counterparty-info';
 import { Http, Response } from '@angular/http';
+import { InstaService } from '../../services/insta-service';
+import { Observable } from 'rxjs/Observable';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+import 'rxjs/add/observable/throw';
 
 @Component({
   templateUrl: 'counterparty-search.html',
@@ -17,11 +22,35 @@ export class CounterpartySearchPage {
   constructor(private navCtrl: NavController,
               private http: Http,
               private counterpartyService: CounterpartyService,
-              private alertController: AlertController,
+              private instaService: InstaService,
+              private alertCtrl: AlertController,
+              private loadingCtrl: LoadingController,
               private toastController: ToastController) {
+  }
+  ngOnInit() {
+    console.log("Searching ranked cps...");
+    let loading = this.loadingCtrl.create({
+      content: 'please wait'
+    });
+    loading.present();
+    this.instaService.getRankedCounterparties()
+      .subscribe(data => {
+        this.counterparties = data;
+        loading.dismissAll();
+      },
+      error=>{
+        loading.dismissAll();
+        console.log(error);
+        let alert = this.alertCtrl.create({
+                title: 'Loading Error!',
+                subTitle: 'Failed to retrieve data',
+                buttons: ['OK']
+              });
+          alert.present();
+      });
+      /*mock
 
-    //get mocked ranked data
-    this.http.get('mock/rankedcps.json')
+          this.http.get('mock/rankedcps.json')
       .map(res => res.json())
       .subscribe(data => {
         this.counterparties = data;
@@ -29,9 +58,7 @@ export class CounterpartySearchPage {
       error=>{
         console.log(error);
       });
-  }
-  ngOnInit() {
-
+      */
   }
 
   searchCounterparties(event) {
@@ -60,27 +87,40 @@ export class CounterpartySearchPage {
   }  
   itemTapped(event, counterparty) {
     //get counterparty details
-    /*
-    this.counterpartyService.getCounterparty(counterparty.id)
-    .subscribe(item=>{
-      if (item == undefined) {
-        let toast = this.toastController.create({
-          message: 'The selected counterparty info is not available',
-          duration: 3000,
-          position: 'middle'
-        });
-        toast.present();
-      }
-      else {
-        this.navCtrl.push(CounterpartyInfoPage, { "counterpartyInfo": item });
-      }
+    let loading = this.loadingCtrl.create({
+      content: 'please wait'
     });
-    
-  }
-  
-    */
+    loading.present();
+    this.instaService.getCounterpartyDetail(counterparty.id)
+    .subscribe(
+      item=>{
+        loading.dismissAll();
+        if (item == undefined) {
+          let toast = this.toastController.create({
+            message: 'The selected counterparty info is not available',
+            duration: 3000,
+            position: 'middle'
+          });
+          toast.present();
+        }
+        else {
+          this.navCtrl.push(CounterpartyInfoPage, { "counterpartyInfo": item });
+        }
+      },
+      error=>{
+        loading.dismissAll();
+        console.log(error);
+        let alert = this.alertCtrl.create({
+                title: 'Loading Error!',
+                subTitle: 'Failed to retrieve data',
+                buttons: ['OK']
+              });
+          alert.present();
+      });
+    /*
     let cp = this.getMockedCp();
     this.navCtrl.push(CounterpartyInfoPage, { "counterpartyInfo": cp });
+    */
   }
   getMockedCp():any{
     let a =   {
