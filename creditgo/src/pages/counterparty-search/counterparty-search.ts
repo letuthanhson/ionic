@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+//import { asEnumerable } from 'linq-es2015';
 
 @Component({
   templateUrl: 'counterparty-search.html',
@@ -28,6 +29,8 @@ export class CounterpartySearchPage {
               private toastController: ToastController) {
   }
   ngOnInit() {
+    let number: number;
+
     console.log("Searching ranked cps...");
     let loading = this.loadingCtrl.create({
       content: 'please wait'
@@ -48,22 +51,34 @@ export class CounterpartySearchPage {
               });
           alert.present();
       });
-      /*mock
-
-          this.http.get('mock/rankedcps.json')
-      .map(res => res.json())
-      .subscribe(data => {
-        this.counterparties = data;
-      },
-      error=>{
-        console.log(error);
-      });
-      */
   }
 
-  searchCounterparties(event) {
-    let query = event.target.value;      
+  filter(event)  {
+    let searchToken: string = event.target.value;
+    searchToken = searchToken.trim().toUpperCase();
+    let results: RankedCounterparty[] = [];
 
+    let start = 0;
+    let doneRootId = -999;
+    if (searchToken) {
+      for(let i = 0; i < this.counterparties.length; i++) {
+        
+        if (this.counterparties[i].name.toUpperCase().indexOf(searchToken) < 0
+            || this.counterparties[i].rootId === doneRootId ) continue;
+
+        doneRootId = this.counterparties[i].rootId;
+
+        Array.prototype.push
+          .apply(results, this.counterparties.filter(o => o.rootId === doneRootId));
+
+      }
+    }
+    this.filteredCounterparties = results;
+  }
+  searchCounterparties(event) {
+    this.filter(event);
+
+    let query = event.target.value;      
     this.filteredCounterparties = this.filterCounterparties(query, this.counterparties);
           //this.counterpartyService.getRankedCounterparties().then(counterparties => {
            // this.filteredCounterparties = this.filterCounterparties(query, counterparties);
@@ -71,19 +86,18 @@ export class CounterpartySearchPage {
 
   }
 
-  filterCounterparties(query, counterparties: RankedCounterparty[]):RankedCounterparty[] {
-        
-        //in a real application, make a request to a remote url with the query and return filtered results, for demo we filter at client side
-        let filtered : RankedCounterparty[] = [];
-        if (query) {
-          for(let i = 0; i < counterparties.length; i++) {
-              let counterparty = counterparties[i];
-              if(counterparty.name.toLowerCase().indexOf(query.toLowerCase()) == 0) { 
-                  filtered.push(counterparty);
-              }
-          }
+  filterCounterparties(query: string, counterparties: RankedCounterparty[]):RankedCounterparty[] {
+      query = query.toLowerCase();
+      let filtered : RankedCounterparty[] = [];
+      if (query.length >= 2) {
+        for(let i = 0; i < counterparties.length; i++) {
+            let counterparty = counterparties[i];
+            if(counterparty.name.toLowerCase().indexOf(query) >= 0) { 
+                filtered.push(counterparty);
+            }
         }
-        return filtered;
+      }
+      return filtered;
   }  
   itemTapped(event, counterparty) {
     //get counterparty details
