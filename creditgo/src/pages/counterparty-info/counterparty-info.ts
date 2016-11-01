@@ -11,7 +11,8 @@ import { CounterpartyCaPage } from '../counterparty-ca/counterparty-ca';
 //import { ChartModalPage } from '../chart-modal/chart-modal';
 //import { OnlyChartPage } from '../only-chart/only-chart';
 import { CounterpartyEntity } from '../../models/counterparty-entity';
-import { CpLimitsAndExposures, Limit, Exposure } from '../../models/cp-limits-and-exposures';
+import { CpLimitAndExposure, Limit, Exposure } from '../../models/cp-limits-and-exposures';
+
 //import * as moment from 'moment';
 
 declare var $: any;
@@ -42,29 +43,58 @@ export class CounterpartyInfoPage implements OnInit {
     this.cpInfo = navParams.get('counterpartyInfo');    
   }
   ngOnInit() {
-/*
-      this.http.get('mock/limit-exposure.json')
-            .map(res => res.json())
-            .subscribe(data => {
+    this.showCurrentLimitsAndExposures()
+  }
+  showCurrentLimitsAndExposures()
+  {
+    console.log("Getting exposures/limits...");
+    
+    let loading = this.loadingCtrl.create({
+      content: 'please wait'
+    });
+    loading.present();
+    this.instaService.getCounterpartyCurrentLimitsAndExposures(this.cpInfo.name)
+      .subscribe(
+        data => {
+          loading.dismissAll();
 
-              let cpLimitsAndExposures: any = data;
+          /* Data sample
+          [{
+          "exposureDate": "2013-06-20T00:00:00",
+          "ultimateParentCPTY": "AEGEAN_GROUP_PE", //obsolete
+          "currentExposure": 437896.0,
+          "limit": 10000000.0
+          }]
 
-              let limitPoints: any[][] = cpLimitsAndExposures.limits.map(o=> { 
-                  return [(new Date(o.start)).getTime(), o.limit];
-              });
-              let exposurePoints: any[][] = cpLimitsAndExposures.exposures.map(o=> { 
-                  return [(new Date(o.start)).getTime(), o.exposure];
-              });
+          export interface CpLimitAndExposure{
+            exposureDate: Date;
+            limit: number;
+            currentExposure: number;
+          }
+          */
+          // let limitAndExposureList: CpLimitAndExposure[] = data;
 
-              //extend limits to match end of exposures
-              if (exposurePoints.length > 0 && limitPoints.length > 0)
-                limitPoints.push([(new Date(exposurePoints[exposurePoints.length-1][0])).getTime(), limitPoints[limitPoints.length-1][1]]);
+          let limitPoints: any[][] = data.limits.map(o=> { 
+              return [(new Date(o.exposureDate)).getTime(), o.limit];
+          });
+          let exposurePoints: any[][] = data.exposures.map(o=> { 
+              return [(new Date(o.exposureDate)).getTime(), o.currentExposure];
+          });
 
-              this.chartLimitsAndExposureData = this.getLimitsExposureChartData(limitPoints, exposurePoints);
-              this.chartLimitsAndExposures();
+          this.chartLimitsAndExposureData = this.getLimitsExposuresChartData(limitPoints, exposurePoints);
+          this.chartLimitsAndExposures();
 
-            });
-            */
+        },
+        error=>{
+          loading.dismissAll();
+          console.log(error);
+          let alert = this.alertCtrl.create({
+                  title: 'Loading Error!',
+                  subTitle: 'Failed to load exposure/limit data',
+                  buttons: ['OK']
+                });
+          alert.present();
+        });
   }
   showCaFiles()
   {
@@ -137,7 +167,7 @@ export class CounterpartyInfoPage implements OnInit {
 
     actionSheet.present();
   }
-	getLimitsExposureChartData(limits: any[][], exposures: any[][]):any {
+	getLimitsExposuresChartData(limits: any[][], exposures: any[][]): any {
     return {
           title: {
               text: ''

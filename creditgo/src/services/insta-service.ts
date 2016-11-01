@@ -13,10 +13,10 @@ export class InstaService{
     _url: string;
     userid: string;
     password: string;
+    static APP_CONFIG = 'appconfig/appconfig.json'
 
     constructor(private http: Http){
         // get base url
-        /*
         http.get(InstaService.APP_CONFIG)
           .map(res => res.json())
           .subscribe(
@@ -28,7 +28,19 @@ export class InstaService{
             error=>{
                 console.log("Can't load '" + InstaService.APP_CONFIG + JSON.stringify(error));
             });
-            */
+    }
+    getAppConfig(){
+        return this.http.get(InstaService.APP_CONFIG)
+            .map(res => res.json())
+            .catch(this.handleError);      
+    }
+    getRankedCounterpartiesByNameQuery(nameQuery: string): Observable<any> {
+        let jsonReq = '{ "nameQuery":"' + nameQuery + '"}';
+        console.log("Getting a ranked cp - userid:json " + this.userid + ":" + jsonReq);
+        let req: InstaRequest = new InstaRequest('get/rankedcounterparty',
+                                    this.userid,
+                                    jsonReq);
+        return this.getData(req);
     }
     getRankedCounterparties(): Observable<any> {
         console.log("Getting ranked cp - userid: " + this.userid);
@@ -47,10 +59,17 @@ export class InstaService{
                                     jsonReq);
         return this.getData(req);
     }
-    getCounterpartyCurrentExposure(id: number): Observable<any> {
+    //mock
+    getCounterpartyCurrentLimitsAndExposures(counterpartyName: string): Observable<any> {
 
-        let jsonReq = '{ "id":' + id + '}';
-        console.log("Getting cp/currentexposure - id:userid:json " + id + ":" + this.userid + ":" + jsonReq);
+        return this.http.get('mock/exposure.json')
+            .map(res => res.json())
+            .catch(this.handleError);
+    }
+    REAL_getCounterpartyCurrentLimitsAndExposures(counterpartyName: string): Observable<any> {
+
+        let jsonReq = '{ "name": "' + counterpartyName + '" }';
+        console.log("Getting cp/currentexposure - name:userid:json " + counterpartyName + ":" + this.userid + ":" + jsonReq);
 
         let req: InstaRequest = new InstaRequest('get/counterparty/currentexposure',
                                     this.userid,
@@ -58,12 +77,12 @@ export class InstaService{
         return this.getData(req);
     }
     // mock
-    getCounterpartyCaFiles(id: number): Observable<any> {
+    MOCK_getCounterpartyCaFiles(id: number): Observable<any> {
         return this.http.get('mock/cafiles.json')
             .map(res => res.json())
             .catch(this.handleError);
     }
-    REAL_getCounterpartyCaFiles(id: number): Observable<any> {
+    getCounterpartyCaFiles(id: number): Observable<any> {
         let jsonReq = '{ "id":' + id + '}';
         console.log("Getting cp ca folder - id:userid:json " + id + ":" + this.userid + ":" + jsonReq);
 

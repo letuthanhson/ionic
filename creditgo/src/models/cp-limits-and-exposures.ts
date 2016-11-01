@@ -7,9 +7,16 @@ export interface Exposure {
     start: Date;
     exposure: number;
 }
-
-export interface CpLimitsAndExposures {
+/*
+export class CpLimitsAndExposures {
     id: number;
-    limits: Limit[];
-    exposures: Exposure[];
+    limits: number[]= new Array();
+    exposures: any[]= new Array();
+    exposureDates: any[]= new Array();
+}
+*/
+export interface CpLimitAndExposure{
+    exposureDate: Date;
+    limit: number;
+    currentExposure: number;
 }

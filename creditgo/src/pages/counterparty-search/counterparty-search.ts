@@ -52,7 +52,33 @@ export class CounterpartySearchPage {
           alert.present();
       });
   }
+  search(event) {
+    let searchToken: string = event.target.value;
+    searchToken = searchToken.trim();
+    //if (searchToken.length < 2) {}
 
+    this.instaService.getRankedCounterpartiesByNameQuery(searchToken)
+      .subscribe(data => {
+        this.counterparties = data;
+        if (this.counterparties === undefined || this.counterparties.length === 0) {
+          let toast = this.toastController.create({
+              message: 'Search returns no counterparty',
+              duration: 3000,
+              position: 'middle'
+            });
+          toast.present();
+        }
+      },
+      error=>{
+        console.log(error);
+        let alert = this.alertCtrl.create({
+                title: 'Loading Error!',
+                subTitle: 'Failed to retrieve data',
+                buttons: ['OK']
+              });
+          alert.present();
+      });
+  }
   filter(event)  {
     let searchToken: string = event.target.value;
     searchToken = searchToken.trim().toUpperCase();

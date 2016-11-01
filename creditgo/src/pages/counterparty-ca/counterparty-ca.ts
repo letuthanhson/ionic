@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { NavController, PopoverController, ViewController, AlertController, ToastController, NavParams } from 'ionic-angular';
+import { NavController, PopoverController, LoadingController, ViewController, AlertController, ToastController, NavParams } from 'ionic-angular';
 import { InstaService } from '../../services/insta-service';
 import { InAppBrowser, File } from 'ionic-native';
 
@@ -15,7 +15,8 @@ export class CounterpartyCaPage implements OnInit {
 
   constructor(private navCtrl: NavController,
               private instaService: InstaService,
-              private alertController: AlertController,
+              private alertCtrl: AlertController,
+              private loadingCtrl: LoadingController,
               private toastController: ToastController,
               navParams: NavParams) {
 
@@ -30,10 +31,15 @@ export class CounterpartyCaPage implements OnInit {
       
   }
   openDoc(item: any){
-
+    let loading = this.loadingCtrl.create({
+      content: 'please wait'
+    });
+    loading.present();
     this.instaService.getCounterpartyCaFileBase64(item.url)
       .subscribe(
         data => {
+          loading.dismissAll();
+
           if (data === undefined && data.fileasbase64 == undefined) {
             let toast = this.toastController.create({
                             message: 'Unable to get file content',
@@ -49,10 +55,11 @@ export class CounterpartyCaPage implements OnInit {
           }
       },
       error=>{
+        loading.dismissAll();
         console.log(error);
-        let alert = this.alertController.create({
-                title: 'Service Error!',
-                subTitle: 'Please contact support: ' + JSON.stringify(error),
+        let alert = this.alertCtrl.create({
+                title: 'Loading Error!',
+                subTitle: 'Failed to load the document',
                 buttons: ['OK']
               });
         alert.present();
@@ -65,14 +72,21 @@ export class CounterpartyCaPage implements OnInit {
         function (success) {},
         function (error) {
           if (error == 53) {
-            console.log('No app that handles this file type.');
+            let alert = this.alertCtrl.create({
+                title: 'File Openning Error!',
+                subTitle: 'No application handles this file type',
+                buttons: ['OK']
+              });
+            alert.present();
           }
-          let alert = this.alertController.create({
-                  title: 'Service Error!',
-                  subTitle: 'Please contact support: ' + JSON.stringify(error),
-                  buttons: ['OK']
-                });
-          alert.present();
+          else {
+            let alert = this.alertController.create({
+                    title: 'File Openning Error!',
+                    subTitle: 'Unable to open file: ' + JSON.stringify(error),
+                    buttons: ['OK']
+                  });
+            alert.present();
+          }
         }, 
         contentAsBase63,
         contentType, // 'application/pdf', 
