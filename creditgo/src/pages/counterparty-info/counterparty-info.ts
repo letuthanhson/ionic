@@ -57,7 +57,7 @@ export class CounterpartyInfoPage implements OnInit {
       .subscribe(
         data => {
           loading.dismissAll();
-
+          console.log(JSON.stringify(data));
           /* Data sample
           [{
           "exposureDate": "2013-06-20T00:00:00",
@@ -73,14 +73,15 @@ export class CounterpartyInfoPage implements OnInit {
           }
           */
           // let limitAndExposureList: CpLimitAndExposure[] = data;
-
-          let limitPoints: any[][] = data.limits.map(o=> { 
+          console.log("Start limits and exposures...")
+          let limitPoints: any[][] = data.map(o=> { 
               return [(new Date(o.exposureDate)).getTime(), o.limit];
           });
-          let exposurePoints: any[][] = data.exposures.map(o=> { 
+          let exposurePoints: any[][] = data.map(o=> { 
               return [(new Date(o.exposureDate)).getTime(), o.currentExposure];
           });
-
+          console.log("limits: " + JSON.stringify(limitPoints));
+          console.log("Exposures: " + JSON.stringify(exposurePoints));
           this.chartLimitsAndExposureData = this.getLimitsExposuresChartData(limitPoints, exposurePoints);
           this.chartLimitsAndExposures();
 
@@ -168,6 +169,9 @@ export class CounterpartyInfoPage implements OnInit {
     actionSheet.present();
   }
 	getLimitsExposuresChartData(limits: any[][], exposures: any[][]): any {
+    console.log("Limits: "+JSON.stringify(limits));
+    console.log("Exposures: "+JSON.stringify(exposures));
+
     return {
           title: {
               text: ''
@@ -206,11 +210,11 @@ export class CounterpartyInfoPage implements OnInit {
           },
 
           series: [{
-              step: true,
+              //step: true,
               name: 'Limits',
               data: limits
           }, {
-              step: true,
+              //step: true,
               name: 'Exposures',
               data: exposures
           }]

@@ -7,11 +7,14 @@
 </ion-header>
 
 <ion-content>
-<ion-searchbar class="search-bar" placeholder="Search counterparties" (ionInput)="searchCounterparties($event)" autocomplete="on"></ion-searchbar>
+<ion-searchbar class="search-bar" placeholder="Search counterparties" debounce="700" (ionInput)="search($event)" autocomplete="off"></ion-searchbar>
+ <!--
+ <ion-searchbar [(ngModel)]="searchToken" [formControl]="searchControl"></ion-searchbar>
+-->
   <ion-list>
     <ion-item [style.margin-left]= "(counterparty.rank - 1) + 'em'"
        [ngClass]="{'ultimate-parent': counterparty.rank === 1}"
-       *ngFor="let counterparty of filteredCounterparties" (click)="itemTapped($event, counterparty)">
+       *ngFor="let counterparty of counterparties" (click)="itemTapped($event, counterparty)">
           {{ counterparty.name }}
     </ion-item>
   </ion-list>

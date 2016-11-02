@@ -17,6 +17,7 @@ export class InstaService{
 
     constructor(private http: Http){
         // get base url
+        /*
         http.get(InstaService.APP_CONFIG)
           .map(res => res.json())
           .subscribe(
@@ -28,6 +29,7 @@ export class InstaService{
             error=>{
                 console.log("Can't load '" + InstaService.APP_CONFIG + JSON.stringify(error));
             });
+            */
     }
     getAppConfig(){
         return this.http.get(InstaService.APP_CONFIG)
@@ -37,7 +39,7 @@ export class InstaService{
     getRankedCounterpartiesByNameQuery(nameQuery: string): Observable<any> {
         let jsonReq = '{ "nameQuery":"' + nameQuery + '"}';
         console.log("Getting a ranked cp - userid:json " + this.userid + ":" + jsonReq);
-        let req: InstaRequest = new InstaRequest('get/rankedcounterparty',
+        let req: InstaRequest = new InstaRequest('get/rankedcounterparty/query',
                                     this.userid,
                                     jsonReq);
         return this.getData(req);
@@ -60,15 +62,15 @@ export class InstaService{
         return this.getData(req);
     }
     //mock
-    getCounterpartyCurrentLimitsAndExposures(counterpartyName: string): Observable<any> {
+    MOCK_getCounterpartyCurrentLimitsAndExposures(counterpartyName: string): Observable<any> {
 
         return this.http.get('mock/exposure.json')
             .map(res => res.json())
             .catch(this.handleError);
     }
-    REAL_getCounterpartyCurrentLimitsAndExposures(counterpartyName: string): Observable<any> {
+    getCounterpartyCurrentLimitsAndExposures(counterpartyName: string): Observable<any> {
 
-        let jsonReq = '{ "name": "' + counterpartyName + '" }';
+        let jsonReq = '{ "counterpartyName": "' + counterpartyName + '" }';
         console.log("Getting cp/currentexposure - name:userid:json " + counterpartyName + ":" + this.userid + ":" + jsonReq);
 
         let req: InstaRequest = new InstaRequest('get/counterparty/currentexposure',
@@ -92,12 +94,12 @@ export class InstaService{
         return this.getData(req); 
     }
     //mock method
-    getCounterpartyCaFileBase64(url: string): Observable<any>  {
+    MOCK_getCounterpartyCaFileBase64(url: string): Observable<any>  {
         return this.http.get('mock/file64.json')
             .map(res => res.json())
             .catch(this.handleError);
     }
-    REAL_getCounterpartyCaFileBase64(url: string): Observable<any>  {
+    getCounterpartyCaFileBase64(url: string): Observable<any>  {
         let jsonReq = '{ "fileUrl":"' + url + '"}';
         console.log("Getting a cafile - userid:json " + this.userid + ":" + jsonReq);
 
@@ -156,7 +158,8 @@ export class InstaService{
 
         let headers = new Headers();
         // passing your password
-        headers.append('Authorization', 'Basic '+ btoa('bp1\\' + this.userid + ':' + this.password));
+        headers.append('Content-Type', 'application/soap+xml; charset=UTF-8');
+        headers.append('Authorization', 'Basic '+ btoa(this.userid + ':' + this.password));
 
         return headers;
     }

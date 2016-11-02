@@ -91,7 +91,7 @@ export class LoginPage {
                   subTitle: 'Login failed!',
                   buttons: ['OK']
                 });
-            alert.present();
+          alert.present();
         });
         
   }

@@ -29,6 +29,7 @@ export class CounterpartySearchPage {
               private toastController: ToastController) {
   }
   ngOnInit() {
+    /*
     let number: number;
 
     console.log("Searching ranked cps...");
@@ -51,12 +52,14 @@ export class CounterpartySearchPage {
               });
           alert.present();
       });
+      */
   }
   search(event) {
     let searchToken: string = event.target.value;
     searchToken = searchToken.trim();
     //if (searchToken.length < 2) {}
 
+    this.counterparties = undefined;
     this.instaService.getRankedCounterpartiesByNameQuery(searchToken)
       .subscribe(data => {
         this.counterparties = data;
