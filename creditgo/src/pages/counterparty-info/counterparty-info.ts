@@ -40,7 +40,9 @@ export class CounterpartyInfoPage implements OnInit {
               navParams: NavParams) {
 
     // If we navigated to this page, we will have an item available as a nav param
-    this.cpInfo = navParams.get('counterpartyInfo');    
+    this.cpInfo = navParams.get('counterpartyInfo');   
+    this.cpInfo.appraisalCompletionDate = 
+          (new Date(this.cpInfo.appraisalCompletionDate));
   }
   ngOnInit() {
     this.showCurrentLimitsAndExposures()
@@ -80,8 +82,7 @@ export class CounterpartyInfoPage implements OnInit {
           let exposurePoints: any[][] = data.map(o=> { 
               return [(new Date(o.exposureDate)).getTime(), o.currentExposure];
           });
-          console.log("limits: " + JSON.stringify(limitPoints));
-          console.log("Exposures: " + JSON.stringify(exposurePoints));
+
           this.chartLimitsAndExposureData = this.getLimitsExposuresChartData(limitPoints, exposurePoints);
           this.chartLimitsAndExposures();
 
@@ -110,7 +111,7 @@ export class CounterpartyInfoPage implements OnInit {
         data => {
           loading.dismissAll();
           this.caFileList = data;
-          if (this.caFileList === undefined && this.caFileList.length === 0) {
+          if (this.caFileList === undefined || this.caFileList.length === 0) {
             let toast = this.toastController.create({
                             message: 'Credit Review document is not available for the counterparty',
                             duration: 3000,
@@ -143,11 +144,6 @@ export class CounterpartyInfoPage implements OnInit {
         text: 'Credit Reviews',
         handler: ()=>{
           let navTransition = actionSheet.dismiss();
-
-          //mock data
-          //let documents = [{"docName": "appraisal_sample1.docx", "docUrl": "www/mock/appraisal_sample1.docx"},
-          //                {"docName": "appraisal_sample2.pdf", "docUrl": "www/mock/appraisal_sample2.pdf"},
-          //                {"docName": "appraisal_sample3.xlsx", "docUrl": "www/mock/appraisal_sample3.xlsx"}];
 
           navTransition.then(()=>{
             //open the list of documents for the cp

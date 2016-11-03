@@ -28,39 +28,15 @@ export class CounterpartySearchPage {
               private loadingCtrl: LoadingController,
               private toastController: ToastController) {
   }
-  ngOnInit() {
-    /*
-    let number: number;
-
-    console.log("Searching ranked cps...");
-    let loading = this.loadingCtrl.create({
-      content: 'please wait'
-    });
-    loading.present();
-    this.instaService.getRankedCounterparties()
-      .subscribe(data => {
-        this.counterparties = data;
-        loading.dismissAll();
-      },
-      error=>{
-        loading.dismissAll();
-        console.log(error);
-        let alert = this.alertCtrl.create({
-                title: 'Loading Error!',
-                subTitle: 'Failed to retrieve data',
-                buttons: ['OK']
-              });
-          alert.present();
-      });
-      */
-  }
+  ngOnInit() {}
   search(event) {
     let searchToken: string = event.target.value;
-    searchToken = searchToken.trim();
-    //if (searchToken.length < 2) {}
 
-    this.counterparties = undefined;
-    this.instaService.getRankedCounterpartiesByNameQuery(searchToken)
+    if (searchToken === undefined || searchToken.trim().length < 2) {
+      this.counterparties = [];
+      return;
+    }
+    this.instaService.getRankedCounterpartiesByNameQuery(searchToken.trim())
       .subscribe(data => {
         this.counterparties = data;
         if (this.counterparties === undefined || this.counterparties.length === 0) {
@@ -81,53 +57,7 @@ export class CounterpartySearchPage {
               });
           alert.present();
       });
-  }
-  filter(event)  {
-    let searchToken: string = event.target.value;
-    searchToken = searchToken.trim().toUpperCase();
-    let results: RankedCounterparty[] = [];
-
-    let start = 0;
-    let doneRootId = -999;
-    if (searchToken) {
-      for(let i = 0; i < this.counterparties.length; i++) {
-        
-        if (this.counterparties[i].name.toUpperCase().indexOf(searchToken) < 0
-            || this.counterparties[i].rootId === doneRootId ) continue;
-
-        doneRootId = this.counterparties[i].rootId;
-
-        Array.prototype.push
-          .apply(results, this.counterparties.filter(o => o.rootId === doneRootId));
-
-      }
-    }
-    this.filteredCounterparties = results;
-  }
-  searchCounterparties(event) {
-    this.filter(event);
-
-    let query = event.target.value;      
-    this.filteredCounterparties = this.filterCounterparties(query, this.counterparties);
-          //this.counterpartyService.getRankedCounterparties().then(counterparties => {
-           // this.filteredCounterparties = this.filterCounterparties(query, counterparties);
-          //});
-
-  }
-
-  filterCounterparties(query: string, counterparties: RankedCounterparty[]):RankedCounterparty[] {
-      query = query.toLowerCase();
-      let filtered : RankedCounterparty[] = [];
-      if (query.length >= 2) {
-        for(let i = 0; i < counterparties.length; i++) {
-            let counterparty = counterparties[i];
-            if(counterparty.name.toLowerCase().indexOf(query) >= 0) { 
-                filtered.push(counterparty);
-            }
-        }
-      }
-      return filtered;
-  }  
+  } 
   itemTapped(event, counterparty) {
     //get counterparty details
     let loading = this.loadingCtrl.create({
@@ -147,6 +77,7 @@ export class CounterpartySearchPage {
           toast.present();
         }
         else {
+          
           this.navCtrl.push(CounterpartyInfoPage, { "counterpartyInfo": item });
         }
       },
