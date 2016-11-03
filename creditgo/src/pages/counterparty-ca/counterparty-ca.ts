@@ -67,33 +67,34 @@ export class CounterpartyCaPage implements OnInit {
    
   }
   openDocument(fileName: string, contentType: string, contentAsBase64: string) {
-    contentType=""
-    console.log("open file content type/base 64..." + fileName + contentType + contentAsBase64);
+    
+    console.log("open file dir/file/content type..." 
+        + cordova.file.dataDirectory + ':' + fileName + ':' + contentType);
+    fileName = fileName.replace(/\s+/g, '');
+
     DocumentHandler.saveAndPreviewBase64File(
         function (success) {},
         function (error) {
           console.log("Error", JSON.stringify(error));
-          if (error == 53) {
-            let alert = this.alertCtrl.create({
-                title: 'File Openning Error!',
-                subTitle: 'No application handles this file type',
-                buttons: ['OK']
-              });
-            alert.present();
-          }
-          else {
-            let alert = this.alertCtrl.create({
-                    title: 'File Openning Error!',
-                    subTitle: 'Unable to open file: ',
-                    buttons: ['OK']
-                  });
-            alert.present();
-          }
+          let errorMsg = '';
+          if (error == 53)
+            errorMsg = 'No application handles this file type';
+          else
+            errorMsg = 'Unable to open file';
+
+          let alert = this.alertCtrl.create({
+              title: 'File Openning Error!',
+              subTitle: errorMsg,
+              buttons: ['OK']
+            });
+
+          console.log("Alert Object: " + JSON.stringify(alert));
+          alert.present();
         }, 
         contentAsBase64,
         contentType, // 'application/pdf', 
         cordova.file.dataDirectory, 
-        '/' + fileName
+        fileName
     );
   }
 }
