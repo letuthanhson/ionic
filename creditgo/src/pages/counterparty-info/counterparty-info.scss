@@ -1,3 +1,6 @@
+.zoomin-button {
+    color: color($colors, primary, base);
+}
 .cp-table, .cp-table-header, .cp-primary-detail, .cp-table-check, .cp-sliding-scale  {
     width: 100%;
     text-align: center;
@@ -190,16 +193,18 @@
         text-align: right;
         padding-right: 10px;
         button {
-            width: 30px;
-            height: 30px;
+            width: 38px;
+            height: 38px;
             ion-icon {
-                font-size: 18px;
+                font-size: 30px;
             }
         }
     }
     div:nth-child(2) { //the .chart
+        position: relative;
+        z-index: -1;
         width: 100%;
-        margin-top: -50;
+        margin-top: -50px;
     }
 }
 

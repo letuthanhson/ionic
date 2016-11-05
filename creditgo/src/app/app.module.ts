@@ -9,6 +9,7 @@ import { CounterpartySearchPage } from '../pages/counterparty-search/counterpart
 import { CounterpartyInfoPage } from '../pages/counterparty-info/counterparty-info';
 import { CounterpartyCaPage } from '../pages/counterparty-ca/counterparty-ca';
 import { InstaService } from '../services/insta-service';
+import { ChartModalPage } from '../pages/chart-modal/chart-modal';
 
 import { TabsPage } from '../pages/tabs/tabs';
 @NgModule({
@@ -21,6 +22,7 @@ import { TabsPage } from '../pages/tabs/tabs';
     CounterpartySearchPage,
     CounterpartyInfoPage,
     CounterpartyCaPage,
+    ChartModalPage,
     TabsPage
   ],
   imports: [
@@ -36,6 +38,7 @@ import { TabsPage } from '../pages/tabs/tabs';
     CounterpartySearchPage,
     CounterpartyInfoPage,
     CounterpartyCaPage,
+    ChartModalPage,
     TabsPage
   ],
   providers: [InstaService]

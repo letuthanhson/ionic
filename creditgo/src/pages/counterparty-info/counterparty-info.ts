@@ -7,6 +7,7 @@ import {Http, Response} from '@angular/http';
 import { InstaService } from '../../services/insta-service';
 import { RankedCounterparty } from '../../models/ranked-counterparty';
 import { CounterpartyCaPage } from '../counterparty-ca/counterparty-ca';
+import { ChartModalPage } from '../chart-modal/chart-modal';
 //import { DashboardPage } from '../dashboard/dashboard';
 //import { ChartModalPage } from '../chart-modal/chart-modal';
 //import { OnlyChartPage } from '../only-chart/only-chart';
@@ -188,13 +189,13 @@ export class CounterpartyInfoPage implements OnInit {
           },
           yAxis: {
               title: {
-                  text: 'Millions (USD)'
+                  text: 'USD'
               },
               min: 0
           },
           tooltip: {
               headerFormat: '<b>{series.name}</b><br>',
-              pointFormat: '{point.x:%e-%b-%y}: {point.y:.2f} m'
+              pointFormat: '{point.x:%e-%b-%y}: {point.y:,.0f}'
           },
 
           plotOptions: {
@@ -207,10 +208,12 @@ export class CounterpartyInfoPage implements OnInit {
 
           series: [{
               //step: true,
+              color: '#FF6600',
               name: 'Limits',
               data: limits
           }, {
               //step: true,
+              color: '#006633', 
               name: 'Exposures',
               data: exposures
           }]
@@ -221,11 +224,10 @@ export class CounterpartyInfoPage implements OnInit {
     $('#chart-limit-exposure').highcharts(this.chartLimitsAndExposureData);
   }
   //open Chart in full screen
-  expandChartModalLimitsAndExposures() {
+  zoomInChartLimitsAndExposures() {
 
     // Get the same chart data on this page and set title
-
-    /*
+/*
     let chartData = this.chartLimitsAndExposureData;
     chartData.title = { text: this.cpInfo.name };
     chartData.subtitle = { text: 'Limits & Exposures'};
@@ -233,11 +235,11 @@ export class CounterpartyInfoPage implements OnInit {
     this.app.getRootNav().push(OnlyChartPage, { "chartData": chartData });
 
     */
-    //let modal = this.modalCtrl.create(ChartModalPage, { "chartData": chartData });
-    //modal.onDidDismiss(()=>{
-    //});
+    let chartData = this.chartLimitsAndExposureData;
+    let modal = this.modalCtrl.create(ChartModalPage, { "chartData": chartData, "title": this.cpInfo.name, "subtitle": "Limits  & Exposures" });
+    modal.onDidDismiss(()=>{});
 
-    //modal.present();
+    modal.present();
     
   }
 }

@@ -46,7 +46,8 @@
     "cordova-plugin-file",
     "cordova-plugin-secure-storage",
     "cordova-plugin-nativestorage",
-    "polarcape-cordova-plugin-document-handler"
+    "polarcape-cordova-plugin-document-handler",
+    "cordova-plugin-screen-orientation"
   ],
   "cordovaPlatforms": [
     "ios",

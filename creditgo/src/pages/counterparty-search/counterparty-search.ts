@@ -36,9 +36,14 @@ export class CounterpartySearchPage {
       this.counterparties = [];
       return;
     }
+    let loading = this.loadingCtrl.create({
+      content: 'please wait'
+    });
+    loading.present();
     this.instaService.getRankedCounterpartiesByNameQuery(searchToken.trim())
       .subscribe(data => {
         this.counterparties = data;
+        loading.dismissAll();
         if (this.counterparties === undefined || this.counterparties.length === 0) {
           let toast = this.toastController.create({
               message: 'Search returns no counterparty',
@@ -49,6 +54,7 @@ export class CounterpartySearchPage {
         }
       },
       error=>{
+        loading.dismissAll();
         console.log(error);
         let alert = this.alertCtrl.create({
                 title: 'Loading Error!',
