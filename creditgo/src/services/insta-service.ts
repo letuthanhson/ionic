@@ -14,7 +14,12 @@ export class InstaService{
     userid: string;
     password: string;
     static APP_CONFIG = 'appconfig/appconfig.json'
-
+    static XML_ESCAPE_MAP = { '&': '&amp;',
+                            '"': '&quot;',
+                            "'": '&apos;',
+                            '<': '&lt;',
+                            '>': '&gt;'
+                            };
     constructor(private http: Http){
         // get base url
         /*
@@ -31,7 +36,7 @@ export class InstaService{
             });
             */
     }
-    getAppConfig(){
+    getAppConfig(): Observable<any>{
         return this.http.get(InstaService.APP_CONFIG)
             .map(res => res.json())
             .catch(this.handleError);      
@@ -139,6 +144,11 @@ export class InstaService{
         .catch(this.handleError);
         */
     }
+    private static encodeXml(value: string) {
+        return value.replace(/([\&"'<>])/g, function(str, item) {
+            return InstaService.XML_ESCAPE_MAP[item];
+        });
+    };
     private createSoapRequest(request: InstaRequest): string{
         return    `<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:onec="http://onecreditportal.am.ist.bp.com">
                         <soapenv:Header/>
@@ -147,7 +157,7 @@ export class InstaService{
                                 <onec:request>
                                     <onec:Route>${request.route}</onec:Route>
                                     <onec:UserId>${request.userId}</onec:UserId>
-                                    <onec:JsonRequest>${request.jsonRequest}</onec:JsonRequest>
+                                    <onec:JsonRequest>${InstaService.encodeXml(request.jsonRequest)}</onec:JsonRequest>
                                 </onec:request>
                             </onec:InstaCreditRequest>
                         </soapenv:Body>
