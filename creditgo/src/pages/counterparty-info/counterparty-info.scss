@@ -21,13 +21,14 @@
 }
 //parent cp
 .cp-table .cp-table-header tr:nth-child(2) th {
+    padding-bottom: 5px;
     font-size: 13px;
     font-weight: normal;
     vertical-align: top;
     color: black;
 }
 .cp-table .cp-table-header tr:nth-child(3) th span {
-    //padding-top: 10px;
+    //padding-top: 5px;
     display: block;
     font: bold 18px/30px Verdana, Serif;
     text-align: center;
