@@ -1,23 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { NavController, Platform, NavParams, ViewController } from 'ionic-angular';
 import { ScreenOrientation } from 'ionic-native';
+import { BubbleChartComponent } from '../../components/bubble-chart/bubble-chart';
 
 declare var $: any;
 
 @Component({
   templateUrl: 'chart-modal.html'
 })
-export class ChartModalPage implements OnInit {
-  chartData: any;
+export class ChartModalPage {
+  @ViewChild('bubbleChart') bubbleChart: BubbleChartComponent
+
+  highChartsData: any;
+  bubbleRootData: any;
+  bubbleChartTitle: string;
 
   constructor(
       public platform: Platform,
       public params: NavParams,
       public viewCtrl: ViewController) {
 
-      this.chartData = params.get('chartData');   
-      this.chartData.title = { text: params.get('title') };
-      this.chartData.subtitle = { text: params.get('subtitle') };
+      // bubble chart
+      if (params.get('bubbleRootData') != undefined)
+        this.bubbleRootData = params.get('bubbleRootData');       
+      if (params.get('bubbleChartTitle') != undefined)
+        this.bubbleChartTitle = params.get('bubbleChartTitle');
+
+      // highcharts
+      if (params.get('chartData') != undefined)
+        this.highChartsData = params.get('chartData');   
+      if (params.get('title') != undefined)
+        this.highChartsData.title = { text: params.get('title') };
+      if (params.get('subtitle') != undefined)
+        this.highChartsData.subtitle = { text: params.get('subtitle') };
   }
   ionViewDidLoad() {
     ScreenOrientation.lockOrientation('landscape');
@@ -26,9 +41,13 @@ export class ChartModalPage implements OnInit {
   ionViewWillUnload() {
     ScreenOrientation.unlockOrientation();
   }
-  ngOnInit() {
+  ionViewDidEnter() {
+
+    if (this.highChartsData != undefined)
+      $('#the-chart').highcharts(this.highChartsData);
     
-    $('#the-chart').highcharts(this.chartData);
+    if (this.bubbleRootData != undefined)
+      this.bubbleChart.render(this.bubbleRootData);
     
   }
   dismiss() {

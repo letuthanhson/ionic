@@ -113,6 +113,51 @@ export class InstaService{
                                     jsonReq);
         return this.getData(req); 
     }
+
+    //mock method
+    MOCK_getExposuresAndLimitsGroupByRatingBand(): Observable<any>  {
+        return this.http.get('mock/exp_and_el_by_ratingband.json')
+            .map(res => res.json())
+            .catch(this.handleError);
+    }
+    getExposuresAndLimitsGroupByRatingBand(): Observable<any>  {
+    
+        console.log("Getting rating band exposures: " + this.userid);
+        let req: InstaRequest = new InstaRequest('get/currentRatingBandExposureAndExpectedLoss',
+                                    this.userid,
+                                    "{}");
+        return this.getData(req);
+    }
+    //mock method
+    MOCK_getExposuresAndLimitsGroupByTeam(): Observable<any>  {
+        return this.http.get('mock/exp_and_el_by_team.json')
+            .map(res => res.json())
+            .catch(this.handleError);
+    }
+    getExposuresAndLimitsGroupByTeam(): Observable<any>  {
+
+        console.log("Getting team exposures - userid: " + this.userid);
+        let req: InstaRequest = new InstaRequest('get/currentTeamExposureAndExpectedLoss',
+                                    this.userid,
+                                    "{}");
+        return this.getData(req);
+    }
+    getHistoricalExposuresAndExpectedLosses(): Observable<any>  {
+
+        console.log("Getting team exposures - userid: " + this.userid);
+        let req: InstaRequest = new InstaRequest('get/historicExposureGroupByDate',
+                                    this.userid,
+                                    "{}");
+        return this.getData(req);
+    }
+    getTopCounterpartyExposures(): Observable<any>  {
+
+        console.log("Getting team exposures - userid: " + this.userid);
+        let req: InstaRequest = new InstaRequest('get/topCounterpartyExposureAndExpectedLoss',
+                                    this.userid,
+                                    "{}");
+        return this.getData(req);
+    }
     // set user credential for url
     setServiceCredential(url: string, userid: string, password: string): void {
         this._url = url;
@@ -122,9 +167,9 @@ export class InstaService{
     }
     // authenticate a user.  This has been call from 
     authenticate() {
-        let jsonReq = '{ "id": -999 }';
+        let jsonReq = '{}';
        
-        let req: InstaRequest = new InstaRequest('get/counterparty',
+        let req: InstaRequest = new InstaRequest('get/logon',
                                     this.userid,
                                     jsonReq);
         return this.getData(req);
@@ -186,7 +231,7 @@ export class InstaService{
                 headers: headers
             })
             .map((resp:Response)=> {
-                console.log("getData(): map...");
+                console.log("getData(): map.....: " + instaRequest.route + "...");
                 let parser = new DOMParser();
                 let xmlDoc = parser.parseFromString(resp.text(), "text/xml");
                 let jsonString = xmlDoc.getElementsByTagName("JsonResponse")[0].childNodes[0].nodeValue;

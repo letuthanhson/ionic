@@ -90,6 +90,26 @@
                 <!--Sliding Scale-->
                 
                 <h4>SLIDING SCALE</h4>
+                <table class="db-table">
+                <thead>
+                  <tr>
+                      <th></th>
+                      <th>S&P</th><th>Moody's</th><th>Fitch</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th>Issuer</th><td>{{ cpInfo.issuerSppRating }}</td><td>{{ cpInfo.issuerMoodyRating }}</td><td>{{ cpInfo.isuerFitchRating }}</td>
+                  </tr>
+                  <tr>
+                    <th>Unsec</th><td>{{ cpInfo.sppRating }}</td><td>{{ cpInfo.moodyRating }}</td><td>{{ cpInfo.fitchRating }}</td>
+                  </tr>
+                  <tr>
+                    <th>Outlook</th><td>{{ cpInfo.sppOutlook }}</td><td>{{ cpInfo.moodyOutlook }}</td><td>{{ cpInfo.fitchOutlook }}</td>
+                  </tr>    
+                </tbody>
+              </table>
+              <!--
                 <table class="ss-table ss-table-detail">
                   <tr>
                     <td></td><td>S&P</td><td>Moody's</td><td>Fitch</td>
@@ -104,7 +124,7 @@
                     <td>Outlook</td><td>{{ cpInfo.sppOutlook }}</td><td>{{ cpInfo.moodyOutlook }}</td><td>{{ cpInfo.fitchOutlook }}</td>
                   </tr>
                 </table>
-                
+                -->
             </div>
           </div>
 

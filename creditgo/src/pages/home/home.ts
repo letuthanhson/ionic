@@ -40,6 +40,7 @@ export class HomePage {
                           buttons: ['OK']
                         });
                   alert.present();
+                  platform.exitApp();
                 }
                 else this.startLogin(url);
               },
@@ -52,6 +53,7 @@ export class HomePage {
                         buttons: ['OK']
                       });
                 alert.present();
+                platform.exitApp();
             });
 
 /*
@@ -68,7 +70,16 @@ export class HomePage {
               this.showLoginPage(new LogonUser());
             });
 */
-        }).catch(e => { console.log(e);});
+        }).catch(e => {                 
+          let alert = this.alertCtrl.create({
+                  title: 'Fatal Error!',
+                  subTitle: 'Unable to get service end-point.  Please contact admin.',
+                  buttons: ['OK']
+                });
+          alert.present();
+          platform.exitApp();
+
+        });
   }
   showLoginPage(savedUser: LogonUser, baseServiceUrl: string) {
     let profileModal = this.modalCtrl.create(LoginPage, {"logonUser": savedUser, "baseServiceUrl": baseServiceUrl});
@@ -90,9 +101,13 @@ export class HomePage {
                 this.showLoginPage(new LogonUser(), baseServiceUrl);
             },
             error => {
-            // nothing saved previously
-            this.showLoginPage(new LogonUser(), baseServiceUrl);
+              // nothing saved previously
+              this.showLoginPage(new LogonUser(), baseServiceUrl);
             });
-        }).catch(e => console.log(e))
+        })
+      .catch(e => {
+          console.log(e);
+          this.showLoginPage(new LogonUser(), baseServiceUrl);
+      });
   }
 }

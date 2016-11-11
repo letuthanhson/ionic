@@ -1,0 +1,111 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title>
+      <span class="logo-sm-insta">Insta</span><span class="logo-sm-credit">Credit</span>
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content>  
+    <ion-grid> 
+     <!--RATING BAND-->
+      <ion-row responsive-sm>
+        <ion-col width-50>
+          <h4>EXPOSURES BY RATING BAND</h4>
+          <div class="chart">
+              <div>
+                <!--
+              <button ion-button icon-only clear (click)="zoomInChartRatingBand()">
+                <ion-icon name="expand" class="zoomin-button"></ion-icon>
+              </button>
+              -->
+            </div>
+            <!--
+            <div id="chart-ratingband-exposures"></div>
+            -->
+            <bubble-chart #chartRatingBandExposures></bubble-chart>
+
+          </div>
+        </ion-col>
+        
+        <ion-col width-50>
+          <div>
+              <h4>EXPOSURES & EXPECTED LOSSES BY RATING BAND</h4>
+              <table class="db-table">
+                <thead>
+                  <tr>
+                      <th></th>
+                      <th colspan="2">Millions (USD)</th>
+                  </tr>
+                  <tr>
+                      <th>Rating Band</th>
+                      <th>Exposure</th>
+                      <th>Expected Loss</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of ratingBandExposuresAndExpectedLosses">              
+                      <td >{{ item.ratingBand }}</td>
+                      <td>{{ (item.exposure/1000000).toFixed(0) }}</td>
+                      <td>{{ (item.expectedLoss/1000000).toFixed(2) }}</td>
+                  </tr>       
+                </tbody>
+              </table>
+          </div>
+        </ion-col>        
+      </ion-row>
+      <!--CDS Historical Exposures-->
+      <ion-row responsive-sm>
+        <ion-col width-100>
+          <div class="chart">
+              <div>
+              <button ion-button icon-only clear (click)="zoomInChartHistorical()">
+                <ion-icon name="expand" class="zoomin-button"></ion-icon>
+              </button>
+            </div>
+            <div id="chart-historical-exposures"></div>
+          </div>
+        </ion-col>       
+      </ion-row>
+ 
+      <!--TEAM-->
+      <ion-row responsive-sm>
+        <ion-col width-50>
+          <div class="chart">
+              <div>
+              <button ion-button icon-only clear (click)="zoomInChartTeam()">
+                <ion-icon name="expand" class="zoomin-button"></ion-icon>
+              </button>
+            </div>
+            <div id="chart-team-exposures"></div>
+          </div>
+        </ion-col>
+        
+        <ion-col width-50>
+          <div>
+              <h4>EXPOSURES BY TEAM</h4>
+              <table class="db-table">
+                <thead>
+                  <tr>
+                      <th></th>
+                      <th colspan="2">Millions (USD)</th>
+                  </tr>
+                  <tr>
+                      <th>Team</th>
+                      <th>Exposure</th>
+                      <th>Expected Loss</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr *ngFor="let item of teamExposuresAndExpectedLosses">              
+                      <td >{{ item.teamName }}</td>
+                      <td>{{ (item.exposure/1000000).toFixed(0) }}</td>
+                      <td>{{ (item.expectedLoss/1000000).toFixed(2) }}</td>
+                  </tr>       
+                </tbody>
+              </table>
+          </div>
+        </ion-col>        
+      </ion-row>
+    </ion-grid>
+</ion-content>

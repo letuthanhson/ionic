@@ -60,7 +60,7 @@ export class CounterpartyInfoPage implements OnInit {
       .subscribe(
         data => {
           loading.dismissAll();
-          console.log(JSON.stringify(data));
+
           /* Data sample
           [{
           "exposureDate": "2013-06-20T00:00:00",
@@ -166,8 +166,6 @@ export class CounterpartyInfoPage implements OnInit {
     actionSheet.present();
   }
 	getLimitsExposuresChartData(limits: any[][], exposures: any[][]): any {
-    console.log("Limits: "+JSON.stringify(limits));
-    console.log("Exposures: "+JSON.stringify(exposures));
 
     return {
           title: {
@@ -193,11 +191,13 @@ export class CounterpartyInfoPage implements OnInit {
               },
               min: 0
           },
+          credits: {
+             enabled: false
+          },
           tooltip: {
               headerFormat: '<b>{series.name}</b><br>',
               pointFormat: '{point.x:%e-%b-%y}: {point.y:,.0f}'
           },
-
           plotOptions: {
               spline: {
                   marker: {
@@ -208,12 +208,12 @@ export class CounterpartyInfoPage implements OnInit {
 
           series: [{
               //step: true,
-              color: '#FF6600',
+              color: '#006633',
               name: 'Limits',
               data: limits
           }, {
               //step: true,
-              color: '#006633', 
+              color: '#FF6600', 
               name: 'Exposures',
               data: exposures
           }]

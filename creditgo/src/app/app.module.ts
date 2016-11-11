@@ -8,8 +8,10 @@ import { LoginPage } from '../pages/login/login';
 import { CounterpartySearchPage } from '../pages/counterparty-search/counterparty-search';
 import { CounterpartyInfoPage } from '../pages/counterparty-info/counterparty-info';
 import { CounterpartyCaPage } from '../pages/counterparty-ca/counterparty-ca';
+import { DashboardPage } from '../pages/dashboard/dashboard';
 import { InstaService } from '../services/insta-service';
 import { ChartModalPage } from '../pages/chart-modal/chart-modal';
+import { BubbleChartComponent } from '../components/bubble-chart/bubble-chart';
 
 import { TabsPage } from '../pages/tabs/tabs';
 @NgModule({
@@ -22,8 +24,10 @@ import { TabsPage } from '../pages/tabs/tabs';
     CounterpartySearchPage,
     CounterpartyInfoPage,
     CounterpartyCaPage,
+    DashboardPage,
     ChartModalPage,
-    TabsPage
+    TabsPage,
+    BubbleChartComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)
@@ -38,6 +42,7 @@ import { TabsPage } from '../pages/tabs/tabs';
     CounterpartySearchPage,
     CounterpartyInfoPage,
     CounterpartyCaPage,
+    DashboardPage,
     ChartModalPage,
     TabsPage
   ],
