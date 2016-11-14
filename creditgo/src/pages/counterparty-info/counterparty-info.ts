@@ -100,7 +100,7 @@ export class CounterpartyInfoPage implements OnInit {
           this.caFileList = data;
           if (this.caFileList === undefined || this.caFileList.length === 0) {
             let toast = this.toastController.create({
-                            message: 'Credit Review document is not available for the counterparty',
+                            message: 'Credit Review documents are not available for the counterparty',
                             duration: 3000,
                             position: 'middle'
                           });
