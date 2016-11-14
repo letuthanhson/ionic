@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, OnInit } from '@angular/core';
 import { App, NavController, AlertController, ToastController, PopoverController, LoadingController, ViewController, NavParams, ActionSheetController, ModalController } from 'ionic-angular';
 import { CounterpartyService } from '../../services/counterparty-service';
 import { InAppBrowser, ScreenOrientation } from 'ionic-native';
@@ -13,6 +13,7 @@ import { ChartModalPage } from '../chart-modal/chart-modal';
 //import { OnlyChartPage } from '../only-chart/only-chart';
 import { CounterpartyEntity } from '../../models/counterparty-entity';
 import { CpLimitAndExposure, Limit, Exposure } from '../../models/cp-limits-and-exposures';
+import { HighchartsChartComponent } from '../../components/highcharts-chart/highcharts-chart';
 
 //import * as moment from 'moment';
 
@@ -23,7 +24,11 @@ declare var $: any;
   providers: [CounterpartyService]
 })
 export class CounterpartyInfoPage implements OnInit {
+    @ViewChild('chartLimitsAndExposures') chartLimitsAndExposures: HighchartsChartComponent
+
   cpInfo: CounterpartyEntity;
+  limitsAndExposures: any;
+
   caFileList: any[];
 
   chartLimitsAndExposureData: any;
@@ -42,63 +47,44 @@ export class CounterpartyInfoPage implements OnInit {
 
     // If we navigated to this page, we will have an item available as a nav param
     this.cpInfo = navParams.get('counterpartyInfo');   
-    this.cpInfo.appraisalCompletionDate = 
-          (new Date(this.cpInfo.appraisalCompletionDate));
+    this.limitsAndExposures = navParams.get('limitsAndExposures');
+    console.log(this.cpInfo);
+    console.log(this.limitsAndExposures);
+    //this.cpInfo.appraisalCompletionDate = 
+    //      (new Date(this.cpInfo.appraisalCompletionDate));
   }
   ngOnInit() {
-    this.showCurrentLimitsAndExposures()
+    this.showLimitsAndExposures();
   }
-  showCurrentLimitsAndExposures()
+  showLimitsAndExposures()
   {
-    console.log("Getting exposures/limits...");
-    
-    let loading = this.loadingCtrl.create({
-      content: 'please wait'
+    if (this.limitsAndExposures === undefined) return;
+    /* Data sample
+    [{
+    "exposureDate": "2013-06-20T00:00:00",
+    "ultimateParentCPTY": "AEGEAN_GROUP_PE", //obsolete
+    "currentExposure": 437896.0,
+    "limit": 10000000.0
+    }]
+
+    export interface CpLimitAndExposure{
+      exposureDate: Date;
+      limit: number;
+      currentExposure: number;
+    }
+    */
+
+    let limitPoints: any[][] = this.limitsAndExposures.map(o=> { 
+        return [(new Date(o.exposureDate)).getTime(), o.limit];
     });
-    loading.present();
-    this.instaService.getCounterpartyCurrentLimitsAndExposures(this.cpInfo.name)
-      .subscribe(
-        data => {
-          loading.dismissAll();
+    let exposurePoints: any[][] = this.limitsAndExposures.map(o=> { 
+        return [(new Date(o.exposureDate)).getTime(), o.currentExposure];
+    });
 
-          /* Data sample
-          [{
-          "exposureDate": "2013-06-20T00:00:00",
-          "ultimateParentCPTY": "AEGEAN_GROUP_PE", //obsolete
-          "currentExposure": 437896.0,
-          "limit": 10000000.0
-          }]
-
-          export interface CpLimitAndExposure{
-            exposureDate: Date;
-            limit: number;
-            currentExposure: number;
-          }
-          */
-          // let limitAndExposureList: CpLimitAndExposure[] = data;
-          console.log("Start limits and exposures...")
-          let limitPoints: any[][] = data.map(o=> { 
-              return [(new Date(o.exposureDate)).getTime(), o.limit];
-          });
-          let exposurePoints: any[][] = data.map(o=> { 
-              return [(new Date(o.exposureDate)).getTime(), o.currentExposure];
-          });
-
-          this.chartLimitsAndExposureData = this.getLimitsExposuresChartData(limitPoints, exposurePoints);
-          this.chartLimitsAndExposures();
-
-        },
-        error=>{
-          loading.dismissAll();
-          console.log(error);
-          let alert = this.alertCtrl.create({
-                  title: 'Loading Error!',
-                  subTitle: 'Failed to load exposure/limit data',
-                  buttons: ['OK']
-                });
-          alert.present();
-        });
+    this.chartLimitsAndExposureData = this.getLimitsExposuresChartData(limitPoints, exposurePoints);
+    this.chartLimitsAndExposures.render(this.chartLimitsAndExposureData);
   }
+ 
   showCaFiles()
   {
     console.log("Getting CA files...");
@@ -121,7 +107,10 @@ export class CounterpartyInfoPage implements OnInit {
             toast.present();
           }
           else {
-            this.showCaActionSheet();
+            //this.showCaActionSheet();  //For this version there is only Action Items.  Let's go directly
+            //open the list of documents for the cp
+            this.navCtrl.push(CounterpartyCaPage,
+                { "counterpartyName": this.cpInfo.name, "documents": this.caFileList });
           }
       },
       error=>{
@@ -169,7 +158,7 @@ export class CounterpartyInfoPage implements OnInit {
 
     return {
           title: {
-              text: ''
+              text: 'Exposures & Limits'
           },
           subtitle: {
               text: ''
@@ -219,9 +208,6 @@ export class CounterpartyInfoPage implements OnInit {
           }]
       };
 
-  }
-  chartLimitsAndExposures() {
-    $('#chart-limit-exposure').highcharts(this.chartLimitsAndExposureData);
   }
   //open Chart in full screen
   zoomInChartLimitsAndExposures() {

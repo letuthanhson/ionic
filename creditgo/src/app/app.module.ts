@@ -12,6 +12,7 @@ import { DashboardPage } from '../pages/dashboard/dashboard';
 import { InstaService } from '../services/insta-service';
 import { ChartModalPage } from '../pages/chart-modal/chart-modal';
 import { BubbleChartComponent } from '../components/bubble-chart/bubble-chart';
+import { HighchartsChartComponent } from '../components/highcharts-chart/highcharts-chart';
 
 import { TabsPage } from '../pages/tabs/tabs';
 @NgModule({
@@ -27,7 +28,8 @@ import { TabsPage } from '../pages/tabs/tabs';
     DashboardPage,
     ChartModalPage,
     TabsPage,
-    BubbleChartComponent
+    BubbleChartComponent,
+    HighchartsChartComponent
   ],
   imports: [
     IonicModule.forRoot(MyApp)

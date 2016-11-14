@@ -6,8 +6,8 @@
     </ion-title>
 
     <ion-buttons end>
-      <button (click)="showCaFiles()">
-        <ion-icon name="more"></ion-icon>
+      <button ion-button (click)="showCaFiles()">
+        <ion-icon name="document"></ion-icon>
       </button>
     </ion-buttons>
   </ion-navbar>
@@ -76,17 +76,20 @@
                 </table>
 
 
-                <!--<div class="sub-header">Limits & Exposures</div>-->
+                <!--<div class="sub-header">Limits & Exposures</div>
                <h4>LIMITS & EXPOSURES</h4>
+               -->
+               <!--
                 <div class="chart">
                     <div>
                     <button ion-button icon-only clear (click)="zoomInChartLimitsAndExposures()">
                       <ion-icon name="expand" class="zoomin-button"></ion-icon>
                     </button>
                   </div>
-                  <div id="chart-limit-exposure"></div>
+                  
                 </div>
-                
+                -->
+                <highcharts-chart #chartLimitsAndExposures></highcharts-chart>
                 <!--Sliding Scale-->
                 
                 <h4>SLIDING SCALE</h4>

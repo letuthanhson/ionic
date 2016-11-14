@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import 'rxjs/add/observable/forkJoin';
 //import { asEnumerable } from 'linq-es2015';
 
 @Component({
@@ -70,11 +71,13 @@ export class CounterpartySearchPage {
       content: 'please wait'
     });
     loading.present();
-    this.instaService.getCounterpartyDetail(counterparty.id)
+    Observable.forkJoin(
+      this.instaService.getCounterpartyDetail(counterparty.id),
+      this.instaService.getCounterpartyCurrentLimitsAndExposures(counterparty.name))
     .subscribe(
-      item=>{
+      data=>{
         loading.dismissAll();
-        if (item == undefined) {
+        if (data[0] == undefined) {
           let toast = this.toastController.create({
             message: 'The selected counterparty info is not available',
             duration: 3000,
@@ -84,7 +87,7 @@ export class CounterpartySearchPage {
         }
         else {
           
-          this.navCtrl.push(CounterpartyInfoPage, { "counterpartyInfo": item });
+          this.navCtrl.push(CounterpartyInfoPage, { "counterpartyInfo": data[0], "limitsAndExposures": data[1] });
         }
       },
       error=>{

@@ -33,8 +33,15 @@ export class BubbleChartComponent
         //
         // Pick some colours for the categories (groups)
         //
-        var color = d3.scale.category10();
-        
+        //var color = d3.scale.category10();
+
+        var colorDomain = d3.extent(root.children, function(d){
+            return d.value;
+        });
+        var colorScale = d3.scale.linear()
+            .domain(colorDomain)
+            .range(["yellow", "#FF6600"]);
+
         //
         // Create a bubble layout based on the tree of objects. 
         // This adds properties x,y,r to each of our leaf objects
@@ -51,6 +58,15 @@ export class BubbleChartComponent
                     .attr("width", diameter)
                     .attr("height", diameter)
                     .attr("class", "bubble");
+
+    //create the empty gradient that we're going to populate later
+    //    svg.append("defs")
+    //                .append("linearGradient")
+    //                    .attr("id", "linear-gradient")
+    //                    .attr("x1", "0%")
+    //                    .attr("x2", "0%")
+    //                    .attr("y1", "100%")
+    //                    .attr("y2", "0%");
         
         //
         // For each leaf, create a new "node" and place it in the correct
@@ -79,7 +95,10 @@ export class BubbleChartComponent
        //
        node.append("circle")
            .attr("r", function(d) { return d.r; })
-           .style("fill", function(d) { return  self.randomCssRgba();  })
+           .attr("fill", function(d) {
+               return colorScale(d.value);
+           })
+           //.style("fill", function(d) { return  self.randomCssRgba();  })
            .on("mouseover", function(d) {
                           tooltip.text(d.name + ": " + format(d.value));
                           tooltip.style("visibility", "visible");
@@ -89,6 +108,7 @@ export class BubbleChartComponent
                   })
                   .on("mouseout", function(){return tooltip.style("visibility", "hidden");
                 });   
+
 
         //
         // For each node, add a label to the middle of the circle
@@ -127,5 +147,22 @@ export class BubbleChartComponent
 
    private randomNumber(min, max): any {        
           return Math.floor(Math.random() * (max - min + 1) + min);
-    } 
+   } 
+   heatmapColors(root: any): any[] {
+       let values: number[] = root.children.map(o  => { return o.value; });
+       let maxValue: number = Math.max(...values);
+       let minValue: number = Math.min(...values);
+
+       let heatmapColors: any[] = new Array();
+       values.map(itemValue => {
+           let rate = (maxValue - minValue + 1) === 0 ? 0 : (itemValue - minValue) / (maxValue - minValue + 1);
+           
+           heatmapColors.push({
+               value: itemValue,
+               heatmapColor: d3.rba(Math.round(255*rate), Math.round(255*(1-rate)), 0, 1).toString()
+           })
+       });
+
+       return heatmapColors;
+   }
 }

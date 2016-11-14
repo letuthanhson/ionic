@@ -7,7 +7,7 @@
 </ion-header>
 
 <ion-content>  
-    <ion-grid> 
+    <ion-grid > 
      <!--RATING BAND-->
       <ion-row responsive-sm>
         <ion-col width-50>
@@ -31,7 +31,7 @@
         <ion-col width-50>
           <div>
               <h4>EXPOSURES & EXPECTED LOSSES BY RATING BAND</h4>
-              <table class="db-table">
+              <table class="db-table" *ngIf="isDataLoaded" >
                 <thead>
                   <tr>
                       <th></th>
@@ -57,6 +57,8 @@
       <!--CDS Historical Exposures-->
       <ion-row responsive-sm>
         <ion-col width-100>
+          <highcharts-chart #chartHistoricalExposures></highcharts-chart>
+          <!--
           <div class="chart">
               <div>
               <button ion-button icon-only clear (click)="zoomInChartHistorical()">
@@ -65,12 +67,17 @@
             </div>
             <div id="chart-historical-exposures"></div>
           </div>
+          -->
         </ion-col>       
       </ion-row>
  
       <!--TEAM-->
       <ion-row responsive-sm>
+        
+        
         <ion-col width-50>
+          <highcharts-chart #chartTeamExposures></highcharts-chart>
+        <!--
           <div class="chart">
               <div>
               <button ion-button icon-only clear (click)="zoomInChartTeam()">
@@ -79,12 +86,13 @@
             </div>
             <div id="chart-team-exposures"></div>
           </div>
+          -->
         </ion-col>
         
         <ion-col width-50>
           <div>
               <h4>EXPOSURES BY TEAM</h4>
-              <table class="db-table">
+              <table class="db-table" *ngIf="isDataLoaded">
                 <thead>
                   <tr>
                       <th></th>

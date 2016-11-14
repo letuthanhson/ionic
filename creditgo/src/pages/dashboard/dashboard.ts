@@ -2,11 +2,13 @@ import { Component, ViewChild, OnInit, ElementRef, Directive } from '@angular/co
 import { NavController, NavParams, LoadingController, AlertController, ModalController } from 'ionic-angular';
 import { ChartModalPage } from '../chart-modal/chart-modal';
 import { BubbleChartComponent } from '../../components/bubble-chart/bubble-chart';
+import { HighchartsChartComponent } from '../../components/highcharts-chart/highcharts-chart';
 import { InstaService } from '../../services/insta-service';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/observable/throw';
+import 'rxjs/add/observable/forkJoin';
 
 declare var $;
 declare var Highcharts;
@@ -16,7 +18,10 @@ declare var Highcharts;
 })
 export class DashboardPage {
     @ViewChild('chartRatingBandExposures') chartRatingBandExposures: BubbleChartComponent
+    @ViewChild('chartHistoricalExposures') chartHistoricalExposures: HighchartsChartComponent
+    @ViewChild('chartTeamExposures') chartTeamExposures: HighchartsChartComponent
 
+    isDataLoaded: boolean = false;
     static RATING_BAND = 'Rating Band';
     static TEAM = 'Team';
 
@@ -54,9 +59,61 @@ export class DashboardPage {
         modal.present();
     }
     ngOnInit() {
-        this.showHistoricalExposuresAndExpectedLosses();
-        this.showRatingBandExposuresAndExpectedLosses();
-        this.showTeamExposuresAndExpectedLosses();
+        
+        let loading = this.loadingCtrl.create({
+                            content: 'please wait'
+                        });
+        loading.present();
+        Observable.forkJoin(
+            this.instaService.getHistoricalExposuresAndExpectedLosses(),
+            this.instaService.getExposuresAndLimitsGroupByRatingBand(),
+            this.instaService.getExposuresAndLimitsGroupByTeam()
+        )
+        .subscribe(
+            data => {
+                this.historialExposuresAndExpectedLosses = data[0];
+                this.ratingBandExposuresAndExpectedLosses = data[1];
+                this.teamExposuresAndExpectedLosses = data[2];
+
+                this.isDataLoaded = true;
+                loading.dismissAll();
+
+                // loading rating band data
+                let root:any = {};
+                root.name = "Interactions";
+                root.children = new Array(); 
+
+                this.ratingBandExposuresAndExpectedLosses.map(o=>
+                {
+                    root.children.push({name: o.ratingBand,  value: o.exposure});
+                })    
+                this.chartRatingBandExposures.render(root);
+
+                // loading historical data
+                this.chartHistoricalExposures.render(this.chartDataHistoricalExposuresAndExpectedLosses(this.historialExposuresAndExpectedLosses));
+                //$('#chart-historical-exposures').highcharts(
+                //    this.chartDataHistoricalExposuresAndExpectedLosses(this.historialExposuresAndExpectedLosses));
+
+                // loading team data
+                //$('#chart-team-exposures').highcharts(
+                //    this.chartDataExposuresAndExpectedLosses(DashboardPage.TEAM,
+                //        this.teamExposuresAndExpectedLosses));
+                this.chartTeamExposures.render(this.chartDataExposuresAndExpectedLosses(DashboardPage.TEAM,
+                        this.teamExposuresAndExpectedLosses));
+            },
+            error=>{
+                loading.dismissAll();
+                console.log(error);
+                let alert = this.alertCtrl.create({
+                        title: 'Loading Error!',
+                        subTitle: 'Failed to load dashboard loss data',
+                        buttons: ['OK']
+                        });
+                alert.present();
+            });
+        //this.showHistoricalExposuresAndExpectedLosses();
+        //this.showRatingBandExposuresAndExpectedLosses();
+        //this.showTeamExposuresAndExpectedLosses();
     }
 
     randomCssRgba () {
@@ -66,123 +123,7 @@ export class DashboardPage {
     randomNumber(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     }    
-    // Show Exposure by Rating Band as bubble chart
-    showRatingBandExposuresAndExpectedLosses(){
-        console.log("Getting rating band exposures/losses...");
-        
-        let loading = this.loadingCtrl.create({
-                            content: 'please wait'
-                        });
-        loading.present();
-        this.instaService.getExposuresAndLimitsGroupByRatingBand()
-        .subscribe(
-            data => {
-                this.ratingBandExposuresAndExpectedLosses = data;
-                loading.dismissAll();
 
-                let root:any = {};
-                root.name = "Interactions";
-                root.children = new Array(); 
-
-                data.map(o=>
-                {
-                    root.children.push({name: o.ratingBand,  value: o.exposure});
-                })    
-
-                this.chartRatingBandExposures.render(root);
-
-            },
-            error=>{
-                loading.dismissAll();
-                console.log(error);
-                let alert = this.alertCtrl.create({
-                        title: 'Loading Error!',
-                        subTitle: 'Failed to load rating band exposure/expected loss data',
-                        buttons: ['OK']
-                        });
-                alert.present();
-            });
-    }
-    SAVED_showRatingBandExposuresAndExpectedLosses(){
-        console.log("Getting rating band exposures/losses...");
-        
-        let loading = this.loadingCtrl.create({
-        content: 'please wait'
-        });
-        loading.present();
-        this.instaService.getExposuresAndLimitsGroupByRatingBand()
-        .subscribe(
-            data => {
-                this.ratingBandExposuresAndExpectedLosses = data;
-                loading.dismissAll();
-                $('#chart-ratingband-exposures').highcharts(
-                    this.chartDataExposuresAndExpectedLosses(DashboardPage.RATING_BAND,
-                        this.ratingBandExposuresAndExpectedLosses));
-            },
-            error=>{
-            loading.dismissAll();
-                console.log(error);
-                let alert = this.alertCtrl.create({
-                        title: 'Loading Error!',
-                        subTitle: 'Failed to load rating band exposure/expected loss data',
-                        buttons: ['OK']
-                        });
-                alert.present();
-            });
-    }
-    showTeamExposuresAndExpectedLosses(){
-        console.log("Getting team exposures/losses...");
-        
-        let loading = this.loadingCtrl.create({
-        content: 'please wait'
-        });
-        loading.present();
-        this.instaService.getExposuresAndLimitsGroupByTeam()
-        .subscribe(
-            data => {
-                this.teamExposuresAndExpectedLosses = data;
-                loading.dismissAll();
-                $('#chart-team-exposures').highcharts(
-                    this.chartDataExposuresAndExpectedLosses(DashboardPage.TEAM,
-                        this.teamExposuresAndExpectedLosses));
-            },
-            error=>{
-                loading.dismissAll();
-                console.log(error);
-                let alert = this.alertCtrl.create({
-                        title: 'Loading Error!',
-                        subTitle: 'Failed to load team exposure/expected loss data',
-                        buttons: ['OK']
-                        });
-                alert.present();
-            });
-    }
-    showHistoricalExposuresAndExpectedLosses(){
-        console.log("Getting historical exposures/losses...");
-        
-        let loading = this.loadingCtrl.create({
-        content: 'please wait'
-        });
-        loading.present();
-        this.instaService.getHistoricalExposuresAndExpectedLosses()
-        .subscribe(
-            data => {
-                this.historialExposuresAndExpectedLosses = data;
-                loading.dismissAll();
-                $('#chart-historical-exposures').highcharts(
-                    this.chartDataHistoricalExposuresAndExpectedLosses(this.historialExposuresAndExpectedLosses));
-            },
-            error=>{
-                loading.dismissAll();
-                console.log(error);
-                let alert = this.alertCtrl.create({
-                        title: 'Loading Error!',
-                        subTitle: 'Failed to load team exposure/expected loss data',
-                        buttons: ['OK']
-                        });
-                alert.present();
-            });
-    }
     chartDataExposuresAndExpectedLosses(category: string, exposuresAndLosses: any[]): any {
         let categories: string[] =[];
 
