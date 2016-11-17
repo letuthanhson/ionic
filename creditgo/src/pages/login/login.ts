@@ -80,7 +80,7 @@ export class LoginPage {
     loading.present();
     this.instaService.setServiceCredential(
           this.baseServiceUrl,
-          //"https://devtest-istesb.bpglobal.com:25202/InstaCredit_External/proxy?wsdl",
+          //"/api/InstaCredit_External/proxy?wsdl",
           this.logonUser.userid,
           this.logonUser.password);
 

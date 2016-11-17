@@ -28,6 +28,7 @@ export class BubbleChartComponent
         // How big the chart is 
         //
         //console.log('bubble root...' + JSON.stringify(root));
+        document.getElementById("bubblechart").innerHTML = "";
         var diameter = document.getElementById("bubblechart").offsetWidth;
         console.log('diameter...' + diameter);
         //

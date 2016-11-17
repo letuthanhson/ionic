@@ -39,12 +39,17 @@ export class ChartModalPage {
   
   }
   ionViewWillUnload() {
+     // remove zoom type on unload
+    this.highChartsData.chart = { zoomType:'' };
     ScreenOrientation.unlockOrientation();
   }
   ionViewDidEnter() {
 
-    if (this.highChartsData != undefined)
+    if (this.highChartsData != undefined){
+      // add zoom type on max
+      this.highChartsData.chart = { zoomType: 'xy' };
       $('#the-chart').highcharts(this.highChartsData);
+    }
     
     if (this.bubbleRootData != undefined)
       this.bubbleChart.render(this.bubbleRootData);

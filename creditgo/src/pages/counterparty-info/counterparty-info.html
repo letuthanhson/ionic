@@ -12,8 +12,8 @@
     </ion-buttons>
   </ion-navbar>
 </ion-header>
-<ion-content > 
-    <ion-grid>
+<ion-content>
+     <ion-grid>
       <ion-row>
         <ion-col>
           <div class="cp-table clear app-checkbox">
@@ -89,7 +89,15 @@
                   
                 </div>
                 -->
-                <highcharts-chart #chartLimitsAndExposures></highcharts-chart>
+                <div>
+                  <ion-fab right edge>
+                    <button ion-fab (click)="zoomInChartLimitsAndExposures()">
+                      <ion-icon name="expand"></ion-icon>
+                    </button>
+                  </ion-fab>
+                  
+                  <highcharts-chart #chartLimitsAndExposures></highcharts-chart>
+                </div>
                 <!--Sliding Scale-->
                 
                 <h4>SLIDING SCALE</h4>

@@ -13,19 +13,17 @@
   <div id="the-chart"></div>
 -->
   <ion-grid>
-        <ion-row>
-            <ion-fab right edge>
-                <button ion-fab (click)="dismiss()">
-                  <ion-icon name="close"></ion-icon>
-                </button>
-            </ion-fab>
-            <ion-col>
-                <div id="the-chart"></div>
-
-                <h4>{{ bubbleChartTitle }}</h4>
-                <bubble-chart #bubblechart></bubble-chart>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
-
+    <ion-row>
+      <ion-fab right edge>
+        <button ion-fab (click)="dismiss()">
+          <ion-icon name="close"></ion-icon>
+        </button>
+      </ion-fab>
+      <ion-col>
+        <div id="the-chart"></div>
+        <h4>{{ bubbleChartTitle }}</h4>
+        <bubble-chart #bubblechart></bubble-chart>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 </ion-content>

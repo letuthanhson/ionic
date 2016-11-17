@@ -1,14 +1,46 @@
-<ion-content class="about" scroll="false">
-  <div class="brand-centered" > 
+<ion-content padding scroll="false">
+  <!--<div class="brand-centered" > 
 
     <div class="app-image" ><img src="img/insta-credit.png" alt=""></div>
-    <div><span class="logo-sm-insta">Insta</span><span class="logo-sm-credit">Credit</span></div>  
-  </div>
-  <div class="content-centered">
-    <p>Version: 1.0.0</p>  
+    <div><span class="logo-sm-insta">Insta</span><span class="logo-sm-credit">Credit</span></div> 
+
+  </div>-->
+  
+  
+  <ion-grid class="about-content">
+  <ion-row>
+    <ion-col> 
+    <div class="app-image" ><img src="img/insta-credit.png" class="insta-logo" alt="">
+    <span class="logo-sm-insta">Insta</span><span class="logo-sm-credit">Credit</span>
+    </div>
+    
+    </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col center>
+      <div >
+    <p>Version: {{ version }}</p>
+    <p>Build: {{ build }}</p>  
     <p>InstaCredit provides IST Credit teams the ability to view counterparty related data such as financial credit reviews, limits and exposures.  In addition, it provides Credit portfolio views, aiding Credit LT in monitoring and decision-making processes</p>
     <p>Support Email: <a href="mailto:gitscreditsupport@bp.com?Subject=InstaCredit%20Query">G IT&amp;S Credit Support</a></p>
     <p>&copy; 2016 BP</p>
   </div>
+  
+  </ion-col>
+  </ion-row>
+
+  <ion-row>
+    <ion-col>
+      <ion-fab center>
+        <button ion-fab (click)="showHelp()">
+          <ion-icon name="help"></ion-icon>
+        </button> 
+      </ion-fab>
+    </ion-col>
+  </ion-row>
+
+</ion-grid>
+
 </ion-content>
 

@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
-import { NavController, Platform } from 'ionic-angular';
-import { AppVersion } from 'ionic-native';
+import { NavController, Platform , AlertController} from 'ionic-angular';
+import { AppVersion, File } from 'ionic-native';
 import { Http, Response } from '@angular/http';
 
+declare var DocumentHandler: any;
+declare var cordova: any;
 @Component({
   selector: 'page-about',
   templateUrl: 'about.html'
@@ -15,7 +17,8 @@ export class AboutPage {
 
   constructor(private platform: Platform,
               private navCtrl: NavController,
-              private http: Http) {
+              private http: Http,
+              private alertCtrl: AlertController) {
 
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
@@ -53,7 +56,36 @@ export class AboutPage {
     });
 */
   }
-  showHelp(){}
+  showHelp(){
+    
+    var self = this;
+    
+    console.log( cordova.file.applicationDirectory+"www/help/usermanual.docx");
+
+     DocumentHandler.previewFileFromUrlOrPath(
+        function (success) {},
+        function (error) {
+          console.log("Error", error);
+          let errorMsg = '';
+          if (error == 53)
+            errorMsg = 'No application handles this file type';
+          else
+            errorMsg = 'Unable to open file';
+
+          let alert = self.alertCtrl.create({
+              title: 'File Openning Error!',
+              subTitle: errorMsg,
+              buttons: ['OK']
+            });
+
+          console.log("Alert Object: " + error);
+          alert.present();
+        }, 
+        
+        cordova.file.applicationDirectory+"www/help/usermanual.docx", 
+        "usermanual.docx"
+    );
+  }
   /*
   mockCounterpartyData() {
     this.http.get('mock/counterparties.json')

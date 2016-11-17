@@ -56,6 +56,7 @@ export class CounterpartyInfoPage implements OnInit {
   ngOnInit() {
     this.showLimitsAndExposures();
   }
+ 
   showLimitsAndExposures()
   {
     if (this.limitsAndExposures === undefined) return;
