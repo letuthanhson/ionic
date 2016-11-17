@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NavController } from 'ionic-angular';
-import { SQLite, NativeStorage } from 'ionic-native';
+import { NavController, Platform } from 'ionic-angular';
+import { AppVersion } from 'ionic-native';
 import { Http, Response } from '@angular/http';
 
 @Component({
@@ -8,12 +8,32 @@ import { Http, Response } from '@angular/http';
   templateUrl: 'about.html'
 })
 export class AboutPage {
-  private db = new SQLite();
+  
   notMsg: string;
+  version: string = "1.0.0";
+  build: string = "1";
 
-  constructor(private navCtrl: NavController,
+  constructor(private platform: Platform,
+              private navCtrl: NavController,
               private http: Http) {
 
+    platform.ready().then(() => {
+      // Okay, so the platform is ready and our plugins are available.
+      // Here you can do any higher level native things you might need.
+      AppVersion.getVersionNumber()
+        .then(o => {
+          this.version = o;
+          console.log(this.version);
+        });
+      AppVersion.getVersionCode()
+        .then(o => {
+          this.build = o;
+          console.log(this.build);
+        });
+    });
+
+
+/*
     this.db.openDatabase({
       name: 'data.db',
       location: 'default'
@@ -31,8 +51,10 @@ export class AboutPage {
         this.notMsg = "Failed to open table";
         console.log("Unable to open database", e);
     });
-    
+*/
   }
+  showHelp(){}
+  /*
   mockCounterpartyData() {
     this.http.get('mock/counterparties.json')
             .map(res => res.json())
@@ -87,7 +109,7 @@ export class AboutPage {
   }
   getMockCounterparty()
   {
-    /*
+    
     this.storage.query("select * from Counterparty where id = ?", [3430])
         .then(o=>{
           for(let i=0; i<o.res.rows.length; i++){
@@ -97,10 +119,10 @@ export class AboutPage {
       .catch(e=>{
         console.log("Error select cp: ", e);
       });
-      */
+      
   }
   getMockCounterpartyCount()
-  {/*
+  {
     this.storage.query("select count(1) from Counterparty")
         .then(o=>{
           for(let i=0; i<o.res.rows.length; i++){
@@ -110,6 +132,7 @@ export class AboutPage {
       .catch(e=>{
         console.log("Error select count: ", e);
       });
-      */
+      
   }
+  */
 }
