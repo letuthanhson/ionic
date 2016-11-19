@@ -14,8 +14,7 @@ import { ChartModalPage } from '../chart-modal/chart-modal';
 import { CounterpartyEntity } from '../../models/counterparty-entity';
 import { CpLimitAndExposure, Limit, Exposure } from '../../models/cp-limits-and-exposures';
 import { HighchartsChartComponent } from '../../components/highcharts-chart/highcharts-chart';
-
-//import * as moment from 'moment';
+import { Observable } from 'rxjs/Observable';
 
 declare var $: any;
 
@@ -49,31 +48,31 @@ export class CounterpartyInfoPage implements OnInit {
     this.cpInfo = navParams.get('counterpartyInfo');   
     this.limitsAndExposures = navParams.get('limitsAndExposures');
     console.log(this.cpInfo);
-    console.log(this.limitsAndExposures);
-    //this.cpInfo.appraisalCompletionDate = 
-    //      (new Date(this.cpInfo.appraisalCompletionDate));
+    console.log(this.limitsAndExposures);   
   }
   ngOnInit() {
     this.showLimitsAndExposures();
+  }
+
+  // refresh handler
+  refreshCounterpartyInfo(refresher)
+  {
+     Observable
+     .forkJoin(
+        this.instaService.getCounterpartyDetail(this.cpInfo.id),
+        this.instaService.getCounterpartyCurrentLimitsAndExposures(this.cpInfo.name))
+     .subscribe(
+        data => {           
+            this.cpInfo = data[0];
+            this.limitsAndExposures = data[1];
+            this.showLimitsAndExposures();
+            refresher.complete();
+      });
   }
  
   showLimitsAndExposures()
   {
     if (this.limitsAndExposures === undefined) return;
-    /* Data sample
-    [{
-    "exposureDate": "2013-06-20T00:00:00",
-    "ultimateParentCPTY": "AEGEAN_GROUP_PE", //obsolete
-    "currentExposure": 437896.0,
-    "limit": 10000000.0
-    }]
-
-    export interface CpLimitAndExposure{
-      exposureDate: Date;
-      limit: number;
-      currentExposure: number;
-    }
-    */
 
     let limitPoints: any[][] = this.limitsAndExposures.map(o=> { 
         return [(new Date(o.exposureDate)).getTime(), o.limit];
@@ -158,6 +157,11 @@ export class CounterpartyInfoPage implements OnInit {
 	getLimitsExposuresChartData(limits: any[][], exposures: any[][]): any {
 
     return {
+          chart: {
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false
+          },
           title: {
               text: 'Exposures & Limits'
           },

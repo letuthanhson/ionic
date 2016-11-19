@@ -1,6 +1,7 @@
 .close-button {
     color: color($colors, primary, base);
 }
+
 .modal-chart {
     div:nth-child(1) {
         width: 100%;
@@ -14,7 +15,8 @@
             }
         }
     }
-    div:nth-child(2) { //the .chart
+    div:nth-child(2) {
+        //the .chart
         position: relative;
         z-index: -1;
         width: 100%;

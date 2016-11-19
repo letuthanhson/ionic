@@ -20,6 +20,7 @@ export class CounterpartySearchPage {
   counterparty: RankedCounterparty;
   counterparties: RankedCounterparty[]; 
   filteredCounterparties: RankedCounterparty[];
+  showingSection:boolean = false; 
 
   constructor(private navCtrl: NavController,
               private http: Http,
@@ -35,6 +36,7 @@ export class CounterpartySearchPage {
 
     if (searchToken === undefined || searchToken.trim().length < 2) {
       this.counterparties = [];
+      this.showingSection = false;
       return;
     }
     let loading = this.loadingCtrl.create({
@@ -46,12 +48,16 @@ export class CounterpartySearchPage {
         this.counterparties = data;
         loading.dismissAll();
         if (this.counterparties === undefined || this.counterparties.length === 0) {
+          this.showingSection = false;
           let toast = this.toastController.create({
               message: 'Search returns no counterparty',
               duration: 3000,
               position: 'middle'
             });
           toast.present();
+        }
+        else{
+          this.showingSection = true;
         }
       },
       error=>{

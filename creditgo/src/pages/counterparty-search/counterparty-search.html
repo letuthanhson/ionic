@@ -1,18 +1,18 @@
 <ion-header>
-  <ion-navbar>
-    <ion-title>
-      <span class="logo-sm-insta">Insta</span><span class="logo-sm-credit">Credit</span>
-    </ion-title>
-  </ion-navbar>
-  <ion-searchbar class="search-bar" placeholder="Search counterparties" debounce="700" (ionInput)="search($event)"></ion-searchbar>
- 
+    <ion-navbar>
+        <ion-title>
+            <span class="logo-sm-insta">Insta</span><span class="logo-sm-credit">Credit</span>
+        </ion-title>
+    </ion-navbar>
+    <ion-searchbar class="search-bar" placeholder="Search counterparties" debounce="700" (ionInput)="search($event)"></ion-searchbar>
+
 </ion-header>
 
 <ion-content>
-<!--
+    <!--
  <ion-searchbar [(ngModel)]="searchToken" [formControl]="searchControl"></ion-searchbar>
 -->
-<!--
+    <!--
   <ion-list>
     <ion-item [style.margin-left]= "(counterparty.rank - 1) + 'em'"
        [ngClass]="{'ultimate-parent': counterparty.rank === 1}"
@@ -23,12 +23,10 @@
 
 -->
 
-  <ion-list [virtualScroll]="counterparties" >
-    <ion-item [style.margin-left]= "(counterparty.rank - 1) + 'em'"
-       [ngClass]="{'ultimate-parent': counterparty.rank === 1}"
-       *virtualItem="let counterparty" (click)="itemTapped($event, counterparty)">
-          {{ counterparty.name }}
-    </ion-item>
-  </ion-list>
+    <ion-list [virtualScroll]="counterparties" [hidden]="!showingSection" approxItemHeight="'60px'">
+        <ion-item [style.margin-left]="(counterparty.rank - 1) + 'em'" [ngClass]="{'ultimate-parent': counterparty.rank === 1}" *virtualItem="let counterparty" (click)="itemTapped($event, counterparty)">
+            {{ counterparty.name }}
+        </ion-item>
+    </ion-list>
 
 </ion-content>

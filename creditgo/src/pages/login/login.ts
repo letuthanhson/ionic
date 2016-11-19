@@ -79,8 +79,8 @@ export class LoginPage {
     });
     loading.present();
     this.instaService.setServiceCredential(
-          this.baseServiceUrl,
-          //"/api/InstaCredit_External/proxy?wsdl",
+          //this.baseServiceUrl,
+          "/api/InstaCredit_External/proxy?wsdl",
           this.logonUser.userid,
           this.logonUser.password);
 
