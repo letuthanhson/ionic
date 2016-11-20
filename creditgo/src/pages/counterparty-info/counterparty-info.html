@@ -36,16 +36,6 @@
                             </tr>
 
                         </table>
-                        <!--
-                <table class="cp-table-check">
-                    <tr>
-                      <td><div class="app-checkbox-label"> <input id="cbxMonitor" type="checkbox" checked="{{ cpInfo.isMonitored }}" disabled="true">
-                      <label for="cbxMonitor"></label><span>Monitor?</span></div></td>
-                      <td><div class="app-checkbox-label"> <span>Watched?</span><input id="cbxWatch" type="checkbox" checked="{{ cpInfo.isWatched }}" disabled="true">
-                      <label for="cbxWatch"></label></div></td>
-                    </tr>
-                </table>
-                -->
 
 
                         <table class="cp-primary-detail">
@@ -133,25 +123,11 @@
                             </tr>
                         </table>
 
-
-                        <!--<div class="sub-header">Limits & Exposures</div>
-               <h4>LIMITS & EXPOSURES</h4>
-               -->
-                        <!--
-                <div class="chart">
-                    <div>
-                    <button ion-button icon-only clear (click)="zoomInChartLimitsAndExposures()">
-                      <ion-icon name="expand" class="zoomin-button"></ion-icon>
-                    </button>
-                  </div>
-                  
-                </div>
-                -->
                         <div>
                             <ion-fab right edge>
                                 <button ion-fab (click)="zoomInChartLimitsAndExposures()">
-                      <ion-icon name="expand"></ion-icon>
-                    </button>
+                                <ion-icon name="expand"></ion-icon>
+                            </button>
                             </ion-fab>
 
                             <highcharts-chart #chartLimitsAndExposures></highcharts-chart>
@@ -189,27 +165,8 @@
                                 </tr>
                             </tbody>
                         </table>
-                        <!--
-                <table class="ss-table ss-table-detail">
-                  <tr>
-                    <td></td><td>S&P</td><td>Moody's</td><td>Fitch</td>
-                  </tr>
-                  <tr>
-                    <td>Issuer</td><td>{{ cpInfo.issuerSppRating }}</td><td>{{ cpInfo.issuerMoodyRating }}</td><td>{{ cpInfo.isuerFitchRating }}</td>
-                  </tr>
-                  <tr>
-                    <td>Unsec</td><td>{{ cpInfo.sppRating }}</td><td>{{ cpInfo.moodyRating }}</td><td>{{ cpInfo.fitchRating }}</td>
-                  </tr>
-                  <tr>
-                    <td>Outlook</td><td>{{ cpInfo.sppOutlook }}</td><td>{{ cpInfo.moodyOutlook }}</td><td>{{ cpInfo.fitchOutlook }}</td>
-                  </tr>
-                </table>
-                -->
                     </div>
                 </div>
-
-
-
             </ion-col>
         </ion-row>
     </ion-grid>

@@ -21,6 +21,7 @@ export class CounterpartySearchPage {
   counterparties: RankedCounterparty[]; 
   filteredCounterparties: RankedCounterparty[];
   showingSection:boolean = false; 
+  searchToken: string = "";
 
   constructor(private navCtrl: NavController,
               private http: Http,
@@ -31,22 +32,53 @@ export class CounterpartySearchPage {
               private toastController: ToastController) {
   }
   ngOnInit() {}
-  search(event) {
-    let searchToken: string = event.target.value;
+  
+  refreshSearch(refresher){
+    
+     if(!this.isSearchTokenValid()){
 
-    if (searchToken === undefined || searchToken.trim().length < 2) {
-      this.counterparties = [];
-      this.showingSection = false;
-      return;
-    }
+       refresher.complete();
+       
+       return;
+     }
+   
+     this.searchCounterparties(()=> refresher.complete());
+  }
+  
+  clearSearchResult(){
+    this.counterparties = [];
+    this.showingSection = false;
+  }
+
+  isSearchTokenValid():boolean
+  {
+    return (this.searchToken !== undefined && this.searchToken.trim().length > 1)      
+  }
+
+  searchClick() {
+
+    this.clearSearchResult();
+    
+    if(!this.isSearchTokenValid()) return;
+
     let loading = this.loadingCtrl.create({
       content: 'please wait'
     });
+
     loading.present();
-    this.instaService.getRankedCounterpartiesByNameQuery(searchToken.trim())
+
+    this.searchCounterparties(()=> loading.dismissAll());
+  } 
+
+  searchCounterparties(callback: ()=> any){
+
+     this.instaService.getRankedCounterpartiesByNameQuery(this.searchToken.trim())
       .subscribe(data => {
+
         this.counterparties = data;
-        loading.dismissAll();
+
+        if(callback) callback();
+        
         if (this.counterparties === undefined || this.counterparties.length === 0) {
           this.showingSection = false;
           let toast = this.toastController.create({
@@ -61,7 +93,9 @@ export class CounterpartySearchPage {
         }
       },
       error=>{
-        loading.dismissAll();
+
+        if(callback) callback();
+
         console.log(error);
         let alert = this.alertCtrl.create({
                 title: 'Loading Error!',
@@ -69,8 +103,9 @@ export class CounterpartySearchPage {
                 buttons: ['OK']
               });
           alert.present();
-      });
-  } 
+      }); ;    
+  }
+
   itemTapped(event, counterparty) {
     //get counterparty details
     let loading = this.loadingCtrl.create({

@@ -21,7 +21,7 @@ export class DashboardPage {
     @ViewChild('chartHistoricalExposures') chartHistoricalExposures: HighchartsChartComponent
     @ViewChild('chartTeamExposures') chartTeamExposures: HighchartsChartComponent
 
-    isDataLoaded: boolean = false;
+    isDataLoaded: any = false;
     static RATING_BAND = 'Rating Band';
     static TEAM = 'Team';
 
@@ -102,9 +102,7 @@ export class DashboardPage {
                 this.historialExposuresAndExpectedLosses = data[0];
                 this.ratingBandExposuresAndExpectedLosses = data[1];
                 this.teamExposuresAndExpectedLosses = data[2];
-
-                this.isDataLoaded = true;
-
+               
                 if(callback) callback();
 
                 // loading rating band data
@@ -123,6 +121,8 @@ export class DashboardPage {
                
                 this.chartTeamExposures.render(this.chartDataExposuresAndExpectedLosses(DashboardPage.TEAM,
                         this.teamExposuresAndExpectedLosses));
+                // set the flag to show hide dom        
+                this.isDataLoaded = true;
             },
             error=>{
                 if(callback) callback();
