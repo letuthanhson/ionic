@@ -72,6 +72,7 @@ var DocumentViewer = {
     },
     previewFileFromUrlOrPath: function (successHandler, failureHandler, url, fileName) {
         viewDocument(successHandler, failureHandler, url, fileName);
+
     }
 };
 

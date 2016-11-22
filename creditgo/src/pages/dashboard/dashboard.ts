@@ -21,7 +21,7 @@ export class DashboardPage {
     @ViewChild('chartHistoricalExposures') chartHistoricalExposures: HighchartsChartComponent
     @ViewChild('chartTeamExposures') chartTeamExposures: HighchartsChartComponent
 
-    isDataLoaded: boolean = false;
+    isDataLoaded: any = false;
     static RATING_BAND = 'Rating Band';
     static TEAM = 'Team';
 
@@ -57,19 +57,23 @@ export class DashboardPage {
                     root.children.push({name: o.ratingBand,  value: o.exposure});
                 });
 
-        let modal = this.modalCtrl.create(ChartModalPage, { "bubbleRootData": root, "bubbleChartTitle": "Exposures By Rating Band" });
-        modal.present();
+        //let modal = this.modalCtrl.create(ChartModalPage, { "bubbleRootData": root, "bubbleChartTitle": "Exposures By Rating Band" });
+        //modal.present();
     }
     zoomInChartTeam(){
         let chartData = this.chartDataExposuresAndExpectedLosses(DashboardPage.TEAM,
                             this.teamExposuresAndExpectedLosses);
-        let modal = this.modalCtrl.create(ChartModalPage, { "chartData": chartData });
-        modal.present();
+        //let modal = this.modalCtrl.create(ChartModalPage, { "chartData": chartData });
+        //modal.present();
+
+        this.navCtrl.push(ChartModalPage, { "chartData": chartData } );
     }
     zoomInChartHistorical(){
         let chartData = this.chartDataHistoricalExposuresAndExpectedLosses(this.historialExposuresAndExpectedLosses);
-        let modal = this.modalCtrl.create(ChartModalPage, { "chartData": chartData });
-        modal.present();
+        //let modal = this.modalCtrl.create(ChartModalPage, { "chartData": chartData });
+        //modal.present();
+
+        this.navCtrl.push(ChartModalPage, { "chartData": chartData } );
     }
     ngOnInit() {
         
@@ -102,9 +106,7 @@ export class DashboardPage {
                 this.historialExposuresAndExpectedLosses = data[0];
                 this.ratingBandExposuresAndExpectedLosses = data[1];
                 this.teamExposuresAndExpectedLosses = data[2];
-
-                this.isDataLoaded = true;
-
+               
                 if(callback) callback();
 
                 // loading rating band data
@@ -123,6 +125,8 @@ export class DashboardPage {
                
                 this.chartTeamExposures.render(this.chartDataExposuresAndExpectedLosses(DashboardPage.TEAM,
                         this.teamExposuresAndExpectedLosses));
+                // set the flag to show hide dom        
+                this.isDataLoaded = true;
             },
             error=>{
                 if(callback) callback();
