@@ -23,11 +23,11 @@
   </ion-list>
 
 -->
-    <ion-refresher (ionRefresh)="refreshSearch($event)">
+    <!--<ion-refresher (ionRefresh)="refreshSearch($event)">
         <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
+    </ion-refresher>-->
 
-    <ion-list [virtualScroll]="counterparties" [hidden]="!showingSection" approxItemHeight="'60px'">
+    <ion-list [virtualScroll]="counterparties" [hidden]="!showingSection">
         <ion-item [style.margin-left]="(counterparty.rank - 1) + 'em'" [ngClass]="{'ultimate-parent': counterparty.rank === 1}" *virtualItem="let counterparty" (click)="itemTapped($event, counterparty)">
             {{ counterparty.name }}
         </ion-item>

@@ -34,7 +34,9 @@ export class CounterpartySearchPage {
   ngOnInit() {}
   
   refreshSearch(refresher){
-    
+
+     this.clearSearchResult();
+         
      if(!this.isSearchTokenValid()){
 
        refresher.complete();

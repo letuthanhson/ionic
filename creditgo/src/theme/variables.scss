@@ -1,19 +1,14 @@
 // Ionic Variables and Theming. For more info, please see:
 // http://ionicframework.com/docs/v2/theming/
 @import "ionic.globals";
-
-
 // Shared Variables
 // --------------------------------------------------
 // To customize the look and feel of this app, you can override
 // the Sass variables found in Ionic's source scss files.
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
-
-$text-color:        #000;
-$background-color:  #fff;
-
-
+$text-color: #000;
+$background-color: #fff;
 // Named Color Variables
 // --------------------------------------------------
 // Named colors makes it easy to reuse colors on various components.
@@ -21,6 +16,7 @@ $background-color:  #fff;
 // to match your app's branding. Ionic uses a Sass map of
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
+
 /* framework default
 $colors: (
   primary:    #387ef5,
@@ -32,75 +28,54 @@ $colors: (
 );
 */
 
-$primary:     #009900;
-$secondary:   #009900;
-$danger1:     #f53d3d;
-$light1:      #f4f4f4;
-$dark:        #222;
-$favorite:    #006633;
-$bp-green:         #009900;
-$bp-light-green:   #99CC00;
-$bp-yellow:        #FFE600;
-$bp-dark-green:    #006633;
-$bp-bright-green:  #CCFF00;
-$bp-dark-blue:     #000099;
-$bp-dark-grey:     #666666;
-$bp-light-grey:    #999999;
-$bp-white:         #FFFFFF;
-$bp-orange:        #FF6600;
-$clear:            rgba(255, 255, 255, 1);
-$bp-gradient-green: linear-gradient($bp-green 0%,$bp-light-green 100%);
+$primary: #009900;
+$secondary: #009900;
+$danger1: #f53d3d;
+$light1: #f4f4f4;
+$dark: #222;
+$favorite: #006633;
+$bp-green: #009900;
+$bp-light-green: #99CC00;
+$bp-yellow: #FFE600;
+$bp-dark-green: #006633;
+$bp-bright-green: #CCFF00;
+$bp-dark-blue: #000099;
+$bp-dark-grey: #666666;
+$bp-light-grey: #999999;
+$bp-white: #FFFFFF;
+$bp-orange: #FF6600;
+$clear: rgba(255, 255, 255, 1);
+$bp-gradient-green: linear-gradient($bp-green 0%, $bp-light-green 100%);
 $favorite: #69BB7B;
-
-$colors: (
-  primary:    $bp-light-green,
-  secondary:  $bp-yellow,
-  danger:     #f53d3d,
-  light:      $bp-light-green,
-  dark:       $bp-dark-green,
-  favorite:   $bp-green,
-  clear:      $clear
-);
-
+$colors: ( primary: $bp-light-green, secondary: $bp-yellow, danger: #f53d3d, light: $bp-light-green, dark: $bp-dark-green, favorite: $bp-green, clear: $clear);
 //override default iPhone
 $action-sheet-ios-button-text-color: color($colors, primary, base);
-
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
-
-
-
-
 // App Material Design Variables
 // --------------------------------------------------
 // Material Design only Sass variables can go here
-
-
-
-
 // App Windows Variables
 // --------------------------------------------------
 // Windows only Sass variables can go here
-
-
-
-
 // App Theme
 // --------------------------------------------------
 // Ionic apps can have different themes applied, which can
 // then be future customized. This import comes last
 // so that the above variables are used and Ionic's
 // default are overridden.
-
 @import "ionic.theme.default";
-
-
 // Ionicons
 // --------------------------------------------------
 // The premium icon font for Ionic. For more info, please see:
 // http://ionicframework.com/docs/v2/ionicons/
-
 $ionicons-font-path: "../assets/fonts";
 @import "ionicons";
 $fab-size: 30px;
+.card-ios,
+.card-md,
+.card-wp {
+    margin: 5px 5px 5px 5px;
+    width: calc(100% - 10px);
+}

@@ -6,8 +6,8 @@
 
         <ion-buttons end>
             <button ion-button (click)="showCaFiles()">
-        <ion-icon name="document"></ion-icon>
-      </button>
+                <ion-icon name="document"></ion-icon>
+            </button>
         </ion-buttons>
     </ion-navbar>
 </ion-header>
@@ -20,155 +20,128 @@
         <ion-row>
             <ion-col>
                 <div class="cp-table clear app-checkbox">
-                    <div>
-                        <table class="cp-table-header">
-                            <tr>
-                                <th>{{ cpInfo.name }}</th>
-                            </tr>
-                            <tr>
-                                <th>{{ cpInfo.parentName }}</th>
-                            </tr>
-                            <tr>
-                                <th><span>{{ cpInfo.bpRating }}</span></th>
-                            </tr>
-                            <tr>
-                                <th>{{ cpInfo.bpRatingInferred }}</th>
-                            </tr>
+                    <table class="cp-table-header">
+                        <tr>
+                            <th>{{ cpInfo.name }}</th>
+                        </tr>
+                        <tr>
+                            <th>{{ cpInfo.parentName }}</th>
+                        </tr>
+                        <tr>
+                            <th><span>{{ cpInfo.bpRating }}</span></th>
+                        </tr>
+                        <tr>
+                            <th>{{ cpInfo.bpRatingInferred }}</th>
+                        </tr>
 
-                        </table>
-
-
-                        <table class="cp-primary-detail">
-                            <tr>
-                                <td>Monitor?</td>
-                                <td>
-                                    <ion-checkbox color="dark" checked="{{ cpInfo.isMonitored }}" disabled></ion-checkbox>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Watch?</td>
-                                <td>
-                                    <ion-checkbox color="dark" checked="{{ cpInfo.isWatched }}" disabled></ion-checkbox>
-                                </td>
-                            </tr>
-
-                            <tr>
-                                <td>Collateral Provider?</td>
-                                <td>
-                                    <ion-checkbox color="dark" checked="{{ cpInfo.canProvideCollateral }}" disabled></ion-checkbox>
-                                </td>
-                            </tr>
-
-                            <!--
-                    <td><input id="cbxCollateral" type="checkbox" checked="{{ cpInfo.canProvideCollateral }}" disabled="true">
-                      <label for="cbxCollateral"></label></td></tr>   -->
-                            <tr>
-                                <td>Jurisdiction of Inc.</td>
-                                <td>{{ cpInfo.jurisdiction }}</td>
-                            </tr>
-                            <tr>
-                                <td>Owning Region</td>
-                                <td>{{ cpInfo.rbuOwner}}</td>
-                            </tr>
-                            <tr>
-                                <td>Bank ROI Required?</td>
-                                <!--
-                  <td><input id="cbxBankLoi" type="checkbox" checked="{{ cpInfo.requiresBankLoi }}" disabled="true">
-                      <label for="cbxBankLoi"></label></td></tr>-->
-                                <td>
-                                    <ion-checkbox color="dark" checked="{{ cpInfo.requiresBankLoi }}" disabled></ion-checkbox>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>EFP Trades Permitted?</td>
-                                <!--
-                   <td><input id="cbxEfp" type="checkbox" checked="{{ cpInfo.permitsEpfTrades }}" disabled="true">
-                      <label for="cbxEfp"></label></td></tr>
-                      -->
-                                <td>
-                                    <ion-checkbox color="primary" checked="{{ cpInfo.permitsEpfTrades }}" disabled></ion-checkbox>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Outlook</td>
-                                <td>{{ cpInfo.bpOutlook }}</td>
-                            </tr>
-                            <tr>
-                                <td>Confidence Level</td>
-                                <td>{{ cpInfo.bpConfidenceLevel }}</td>
-                            </tr>
-                            <!--
-                  <tr><td>Appraisal Completion</td><td>{{ cpInfo.appraisalCompletionDate }}</td></tr>   
-                  <tr><td>Next Appraisal Due</td><td>{{ cpInfo.nextAppraisalDueDate }}</td></tr> 
-                  -->
-                            <tr>
-                                <td>GCR Analyst</td>
-                                <td>{{ cpInfo.gcrAnalyst}}</td>
-                            </tr>
-                            <tr>
-                                <td>Strategic Credit Analyst</td>
-                                <td>{{ cpInfo.strategicCreditAnalyst}}</td>
-                            </tr>
-                            <tr>
-                                <td>Industry Classification</td>
-                                <td>{{ cpInfo.industryClass }}</td>
-                            </tr>
-                            <tr>
-                                <td>Portfolio Tag</td>
-                                <td>{{ cpInfo.portfolioTag }}</td>
-                            </tr>
-                            <tr>
-                                <td>Country of Risk</td>
-                                <td>{{ cpInfo.countryOfRisk }}</td>
-                            </tr>
-                        </table>
-
-                        <div>
-                            <ion-fab right edge>
-                                <button ion-fab (click)="zoomInChartLimitsAndExposures()">
-                                <ion-icon name="expand"></ion-icon>
-                            </button>
-                            </ion-fab>
-
-                            <highcharts-chart #chartLimitsAndExposures></highcharts-chart>
-                        </div>
-                        <!--Sliding Scale-->
-
-                        <h4>SLIDING SCALE</h4>
-                        <table class="db-table">
-                            <thead>
-                                <tr>
-                                    <th></th>
-                                    <th>S&P</th>
-                                    <th>Moody's</th>
-                                    <th>Fitch</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <th>Issuer</th>
-                                    <td>{{ cpInfo.issuerSppRating }}</td>
-                                    <td>{{ cpInfo.issuerMoodyRating }}</td>
-                                    <td>{{ cpInfo.isuerFitchRating }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Unsec</th>
-                                    <td>{{ cpInfo.sppRating }}</td>
-                                    <td>{{ cpInfo.moodyRating }}</td>
-                                    <td>{{ cpInfo.fitchRating }}</td>
-                                </tr>
-                                <tr>
-                                    <th>Outlook</th>
-                                    <td>{{ cpInfo.sppOutlook }}</td>
-                                    <td>{{ cpInfo.moodyOutlook }}</td>
-                                    <td>{{ cpInfo.fitchOutlook }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
+                    </table>
                 </div>
             </ion-col>
         </ion-row>
     </ion-grid>
 
+    <ion-item>
+        <ion-label class="custom-label"> Is Monitor?</ion-label>
+        <ion-checkbox checked="{{ cpInfo.isMonitored }}" item-right disabled></ion-checkbox>
+    </ion-item>
+    <ion-item>
+        <ion-label class="custom-label">Watch?</ion-label>
+        <ion-checkbox checked="{{ cpInfo.isWatched }}" item-right disabled></ion-checkbox>
+    </ion-item>
+    <ion-item>
+        <ion-label class="custom-label">Collateral Provider?</ion-label>
+        <ion-checkbox checked="{{ cpInfo.canProvideCollateral }}" item-right disabled></ion-checkbox>
+    </ion-item>
+    <ion-item>
+        <ion-label class="custom-label">Jurisdiction of Inc.</ion-label>
+        <div item-content>{{ cpInfo.jurisdiction }}</div>
+    </ion-item>
+    <ion-item>
+        <ion-label class="custom-label">Owning Region</ion-label>
+        <div item-content>{{ cpInfo.rbuOwner}}</div>
+    </ion-item>
+    <ion-item>
+        <ion-label class="custom-label">Bank ROI Required?</ion-label>
+        <ion-checkbox checked="{{ cpInfo.requiresBankLoi }}" item-right disabled></ion-checkbox>
+    </ion-item>
+    <ion-item>
+        <ion-label class="custom-label">EFP Trades Permitted?</ion-label>
+        <ion-checkbox color="primary" checked="{{ cpInfo.permitsEpfTrades }}" item-right disabled></ion-checkbox>
+    </ion-item>
+    <ion-item>
+        <ion-label class="custom-label">Outlook</ion-label>
+        <div item-content>{{ cpInfo.bpOutlook }}</div>
+    </ion-item>
+    <ion-item>
+        <ion-label class="custom-label">Confidence Level</ion-label>
+        <div item-content>{{ cpInfo.bpConfidenceLevel }}</div>
+    </ion-item>
+    <ion-item>
+        <ion-label class="custom-label">GCR Analyst</ion-label>
+        <div item-content>{{ cpInfo.gcrAnalyst}}</div>
+    </ion-item>
+    <ion-item>
+        <ion-label class="custom-label">Strategic Credit Analyst</ion-label>
+        <div item-content>{{ cpInfo.strategicCreditAnalyst}}</div>
+    </ion-item>
+    <ion-item>
+        <ion-label class="custom-label">Industry Classification</ion-label>
+        <div item-content>{{ cpInfo.industryClass }}</div>
+    </ion-item>
+    <ion-item>
+        <ion-label class="custom-label">Portfolio Tag</ion-label>
+        <div item-content>{{ cpInfo.portfolioTag }}</div>
+    </ion-item>
+    <ion-item>
+        <ion-label class="custom-label">Country of Risk</ion-label>
+        <div item-content>{{ cpInfo.countryOfRisk }}</div>
+    </ion-item>
+
+    <ion-card>
+        <ion-card-content>
+            <ion-fab right edge>
+                <button ion-fab (click)="zoomInChartLimitsAndExposures()">
+                                <ion-icon name="expand"></ion-icon>
+                            </button>
+            </ion-fab>
+
+            <highcharts-chart #chartLimitsAndExposures></highcharts-chart>
+        </ion-card-content>
+    </ion-card>
+    <!--Sliding Scale-->
+    <ion-card>
+        <ion-card-content>
+            <h4>SLIDING SCALE</h4>
+            <table class="db-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>S&P</th>
+                        <th>Moody's</th>
+                        <th>Fitch</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <th>Issuer</th>
+                        <td>{{ cpInfo.issuerSppRating }}</td>
+                        <td>{{ cpInfo.issuerMoodyRating }}</td>
+                        <td>{{ cpInfo.isuerFitchRating }}</td>
+                    </tr>
+                    <tr>
+                        <th>Unsec</th>
+                        <td>{{ cpInfo.sppRating }}</td>
+                        <td>{{ cpInfo.moodyRating }}</td>
+                        <td>{{ cpInfo.fitchRating }}</td>
+                    </tr>
+                    <tr>
+                        <th>Outlook</th>
+                        <td>{{ cpInfo.sppOutlook }}</td>
+                        <td>{{ cpInfo.moodyOutlook }}</td>
+                        <td>{{ cpInfo.fitchOutlook }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </ion-card-content>
+    </ion-card>
 </ion-content>
