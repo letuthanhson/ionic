@@ -60,19 +60,23 @@ export class DashboardPage {
                     root.children.push({name: o.ratingBand,  value: o.exposure});
                 });
 
-        let modal = this.modalCtrl.create(ChartModalPage, { "bubbleRootData": root, "bubbleChartTitle": "Exposures By Rating Band" });
-        modal.present();
+        //let modal = this.modalCtrl.create(ChartModalPage, { "bubbleRootData": root, "bubbleChartTitle": "Exposures By Rating Band" });
+        //modal.present();
     }
     zoomInChartTeam(){
         let chartData = this.chartDataExposuresAndExpectedLosses(DashboardPage.TEAM,
                             this.teamExposuresAndExpectedLosses);
-        let modal = this.modalCtrl.create(ChartModalPage, { "chartData": chartData });
-        modal.present();
+        //let modal = this.modalCtrl.create(ChartModalPage, { "chartData": chartData });
+        //modal.present();
+
+        this.navCtrl.push(ChartModalPage, { "chartData": chartData } );
     }
     zoomInChartHistorical(){
         let chartData = this.chartDataHistoricalExposuresAndExpectedLosses(this.historialExposuresAndExpectedLosses);
-        let modal = this.modalCtrl.create(ChartModalPage, { "chartData": chartData });
-        modal.present();
+        //let modal = this.modalCtrl.create(ChartModalPage, { "chartData": chartData });
+        //modal.present();
+
+        this.navCtrl.push(ChartModalPage, { "chartData": chartData } );
     }
     ngOnInit() {
         

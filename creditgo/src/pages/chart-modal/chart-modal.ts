@@ -18,7 +18,7 @@ export class ChartModalPage {
   constructor(
       public platform: Platform,
       public params: NavParams,
-      public viewCtrl: ViewController) {
+      public navCtrl: NavController) {
 
       // bubble chart
       if (params.get('bubbleRootData') != undefined)
@@ -56,6 +56,6 @@ export class ChartModalPage {
     
   }
   dismiss() {
-    this.viewCtrl.dismiss();
+    this.navCtrl.pop();
   }
 }

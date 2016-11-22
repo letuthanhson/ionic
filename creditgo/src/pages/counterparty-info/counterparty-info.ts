@@ -227,10 +227,10 @@ export class CounterpartyInfoPage implements OnInit {
 
     */
     let chartData = this.chartLimitsAndExposureData;
-    let modal = this.modalCtrl.create(ChartModalPage, { "chartData": chartData, "title": this.cpInfo.name, "subtitle": "Limits  & Exposures" });
-    modal.onDidDismiss(()=>{});
-
-    modal.present();
+    //let modal = this.modalCtrl.create(ChartModalPage, { "chartData": chartData, "title": this.cpInfo.name, "subtitle": "Limits  & Exposures" });
+    //modal.onDidDismiss(()=>{});
+    this.navCtrl.push(ChartModalPage, { "chartData": chartData, "title": this.cpInfo.name, "subtitle": "Limits  & Exposures" });
+    //modal.present();
     
   }
 }
