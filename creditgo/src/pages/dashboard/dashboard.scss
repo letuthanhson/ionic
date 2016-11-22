@@ -93,6 +93,14 @@ h4 {
     text-align: center;
 }
 
-.highcharts-container {
+
+/*.highcharts-container {
     left: -20px !important;
+}*/
+
+.card-ios,
+.card-md,
+.card-wp {
+    margin: 5px 5px 5px 5px;
+    width: calc(100% - 10px);
 }

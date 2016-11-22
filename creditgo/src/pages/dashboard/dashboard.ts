@@ -34,18 +34,21 @@ export class DashboardPage {
               private modalCtrl: ModalController,
               private instaService: InstaService,
               private alertCtrl: AlertController,
-              private loadingCtrl: LoadingController){
-    
-        platform.ready().then(() => {
-             window.addEventListener("orientationchange", function(e) { 
-                if (platform.isPortrait()) {
-                    $('#chartExpandTeam').removeAttr("center"); $('#chartExpandTeam').attr("right",""); 
+              private loadingCtrl: LoadingController){    
+        // add orientation change event handler
+        window.addEventListener("orientationchange", function(e) {
+                     
+                if(window.orientation === 90|| window.orientation === -90){
+                        $('#chartExpandTeam').removeAttr("right");
+                        $('#chartExpandTeam').attr("center","");
+                        $('#chartExpandTeam').css("right","10px");
                 }
-                else{
-                    $('#chartExpandTeam').removeAttr("right"); $('#chartExpandTeam').attr("center","");
-                }
-            }, false);
-        });       
+                else{ 
+                        $('#chartExpandTeam').removeAttr("center");
+                        $('#chartExpandTeam').attr("right","");
+                    
+                    }
+           }, false);               
     }
 
     zoomInChartRatingBand(){
@@ -167,8 +170,8 @@ export class DashboardPage {
         return {
                 chart: {
                     type: 'bar',
-                    spacingBottom: 50, // to allow legend at bottom
-                    spacingRight:50                   
+                    spacingBottom: 50,// to allow legend at bottom
+                    spacingRight:50
                 },
                 title: {
                     text: 'Exposures & Expected Losses By ' + category
@@ -221,10 +224,10 @@ export class DashboardPage {
             let exposurePoints: any[][] = exposuresAndLosses.map(o=> { 
                 return [(new Date(o.exposureDate)).getTime(), o.exposure];
             });
-            return { 
+            return {  
                 chart:{
-                     spacingRight:50   
-                },              
+                    spacingRight:50
+                },                       
                 title: {
                     text: 'Historical Exposures'
                 },               
