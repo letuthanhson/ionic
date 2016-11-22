@@ -10,8 +10,91 @@
     <ion-refresher (ionRefresh)="refreshDashboard($event)">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
-    <ion-grid>
-        <!--RATING BAND-->
+
+    <ion-card>
+        <ion-card-content>
+            <h4 [hidden]="!isDataLoaded">EXPOSURES BY RATING BAND</h4>
+            <div class="chart">
+                <bubble-chart #chartRatingBandExposures></bubble-chart>
+            </div>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-content [hidden]="!isDataLoaded">
+            <h4>EXPOSURES & EXPECTED LOSSES BY RATING BAND</h4>
+            <table class="db-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th colspan="2">Millions (USD)</th>
+                    </tr>
+                    <tr>
+                        <th>Rating Band</th>
+                        <th>Exposure</th>
+                        <th>Expected Loss</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of ratingBandExposuresAndExpectedLosses">
+                        <td>{{ item.ratingBand }}</td>
+                        <td>{{ (item.exposure/1000000).toFixed(0) | number: '1.0-0' }}</td>
+                        <td>{{ (item.expectedLoss/1000000).toFixed(2) | number: '1.2-2' }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-content [hidden]="!isDataLoaded">
+            <ion-fab right edge>
+                <button ion-fab (click)="zoomInChartHistorical()">
+            <ion-icon name="expand"></ion-icon>
+          </button>
+            </ion-fab>
+            <highcharts-chart #chartHistoricalExposures></highcharts-chart>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-content [hidden]="!isDataLoaded">
+            <ion-fab right edge id="chartExpandTeam">
+                <button ion-fab (click)="zoomInChartTeam()">
+            <ion-icon name="expand"></ion-icon>
+          </button>
+            </ion-fab>
+            <highcharts-chart #chartTeamExposures></highcharts-chart>
+        </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+        <ion-card-content [hidden]="!isDataLoaded">
+            <h4>EXPOSURES & EXPECTED LOSSES BY TEAM</h4>
+            <table class="db-table">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th colspan="2">Millions (USD)</th>
+                    </tr>
+                    <tr>
+                        <th>Team</th>
+                        <th>Exposure</th>
+                        <th>Expected Loss</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of teamExposuresAndExpectedLosses">
+                        <td>{{ item.teamName }}</td>
+                        <td>{{ (item.exposure/1000000).toFixed(0) }}</td>
+                        <td>{{ (item.expectedLoss/1000000).toFixed(2) }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </ion-card-content>
+    </ion-card>
+    <!--<ion-grid>
+        RATING BAND
         <ion-row responsive-sm>
             <ion-col width-50>
                 <h4 [hidden]="!isDataLoaded">EXPOSURES BY RATING BAND</h4>
@@ -46,7 +129,7 @@
                 </div>
             </ion-col>
         </ion-row>
-        <!--CDS Historical Exposures-->
+        <!--CDS Historical Exposures--
         <ion-row responsive-sm [hidden]="!isDataLoaded">
             <ion-fab right edge>
                 <button ion-fab (click)="zoomInChartHistorical()">
@@ -59,7 +142,7 @@
             </ion-col>
         </ion-row>
 
-        <!--TEAM-->
+        <!--TEAM--
         <ion-row [hidden]="!isDataLoaded" responsive-sm>
             <ion-fab right edge id="chartExpandTeam">
                 <button ion-fab (click)="zoomInChartTeam()">
@@ -97,5 +180,5 @@
                 </div>
             </ion-col>
         </ion-row>
-    </ion-grid>
+    </ion-grid>-->
 </ion-content>

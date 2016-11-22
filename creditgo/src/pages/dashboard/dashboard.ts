@@ -167,7 +167,8 @@ export class DashboardPage {
         return {
                 chart: {
                     type: 'bar',
-                    spacingBottom: 50 // to allow legend at bottom
+                    spacingBottom: 50, // to allow legend at bottom
+                    spacingRight:50                   
                 },
                 title: {
                     text: 'Exposures & Expected Losses By ' + category
@@ -220,7 +221,10 @@ export class DashboardPage {
             let exposurePoints: any[][] = exposuresAndLosses.map(o=> { 
                 return [(new Date(o.exposureDate)).getTime(), o.exposure];
             });
-            return {               
+            return { 
+                chart:{
+                     spacingRight:50   
+                },              
                 title: {
                     text: 'Historical Exposures'
                 },               
