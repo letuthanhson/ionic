@@ -47,7 +47,8 @@ export class ChartModalPage {
 
     if (this.highChartsData != undefined){
       // add zoom type on max
-      this.highChartsData.chart.zoomType = 'xy' ;
+      this.highChartsData.chart.zoomType = 'xy' ;   
+      $('#the-chart').css("height",document.documentElement.clientHeight);
       $('#the-chart').highcharts(this.highChartsData);
     }
     

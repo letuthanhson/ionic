@@ -34,21 +34,38 @@ export class DashboardPage {
               private modalCtrl: ModalController,
               private instaService: InstaService,
               private alertCtrl: AlertController,
-              private loadingCtrl: LoadingController){    
+              private loadingCtrl: LoadingController){  
+        var self = this;  
         // add orientation change event handler
         window.addEventListener("orientationchange", function(e) {
-                     
-                if(window.orientation === 90|| window.orientation === -90){
-                        $('#chartExpandTeam').removeAttr("right");
-                        $('#chartExpandTeam').attr("center","");
-                        $('#chartExpandTeam').css("right","10px");
-                }
-                else{ 
-                        $('#chartExpandTeam').removeAttr("center");
-                        $('#chartExpandTeam').attr("right","");
-                    
-                    }
-           }, false);               
+               self.setFabPosition();  
+                // loading rating band data
+                let root:any = {};
+                root.name = "Interactions";
+                root.children = new Array(); 
+
+                self.ratingBandExposuresAndExpectedLosses.map(o=>
+                {
+                    root.children.push({name: o.ratingBand,  value: o.exposure});
+                })    
+                self.chartRatingBandExposures.render(root);
+           
+        }, false); 
+
+        this.setFabPosition();           
+    }
+
+    setFabPosition()
+    {
+        if(window.orientation === 90|| window.orientation === -90){
+            $('#chartExpandTeam').removeAttr("right");
+            $('#chartExpandTeam').attr("center","");
+            $('#chartExpandTeam').css("right","10px");
+        }              
+        else{ 
+            $('#chartExpandTeam').removeAttr("center");
+            $('#chartExpandTeam').attr("right","");                    
+        } 
     }
 
     zoomInChartRatingBand(){
@@ -69,7 +86,7 @@ export class DashboardPage {
         //let modal = this.modalCtrl.create(ChartModalPage, { "chartData": chartData });
         //modal.present();
 
-        this.navCtrl.push(ChartModalPage, { "chartData": chartData } );
+        this.navCtrl.push(ChartModalPage, { "chartData": chartData, "maximize":true } );
     }
     zoomInChartHistorical(){
         let chartData = this.chartDataHistoricalExposuresAndExpectedLosses(this.historialExposuresAndExpectedLosses);
@@ -128,6 +145,7 @@ export class DashboardPage {
                
                 this.chartTeamExposures.render(this.chartDataExposuresAndExpectedLosses(DashboardPage.TEAM,
                         this.teamExposuresAndExpectedLosses));
+                        
                 // set the flag to show hide dom        
                 this.isDataLoaded = true;
             },
@@ -175,7 +193,7 @@ export class DashboardPage {
                 chart: {
                     type: 'bar',
                     spacingBottom: 50,// to allow legend at bottom
-                    spacingRight:50
+                    spacingRight:50                   
                 },
                 title: {
                     text: 'Exposures & Expected Losses By ' + category

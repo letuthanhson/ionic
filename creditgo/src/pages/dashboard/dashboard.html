@@ -95,14 +95,14 @@
     </ion-card>-->
     <ion-grid>
         <!--RATING BAND-->
-        <ion-row responsive-sm>
+        <ion-row responsive-md>
             <ion-col width-50>
                 <ion-card>
                     <ion-card-content>
                         <h4 [hidden]="!isDataLoaded">EXPOSURES BY RATING BAND</h4>
-                        <div class="chart">
-                            <bubble-chart #chartRatingBandExposures></bubble-chart>
-                        </div>
+
+                        <bubble-chart #chartRatingBandExposures></bubble-chart>
+
                     </ion-card-content>
                 </ion-card>
 
@@ -138,43 +138,38 @@
             </ion-col>
         </ion-row>
         <!--CDS Historical Exposures-->
-        <ion-row responsive-sm [hidden]="!isDataLoaded">
+        <ion-row [hidden]="!isDataLoaded">
             <ion-col>
                 <ion-card>
                     <ion-card-content>
                         <ion-fab right edge>
                             <button ion-fab (click)="zoomInChartHistorical()">
-            <ion-icon name="expand"></ion-icon>
-          </button>
+                                <ion-icon name="expand"></ion-icon>
+                            </button>
                         </ion-fab>
-
-
                         <highcharts-chart #chartHistoricalExposures></highcharts-chart>
-
                     </ion-card-content>
                 </ion-card>
             </ion-col>
         </ion-row>
 
         <!--TEAM-->
-        <ion-row [hidden]="!isDataLoaded" responsive-sm>
-            <ion-col width-50>
+        <ion-row [hidden]="!isDataLoaded">
+            <ion-col>
                 <ion-card>
                     <ion-card-content>
                         <ion-fab right edge id="chartExpandTeam">
                             <button ion-fab (click)="zoomInChartTeam()">
-            <ion-icon name="expand"></ion-icon>
-          </button>
+                                <ion-icon name="expand"></ion-icon>
+                            </button>
                         </ion-fab>
-
-
                         <highcharts-chart #chartTeamExposures></highcharts-chart>
-
                     </ion-card-content>
                 </ion-card>
             </ion-col>
-
-            <ion-col width-50>
+        </ion-row>
+        <ion-row>
+            <ion-col>
                 <ion-card>
                     <ion-card-content>
 
@@ -202,7 +197,6 @@
 
                     </ion-card-content>
                 </ion-card>
-
             </ion-col>
         </ion-row>
     </ion-grid>
