@@ -82,7 +82,8 @@ export class HomePage {
         });
   }
   showLoginPage(savedUser: LogonUser, baseServiceUrl: string) {
-    let profileModal = this.modalCtrl.create(LoginPage, {"logonUser": savedUser, "baseServiceUrl": baseServiceUrl});
+    let profileModal = this.modalCtrl.create(LoginPage, {"logonUser": savedUser, "baseServiceUrl": baseServiceUrl},{enableBackdropDismiss:false});
+    
     profileModal.present();
   }
   startLogin(baseServiceUrl: string) {

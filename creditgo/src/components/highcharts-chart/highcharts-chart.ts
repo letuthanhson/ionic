@@ -5,9 +5,8 @@ declare var $: any;
 @Component({
   selector: 'highcharts-chart',
   template:
-    `<div class="highcharts-container" style="width: 100%;">
-        <div #theChart style="width: 100%;"></div>
-    </div>
+    `
+        <div #theChart style="width: 100%;"></div>    
     `
 })
 export class HighchartsChartComponent

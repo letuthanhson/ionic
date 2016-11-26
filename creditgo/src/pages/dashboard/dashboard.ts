@@ -52,15 +52,21 @@ export class DashboardPage {
            
         }, false); 
 
-        this.setFabPosition();           
+               
+    }
+
+    ionViewDidLoad(){
+         this.setFabPosition();   
     }
 
     setFabPosition()
     {
-        if(window.orientation === 90|| window.orientation === -90){
+        console.log("inner width:"+  window.innerWidth);
+        
+        if(window.orientation === 90|| window.orientation === -90 || window.innerWidth>767){
             $('#chartExpandTeam').removeAttr("right");
             $('#chartExpandTeam').attr("center","");
-            $('#chartExpandTeam').css("right","10px");
+            $('#chartExpandTeam button').css("right","30px");
         }              
         else{ 
             $('#chartExpandTeam').removeAttr("center");
@@ -102,6 +108,7 @@ export class DashboardPage {
                         });
         loading.present();
         this.getAllDashboardData(()=>loading.dismissAll());
+        
         //this.showHistoricalExposuresAndExpectedLosses();
         //this.showRatingBandExposuresAndExpectedLosses();
         //this.showTeamExposuresAndExpectedLosses();

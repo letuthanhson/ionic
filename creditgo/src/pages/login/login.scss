@@ -1,28 +1,35 @@
 .login {
     background-color: $bp-green;
-    background-image: linear-gradient($bp-dark-green 0%,$bp-bright-green 100%);
-    margin: 0; height: 100%; width: 100%;
+    background-image: linear-gradient($bp-dark-green 0%, $bp-bright-green 100%);
+    margin: 0;
+    height: 100%;
+    width: 100%;
 }
+
 .header-centered {
     margin: auto;
 }
+
 .centered {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  /* bring your own prefixes */
-  transform: translate(-50%, -50%);
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    /* bring your own prefixes */
+    transform: translate(-50%, -50%);
 }
+
 .login-logo-centered {
     width: 80px;
     height: 80px;
     margin: auto;
 }
+
 .login-brand-centered {
     margin: auto;
     text-align: center;
 }
+
 ::-webkit-scrollbar,
 *::-webkit-scrollbar {
-  display: none;
+    display: none;
 }
