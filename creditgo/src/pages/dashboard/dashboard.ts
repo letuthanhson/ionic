@@ -34,29 +34,10 @@ export class DashboardPage {
               private modalCtrl: ModalController,
               private instaService: InstaService,
               private alertCtrl: AlertController,
-              private loadingCtrl: LoadingController){  
-        var self = this;  
-        // add orientation change event handler
-        window.addEventListener("orientationchange", function(e) {
-               self.setFabPosition();  
-                // loading rating band data
-                let root:any = {};
-                root.name = "Interactions";
-                root.children = new Array(); 
-
-                self.ratingBandExposuresAndExpectedLosses.map(o=>
-                {
-                    root.children.push({name: o.ratingBand,  value: o.exposure});
-                })    
-                self.chartRatingBandExposures.render(root);
-           
-        }, false); 
-
-               
-    }
+              private loadingCtrl: LoadingController){  }
 
     ionViewDidLoad(){
-         this.setFabPosition();   
+         this.setFabPosition();            
     }
 
     setFabPosition()
@@ -66,12 +47,40 @@ export class DashboardPage {
         if(window.orientation === 90|| window.orientation === -90 || window.innerWidth>767){
             $('#chartExpandTeam').removeAttr("right");
             $('#chartExpandTeam').attr("center","");
-            $('#chartExpandTeam button').css("right","30px");
         }              
         else{ 
             $('#chartExpandTeam').removeAttr("center");
             $('#chartExpandTeam').attr("right","");                    
         } 
+    }
+
+    orientationChange = (event: any): void => {
+        this.setFabPosition();  
+        this.renderBubbleChart(); 
+    }
+
+    ionViewDidEnter()
+    {
+        // add orientation change event handler
+        window.addEventListener("orientationchange", this.orientationChange, false); 
+    }
+
+    ionViewDidLeave()
+    {
+         window.removeEventListener("orientationchange", this.orientationChange, false); 
+    }
+
+    renderBubbleChart(this:DashboardPage)
+    {
+        // loading rating band data
+        let root:any = {};
+        root.name = "Interactions";
+        root.children = new Array(); 
+        this.ratingBandExposuresAndExpectedLosses.map(o=>
+        {
+            root.children.push({name: o.ratingBand,  value: o.exposure});
+        })    
+        this.chartRatingBandExposures.render(root);       
     }
 
     zoomInChartRatingBand(){
@@ -136,24 +145,7 @@ export class DashboardPage {
                
                 if(callback) callback();
 
-                // loading rating band data
-                let root:any = {};
-                root.name = "Interactions";
-                root.children = new Array(); 
-
-                this.ratingBandExposuresAndExpectedLosses.map(o=>
-                {
-                    root.children.push({name: o.ratingBand,  value: o.exposure});
-                })    
-                this.chartRatingBandExposures.render(root);
-
-                // loading historical data
-                this.chartHistoricalExposures.render(this.chartDataHistoricalExposuresAndExpectedLosses(this.historialExposuresAndExpectedLosses));
-               
-                this.chartTeamExposures.render(this.chartDataExposuresAndExpectedLosses(DashboardPage.TEAM,
-                        this.teamExposuresAndExpectedLosses));
-                        
-                // set the flag to show hide dom        
+                this.renderAllCharts();
                 this.isDataLoaded = true;
             },
             error=>{
@@ -165,6 +157,29 @@ export class DashboardPage {
                         });
                 alert.present();
             });
+    }
+
+    renderAllCharts()
+    {
+        //todo: remove this function
+        this.setFabPosition();   
+        
+        // loading rating band data
+        let root:any = {};
+        root.name = "Interactions";
+        root.children = new Array(); 
+
+        this.ratingBandExposuresAndExpectedLosses.map(o=>
+        {
+            root.children.push({name: o.ratingBand,  value: o.exposure});
+        })    
+        this.chartRatingBandExposures.render(root);
+
+        // loading historical data
+        this.chartHistoricalExposures.render(this.chartDataHistoricalExposuresAndExpectedLosses(this.historialExposuresAndExpectedLosses));
+        
+        this.chartTeamExposures.render(this.chartDataExposuresAndExpectedLosses(DashboardPage.TEAM,
+                this.teamExposuresAndExpectedLosses));                           
     }
 
     randomCssRgba () {

@@ -1,16 +1,17 @@
-import { Component } from '@angular/core';
+import { Component,ElementRef, ViewChild } from '@angular/core';
 
 declare var d3:any;
 
 @Component({
   selector: 'bubble-chart',
   template:
-    `<div style="width: 100%;" id="bubblechart" >
+    `<div style="width: 100%;" #bubblechart id="bubblechart" >
     </div>
     `
 })
 export class BubbleChartComponent
 {
+    @ViewChild('bubblechart') bubbleChart: ElementRef;
     constructor(){}
     // draw a bubble chart
     render(root: any) {        
@@ -28,8 +29,8 @@ export class BubbleChartComponent
         // How big the chart is 
         //
         //console.log('bubble root...' + JSON.stringify(root));
-        document.getElementById("bubblechart").innerHTML = "";
-        var diameter = document.getElementById("bubblechart").offsetWidth;
+        this.bubbleChart.nativeElement.innerHTML = "";
+        var diameter = this.bubbleChart.nativeElement.offsetWidth;
         console.log('diameter...' + diameter);
         //
         // Pick some colours for the categories (groups)

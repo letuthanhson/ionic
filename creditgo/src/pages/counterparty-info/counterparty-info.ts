@@ -23,8 +23,7 @@ declare var $: any;
   providers: [CounterpartyService]
 })
 export class CounterpartyInfoPage implements OnInit {
-    @ViewChild('chartLimitsAndExposures') chartLimitsAndExposures: HighchartsChartComponent
-
+  @ViewChild('chartLimitsAndExposures') chartLimitsAndExposures: HighchartsChartComponent
   cpInfo: CounterpartyEntity;
   limitsAndExposures: any;
 
@@ -233,6 +232,11 @@ export class CounterpartyInfoPage implements OnInit {
     //modal.present();
     
   }
+
+   renderAllCharts()
+  {
+    this.chartLimitsAndExposures.render(this.chartLimitsAndExposureData);
+  }
 }
 
 @Component({
@@ -263,6 +267,5 @@ class PopoverMenu {
     this.navCtrl.push(DashboardPage).then(()=>{
       this.viewCtrl.dismiss();});
       */
-  }
-
+  } 
 }
