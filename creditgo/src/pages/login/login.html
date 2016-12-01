@@ -1,31 +1,41 @@
-
 <ion-content padding>
-  <!--<div style="margin-top: 30px; margin-bottom: 30px;">-->
-    
-  <div style="margin-top: 50px;"> 
-    <div class="login-logo-centered" ><img src="img/insta-credit.png" alt=""></div>
-    <div class="login-brand-centered"><span class="logo-sm-insta">Insta</span><span class="logo-sm-credit">Credit</span></div>  
-  </div> 
-  
-  <div style="margin-top:50px;">
-    <form [formGroup]="userForm" (ngSubmit)="login()" novalidate>
-        <ion-list>
-          <ion-item>
-            <ion-label floating>Login ID</ion-label>
-            <ion-input type="text" formControlName="userid"></ion-input>
-            <!--<label *ngIf="!(userid.valid || userid.pristine)" name="useridlabel">Login ID required</label>-->
-          </ion-item>
-          <ion-item>
-            <ion-label floating>Password</ion-label>
-            <ion-input type="password" formControlName="password"></ion-input>
-          </ion-item>
-        </ion-list>
-        <ion-item>
-          <ion-label>Remember me?</ion-label>
-          <ion-toggle formControlName="rememberMe"></ion-toggle>
-        </ion-item>
-        
-        <button style="margin-top: 20px;" ion-button full type="submit" [disabled]="!userForm.valid" >Sign In</button>
-    </form>
-  </div>
+    <!--<div style="margin-top: 30px; margin-bottom: 30px;">-->
+
+    <div style="margin-top: 50px;">
+        <div class="login-logo-centered"><img src="img/insta-credit.png" alt=""></div>
+        <div class="login-brand-centered"><span class="logo-sm-insta">Insta</span><span class="logo-sm-credit">Credit</span></div>
+    </div>
+
+    <div style="margin-top:50px;">
+        <form [formGroup]="userForm" (ngSubmit)="login()" novalidate>
+            <ion-list>
+                <ion-item>
+                    <ion-label floating>Login ID</ion-label>
+                    <ion-input type="text" formControlName="userid"></ion-input>
+                    <!--<label *ngIf="!(userid.valid || userid.pristine)" name="useridlabel">Login ID required</label>-->
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>Password</ion-label>
+                    <ion-input type="password" formControlName="password"></ion-input>
+                </ion-item>
+            </ion-list>
+            <ion-item *ngIf="!touchIdAvailable">
+                <ion-label>Remember me?</ion-label>
+                <ion-toggle formControlName="rememberMe"></ion-toggle>
+            </ion-item>
+            <ion-item *ngIf="touchIdAvailable && logonUser.rememberMe">
+                <ion-label item-content>Sign in with Touch ID</ion-label>
+                <button ion-button item-right (click)="startTouchID()" type="button">
+                  <ion-icon name="finger-print" ></ion-icon>
+                </button>
+            </ion-item>
+
+            <ion-item *ngIf="touchIdAvailable && !logonUser.rememberMe">
+                <ion-label item-content>Sign up with Touch ID</ion-label>
+                <ion-toggle formControlName="rememberMe"></ion-toggle>
+            </ion-item>
+
+            <button style="margin-top: 20px;" ion-button full type="submit" [disabled]="!userForm.valid">Sign In</button>
+        </form>
+    </div>
 </ion-content>

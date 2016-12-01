@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { NativeStorage, SecureStorage } from 'ionic-native';
+import { NativeStorage, SecureStorage, TouchID } from 'ionic-native';
 import { ModalController, Platform, NavController, ViewController, NavParams, AlertController, LoadingController } from 'ionic-angular';
 import { TabsPage } from '../tabs/tabs';
 import { LogonUser } from '../../models/logon-user';
@@ -20,6 +20,8 @@ export class LoginPage {
   static readonly SS_USER_KEY = "logonUser";
   userForm: FormGroup;
   baseServiceUrl: string;
+  touchIdAvailable: boolean; 
+  touchIdPwd:string= ""; 
   constructor(
           private platform: Platform,
           private nav: NavController,
@@ -28,17 +30,37 @@ export class LoginPage {
           private instaService: InstaService,
           private alertCtrl: AlertController,
           private loadingCtrl: LoadingController,
-          navParams: NavParams) {
-
-    this.logonUser = navParams.get('logonUser');  
-    this.baseServiceUrl = navParams.get('baseServiceUrl');  
-
+          private navParams: NavParams) {
+    this.logonUser = this.navParams.get('logonUser');  
+    this.baseServiceUrl = this.navParams.get('baseServiceUrl');  
+    
+    this.touchIdPwd = this.logonUser.password;
     this.userForm = this.formBuilder.group({
       "userid": [this.logonUser.userid, Validators.required],
       "password": [this.logonUser.password, Validators.required],
       "rememberMe": [this.logonUser.rememberMe]
     });
+
+    this.platform.ready().then(() => {
+          TouchID.isAvailable().then(
+            res => 
+            {
+              this.touchIdAvailable = true;
+              this.userForm.controls['password'].setValue("");             
+            },
+            err => this.touchIdAvailable = false
+          );
+    });    
   }
+
+  startTouchID(){
+    TouchID.verifyFingerprint('Login with Touch ID')
+            .then(
+              res =>  this.loginWithTouchID(),
+              err => console.error('Error', err)
+    );
+  }
+
   rememberMe(rememberUser: LogonUser) {
     let secureStorage: SecureStorage = new SecureStorage();
     secureStorage.create('account_safe')
@@ -55,25 +77,19 @@ export class LoginPage {
             });
         }).catch(e => console.log(e))
   }
+
+  loginWithTouchID()
+  {
+     this.userForm.value.password = this.touchIdPwd;
+     this.login();
+  }
+
   login() {
     // login
     this.logonUser = this.userForm.value;
-    console.log("User: " + this.logonUser.userid);
-
     // remember me
     this.rememberMe(this.logonUser);
-    // save user
-    /*
-    NativeStorage.setItem(LoginPage.SS_USER_KEY, this.logonUser)
-    .then(
-      () => {
-        console.log("User remembered");
-      },
-      error => {
-        console.log("Error caching user: " + JSON.stringify(error));
-      }
-    );
-    */
+   
     let loading = this.loadingCtrl.create({
       content: 'please wait'
     });
@@ -94,11 +110,12 @@ export class LoginPage {
         },
         error => {
           loading.dismissAll();
-          let alert = this.alertCtrl.create({
-                  title: 'Login Error!',
-                  subTitle: 'Login failed!',
-                  buttons: ['OK']
-                });
+          let alert = this.alertCtrl.create(
+                      {
+                        title: 'Login Error!',
+                        subTitle: 'Login failed!',
+                        buttons: ['OK']
+                      });
           alert.present();
         });
         
