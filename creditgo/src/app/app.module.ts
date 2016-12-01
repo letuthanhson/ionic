@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { IonicApp, IonicModule } from 'ionic-angular';
+import { NgIdleKeepaliveModule } from '@ng-idle/keepalive'; // this includes the core NgIdleModule but includes keepalive providers for easy wireup
+import { MomentModule } from 'angular2-moment'; // optional, provides moment-style pipes for date formatting
 import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
@@ -29,10 +31,12 @@ import { TabsPage } from '../pages/tabs/tabs';
     ChartModalPage,
     TabsPage,
     BubbleChartComponent,
-    HighchartsChartComponent
+    HighchartsChartComponent,
+    
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp),
+    NgIdleKeepaliveModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
