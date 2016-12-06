@@ -1,7 +1,16 @@
 import { Component } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 import { NativeStorage, SecureStorage, TouchID } from 'ionic-native';
-import { ModalController, Platform, NavController, ViewController, NavParams, AlertController, LoadingController } from 'ionic-angular';
+import {
+    AlertController,
+    Events,
+    LoadingController,
+    ModalController,
+    NavController,
+    NavParams,
+    Platform,
+    ViewController
+} from 'ionic-angular';
 import { TabsPage } from '../tabs/tabs';
 import { LogonUser } from '../../models/logon-user';
 import { InstaService } from '../../services/insta-service';
@@ -30,7 +39,8 @@ export class LoginPage {
           private instaService: InstaService,
           private alertCtrl: AlertController,
           private loadingCtrl: LoadingController,
-          private navParams: NavParams) {
+          private navParams: NavParams,
+          private events: Events) {
     this.logonUser = this.navParams.get('logonUser');  
     this.baseServiceUrl = this.navParams.get('baseServiceUrl');  
     
@@ -87,6 +97,7 @@ export class LoginPage {
   login() {
     // login
     this.logonUser = this.userForm.value;
+    
     // remember me
     this.rememberMe(this.logonUser);
    
@@ -107,6 +118,7 @@ export class LoginPage {
           console.log("Authenticating successfully...")
           this.viewCtrl.dismiss();
           loading.dismissAll();
+          this.events.publish('user:signedIn','login');
         },
         error => {
           loading.dismissAll();
