@@ -40,8 +40,7 @@ export class CounterpartySearchPage {
     this.counterparties  = this.searchControl.valueChanges.debounceTime(400)
                               .distinctUntilChanged()
                               .switchMap(searchControl =>  
-                              {
-                                
+                              {                                
                                 return this.instaService.getRankedCounterpartiesByNameQuery(this.searchToken.trim())
                               });                               
   }

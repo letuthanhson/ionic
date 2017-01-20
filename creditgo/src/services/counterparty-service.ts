@@ -107,13 +107,7 @@ export class CounterpartyService {
       });
 
   }
-  // get all the Credit reviews mapped to a counterparty
-  getCounterpartyCaFiles(counterpartyId: number): Observable<CounterpartyFile[]> {
-    return this.http.get('mock/cafiles.json')
-              .map(res => res.json())
-              .catch(this.handleError);
-  }
-
+  
   handleError(error: any): any {
     if (error instanceof Response) {
       return Observable.throw(error.json().error || 'Backend server error');

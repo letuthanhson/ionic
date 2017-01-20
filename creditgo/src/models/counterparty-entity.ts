@@ -44,5 +44,4 @@ export interface CounterpartyEntity {
     creditLimit_25M_Plus: number;
     creditLimitCurrency?: any;
     pfeComments?: any;
-
 }

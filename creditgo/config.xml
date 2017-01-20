@@ -87,6 +87,8 @@
     <icon src="resources/android/icon/drawable-xhdpi-icon.png" />
     <plugin name="cordova-plugin-secure-storage" spec="~2.6.0" />
     <plugin name="uk.co.whiteoctober.cordova.appversion" spec="~0.1.7" />
-    <plugin name="cordova-plugin-file" spec="~4.3.0" />
     <plugin name="cordova-plugin-touch-id" spec="~3.2.0" />
+    <plugin name="cordova-plugin-app-version" spec="https://github.com/whiteoctober/cordova-plugin-app-version.git" />
+    <plugin name="cordova-plugin-file" spec="~4.3.1" />
+    <plugin name="com.polarcape.plugins.documenthandler" spec="~1.0.6" />
 </widget>

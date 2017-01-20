@@ -23,6 +23,7 @@ import 'rxjs/add/observable/throw';
   selector: 'page-login',
   templateUrl: 'login.html'
 })
+
 export class LoginPage {
   logonUser: LogonUser = new LogonUser();
   static readonly SS = "app_storage";
@@ -45,6 +46,7 @@ export class LoginPage {
     this.baseServiceUrl = this.navParams.get('baseServiceUrl');  
     
     this.touchIdPwd = this.logonUser.password;
+
     this.userForm = this.formBuilder.group({
       "userid": [this.logonUser.userid, Validators.required],
       "password": [this.logonUser.password, Validators.required],
@@ -56,7 +58,11 @@ export class LoginPage {
             res => 
             {
               this.touchIdAvailable = true;
-              this.userForm.controls['password'].setValue("");             
+              this.userForm.controls['password'].setValue("");              
+              // show touch id when remember is set up and touchid available
+              if(this.logonUser.rememberMe){
+                this.startTouchID();
+              }
             },
             err => this.touchIdAvailable = false
           );
@@ -70,7 +76,7 @@ export class LoginPage {
               err => console.error('Error', err)
     );
   }
-
+  
   rememberMe(rememberUser: LogonUser) {
     let secureStorage: SecureStorage = new SecureStorage();
     secureStorage.create('account_safe')
@@ -89,9 +95,9 @@ export class LoginPage {
   }
 
   loginWithTouchID()
-  {
-     this.userForm.value.password = this.touchIdPwd;
-     this.login();
+  {    
+    this.userForm.value.password = this.touchIdPwd;
+    this.login();
   }
 
   login() {
