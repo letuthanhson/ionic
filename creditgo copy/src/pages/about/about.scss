@@ -1,0 +1,41 @@
+page-about {
+
+}
+.about {
+    //background-color: $bp-green;
+    //background-image: linear-gradient($bp-dark-green 0%,$bp-bright-green 100%);
+    margin: 0; height: 100%; width: 100%;
+}
+.brand-centered {
+  position: fixed;
+  top: 20%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+.content-centered {
+    position: fixed;
+    padding: 15px;
+    top: 35%;
+    margin: auto;
+}
+.app-image {
+    width: 130px;
+    height: 130px;
+    margin: auto;
+}
+.app-help {
+    position: fixed;
+    width: 100%;
+    bottom: 30%;
+    margin: auto;
+}
+
+.about-content{
+    padding-top:20%;
+}
+ .instalogo
+ {
+     width: 80px;
+     height: 80px; 
+     margin-left: 25px;
+ }
