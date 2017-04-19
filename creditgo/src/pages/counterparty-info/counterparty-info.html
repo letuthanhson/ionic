@@ -108,6 +108,18 @@
             <highcharts-chart #chartLimitsAndExposures></highcharts-chart>
         </ion-card-content>
     </ion-card>
+
+    <ion-card [hidden]="forwardLimitsAndExposures?.length ==0">
+        <ion-card-content>
+            <ion-fab right edge>
+                <button ion-fab (click)="zoomInChartLimitsAndExposures()">
+                                <ion-icon name="expand"></ion-icon>
+                            </button>
+            </ion-fab>
+
+            <highcharts-chart #chartForwardLimitsAndExposures></highcharts-chart>
+        </ion-card-content>
+    </ion-card>
     <!--Sliding Scale-->
     <ion-card>
         <ion-card-content>

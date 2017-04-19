@@ -84,6 +84,17 @@ export class InstaService{
                                     jsonReq);
         return this.getData(req);
     }
+
+    getCounterpartyForwardLimitsAndExposures(counterpartyId: number): Observable<any> {
+
+        let jsonReq = '{ "id": "' + counterpartyId + '" }';
+
+        let req: InstaRequest = new InstaRequest('get/counterparty/forwardexposure',
+                                    this.userid,
+                                    jsonReq);
+        return this.getData(req);
+    }
+    
     // mock
     MOCK_getCounterpartyCaFiles(id: number): Observable<any> {
         return this.http.get('mock/cafiles.json')

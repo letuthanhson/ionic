@@ -23,13 +23,18 @@ declare var $: any;
   providers: [CounterpartyService]
 })
 export class CounterpartyInfoPage implements OnInit {
-  @ViewChild('chartLimitsAndExposures') chartLimitsAndExposures: HighchartsChartComponent
+  @ViewChild('chartLimitsAndExposures') chartLimitsAndExposures: HighchartsChartComponent;
+  @ViewChild('chartForwardLimitsAndExposures') chartForwardLimitsAndExposures: HighchartsChartComponent;
+
   cpInfo: CounterpartyEntity;
   limitsAndExposures: any;
+  forwardLimitsAndExposures: any;
 
   caFileList: any[];
 
   chartLimitsAndExposureData: any;
+
+  chartForwardLimitsAndExposureData: any;
 
   constructor(private navCtrl: NavController,
               private app: App,
@@ -46,11 +51,15 @@ export class CounterpartyInfoPage implements OnInit {
     // If we navigated to this page, we will have an item available as a nav param
     this.cpInfo = navParams.get('counterpartyInfo');   
     this.limitsAndExposures = navParams.get('limitsAndExposures');
+    this.forwardLimitsAndExposures = navParams.get('forwardLimitsAndExposures');
+
     console.log(this.cpInfo);
     console.log(this.limitsAndExposures);   
   }
+
   ngOnInit() {
     this.showLimitsAndExposures();
+    this.showForwardLimitsAndExposures();
   }
 
   // refresh handler
@@ -59,12 +68,16 @@ export class CounterpartyInfoPage implements OnInit {
      Observable
      .forkJoin(
         this.instaService.getCounterpartyDetail(this.cpInfo.id),
-        this.instaService.getCounterpartyCurrentLimitsAndExposures(this.cpInfo.name))
+        this.instaService.getCounterpartyCurrentLimitsAndExposures(this.cpInfo.name),
+        this.instaService.getCounterpartyForwardLimitsAndExposures(this.cpInfo.id))
      .subscribe(
         data => {           
             this.cpInfo = data[0];
             this.limitsAndExposures = data[1];
+            this.forwardLimitsAndExposures = data[2];
+            
             this.showLimitsAndExposures();
+            this.showForwardLimitsAndExposures();
             refresher.complete();
       });
   }
@@ -82,6 +95,21 @@ export class CounterpartyInfoPage implements OnInit {
 
     this.chartLimitsAndExposureData = this.getLimitsExposuresChartData(limitPoints, exposurePoints);
     this.chartLimitsAndExposures.render(this.chartLimitsAndExposureData);
+  }
+
+   showForwardLimitsAndExposures()
+  {
+    if (this.forwardLimitsAndExposures === undefined) return;
+
+    let limitPoints: any[][] = this.forwardLimitsAndExposures.map(o=> { 
+        return [(new Date(o.exposureDate)).getTime(), o.limit];
+    });
+    let exposurePoints: any[][] = this.forwardLimitsAndExposures.map(o=> { 
+        return [(new Date(o.exposureDate)).getTime(), o.exposure];
+    });
+
+    this.chartForwardLimitsAndExposureData = this.getForwardLimitsExposuresChartData(limitPoints, exposurePoints);
+    this.chartForwardLimitsAndExposures.render(this.chartForwardLimitsAndExposureData);
   }
  
   showCaFiles()
@@ -153,6 +181,7 @@ export class CounterpartyInfoPage implements OnInit {
 
     actionSheet.present();
   }
+
 	getLimitsExposuresChartData(limits: any[][], exposures: any[][]): any {
 
     return {
@@ -213,24 +242,73 @@ export class CounterpartyInfoPage implements OnInit {
       };
 
   }
+
+  	getForwardLimitsExposuresChartData(limits: any[][], exposures: any[][]): any {
+
+    return {
+          chart: {
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false
+          },
+          title: {
+              text: 'Forward Exposures & Limits'
+          },
+          subtitle: {
+              text: ''
+          },
+          xAxis: {
+              type: 'datetime',
+              dateTimeLabelFormats: {
+                day: '%e %b <br/> %Y',
+                month: '%e %b <br/> %Y',
+                year: '%e %b <br/> %Y'
+              },
+              title: {
+                  text: 'Date'
+              }
+          },
+          yAxis: {
+              title: {
+                  text: 'USD'
+              },
+              min: 0
+          },
+          credits: {
+             enabled: false
+          },
+          tooltip: {
+              headerFormat: '<b>{series.name}</b><br>',
+              pointFormat: '{point.x:%e-%b-%y}: {point.y:,.0f}'
+          },
+          plotOptions: {
+              spline: {
+                  marker: {
+                      enabled: true
+                  }
+              }
+          },
+
+          series: [{
+              //step: true,
+              color: '#006633',
+              name: 'Limits',
+              data: limits
+          }, {
+              //step: true,
+              color: '#FF6600', 
+              name: 'Exposures',
+              data: exposures
+          }]
+      };
+
+  }
   //open Chart in full screen
   zoomInChartLimitsAndExposures() {
 
-    // Get the same chart data on this page and set title
-/*
     let chartData = this.chartLimitsAndExposureData;
-    chartData.title = { text: this.cpInfo.name };
-    chartData.subtitle = { text: 'Limits & Exposures'};
-
-    this.app.getRootNav().push(OnlyChartPage, { "chartData": chartData });
-
-    */
-    let chartData = this.chartLimitsAndExposureData;
-    //let modal = this.modalCtrl.create(ChartModalPage, { "chartData": chartData, "title": this.cpInfo.name, "subtitle": "Limits  & Exposures" });
-    //modal.onDidDismiss(()=>{});
+   
     this.navCtrl.push(ChartModalPage, { "chartData": chartData, "title": this.cpInfo.name, "subtitle": "Limits  & Exposures" });
-    //modal.present();
-    
   }
 
    renderAllCharts()
