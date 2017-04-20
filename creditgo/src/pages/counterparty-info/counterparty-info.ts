@@ -8,13 +8,11 @@ import { InstaService } from '../../services/insta-service';
 import { RankedCounterparty } from '../../models/ranked-counterparty';
 import { CounterpartyCaPage } from '../counterparty-ca/counterparty-ca';
 import { ChartModalPage } from '../chart-modal/chart-modal';
-//import { DashboardPage } from '../dashboard/dashboard';
-//import { ChartModalPage } from '../chart-modal/chart-modal';
-//import { OnlyChartPage } from '../only-chart/only-chart';
 import { CounterpartyEntity } from '../../models/counterparty-entity';
 import { CpLimitAndExposure, Limit, Exposure } from '../../models/cp-limits-and-exposures';
 import { HighchartsChartComponent } from '../../components/highcharts-chart/highcharts-chart';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 
 declare var $: any;
 
@@ -29,11 +27,10 @@ export class CounterpartyInfoPage implements OnInit {
   cpInfo: CounterpartyEntity;
   limitsAndExposures: any;
   forwardLimitsAndExposures: any;
-
+  endDate: string;
   caFileList: any[];
-
+  isHideForward: boolean = false;
   chartLimitsAndExposureData: any;
-
   chartForwardLimitsAndExposureData: any;
 
   constructor(private navCtrl: NavController,
@@ -50,17 +47,21 @@ export class CounterpartyInfoPage implements OnInit {
 
     // If we navigated to this page, we will have an item available as a nav param
     this.cpInfo = navParams.get('counterpartyInfo');   
-    this.limitsAndExposures = navParams.get('limitsAndExposures');
-    this.forwardLimitsAndExposures = navParams.get('forwardLimitsAndExposures');
-
-    console.log(this.cpInfo);
-    console.log(this.limitsAndExposures);   
+    this.limitsAndExposures = navParams.get('limitsAndExposures');  
+    this.forwardLimitsAndExposures = navParams.get('forwardLimitsAndExposures');   
   }
 
   ngOnInit() {
     this.showLimitsAndExposures();
     this.showForwardLimitsAndExposures();
   }
+
+ toYYYYMMDD(date:Date){
+  var yyyy = date.getFullYear().toString();
+   var mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
+   var dd  = date.getDate().toString();
+   return yyyy +"-"+ (mm[1]?mm:"0"+mm[0]) +"-"+ (dd[1]?dd:"0"+dd[0]); // padding
+ }
 
   // refresh handler
   refreshCounterpartyInfo(refresher)
@@ -85,7 +86,7 @@ export class CounterpartyInfoPage implements OnInit {
   showLimitsAndExposures()
   {
     if (this.limitsAndExposures === undefined) return;
-
+    
     let limitPoints: any[][] = this.limitsAndExposures.map(o=> { 
         return [(new Date(o.exposureDate)).getTime(), o.limit];
     });
@@ -100,6 +101,11 @@ export class CounterpartyInfoPage implements OnInit {
    showForwardLimitsAndExposures()
   {
     if (this.forwardLimitsAndExposures === undefined) return;
+
+    // this will have to be implement from server 
+    this.forwardLimitsAndExposures = _.filter(this.forwardLimitsAndExposures, c => c.exposure > 0);
+
+    this.isHideForward = this.forwardLimitsAndExposures.length == 0;
 
     let limitPoints: any[][] = this.forwardLimitsAndExposures.map(o=> { 
         return [(new Date(o.exposureDate)).getTime(), o.limit];
@@ -311,9 +317,18 @@ export class CounterpartyInfoPage implements OnInit {
     this.navCtrl.push(ChartModalPage, { "chartData": chartData, "title": this.cpInfo.name, "subtitle": "Limits  & Exposures" });
   }
 
+    //open Chart in full screen
+  zoomInChartForwardLimitsAndExposures() {
+
+    let chartData = this.chartForwardLimitsAndExposureData;
+   
+    this.navCtrl.push(ChartModalPage, { "chartData": chartData, "title": this.cpInfo.name, "subtitle": "Forward Limits  & Exposures" });
+  }
+
    renderAllCharts()
   {
     this.chartLimitsAndExposures.render(this.chartLimitsAndExposureData);
+    this.chartForwardLimitsAndExposures.render(this.chartForwardLimitsAndExposureData);
   }
 }
 

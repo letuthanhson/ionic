@@ -32,6 +32,8 @@ export class CounterpartySearchPage {
   searchControl = new FormControl();
   searching: boolean = false;
   prevSearchToken: string = "";
+  //flag to detect orientation changed
+  _isOrientationChanged = false;
 
   constructor(private navCtrl: NavController,
               private http: Http,
@@ -73,19 +75,33 @@ export class CounterpartySearchPage {
 
                               });  
   }
+
+  ionViewDidEnter(){
+   
+    // add orientation change event handler
+    window.addEventListener("orientationchange", ()=>this._isOrientationChanged = true, false); 
+
+    if(this._isOrientationChanged) this.searchCounterparties(()=>this.searching=false);
+    }
+
+  ionViewDidLeave()
+  {
+    this._isOrientationChanged = false;
+    window.removeEventListener("orientationchange", ()=> this.searchCounterparties(()=>this.searching=false), false); 
+  }
   
   refreshSearch(refresher){
 
-     this.clearSearchResult();
-         
-     if(!this.isSearchTokenValid()){
+    this.clearSearchResult();
+        
+    if(!this.isSearchTokenValid()){
 
-       refresher.complete();
-       
-       return;
-     }
+      refresher.complete();
+      
+      return;
+    }
    
-     this.searchCounterparties(()=> refresher.complete());
+    this.searchCounterparties(()=> refresher.complete());
   }
   
   clearSearchResult(){
@@ -100,17 +116,6 @@ export class CounterpartySearchPage {
 
   searchClick(event) {
 
-    // this.clearSearchResult();
-    
-    // if(!this.isSearchTokenValid()) return;
-
-    // let loading = this.loadingCtrl.create({
-    //   content: 'please wait'
-    // });
-
-    // loading.present();
-
-    // this.searchCounterparties(()=> loading.dismissAll());
     if(this.prevSearchToken == event.target.value || !this.isSearchTokenValid()) return;
 
     this.searching = true;
@@ -120,7 +125,8 @@ export class CounterpartySearchPage {
 
   searchCounterparties(callback: ()=> any){
 
-     this.instaService.getRankedCounterpartiesByNameQuery(this.searchToken.trim())
+    this.searching = true;
+    this.instaService.getRankedCounterpartiesByNameQuery(this.searchToken.trim())
       .subscribe(data => {
 
         this.counterparties = data;
@@ -164,7 +170,8 @@ export class CounterpartySearchPage {
     Observable.forkJoin(
       this.instaService.getCounterpartyDetail(counterparty.id),
       this.instaService.getCounterpartyCurrentLimitsAndExposures(counterparty.name),
-      this.instaService.getCounterpartyForwardLimitsAndExposures(counterparty.id))
+      this.instaService.getCounterpartyForwardLimitsAndExposures(counterparty.id)
+      )
     .subscribe(
         data => {
          
@@ -180,7 +187,10 @@ export class CounterpartySearchPage {
 
             toast.present();
           }
-          else {            
+          else {   
+            if(data[2] ==null){
+              data[2] = new Array<any>();
+            }         
             this.navCtrl.push(CounterpartyInfoPage, { "counterpartyInfo": data[0], "limitsAndExposures": data[1] , "forwardLimitsAndExposures": data[2]});
           }
       },

@@ -137,7 +137,7 @@ export class CounterpartySearchPage {
   } 
 
   searchCounterparties(callback: ()=> any){
-
+     this.searching = true;
      this.instaService.getRankedCounterpartiesByNameQuery(this.searchToken.trim())
          .subscribe(data => {
 
