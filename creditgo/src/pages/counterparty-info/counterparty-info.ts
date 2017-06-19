@@ -103,7 +103,7 @@ export class CounterpartyInfoPage implements OnInit {
     if (this.forwardLimitsAndExposures === undefined) return;
 
     // this will have to be implement from server 
-    this.forwardLimitsAndExposures = _.filter(this.forwardLimitsAndExposures, c => c.exposure > 0);
+    //this.forwardLimitsAndExposures = _.filter(this.forwardLimitsAndExposures, c => c.exposure > 0);
 
     this.isHideForward = this.forwardLimitsAndExposures.length == 0;
 
