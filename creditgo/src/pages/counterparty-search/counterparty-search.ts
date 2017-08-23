@@ -25,7 +25,7 @@ import 'rxjs';
 })
 export class CounterpartySearchPage {
   counterparty: RankedCounterparty;
-  counterparties: RankedCounterparty[]; 
+  counterparties: RankedCounterparty[] = []; 
   filteredCounterparties: RankedCounterparty[];
   showingSection:boolean = false; 
   searchToken: string = "";
@@ -54,6 +54,7 @@ export class CounterpartySearchPage {
                               })
                               .subscribe(c=> 
                               {
+                                this.counterparties = [];
                                 this.counterparties = c;       
 
                                 if(c.length > 0) {
@@ -117,7 +118,7 @@ export class CounterpartySearchPage {
   searchClick(event) {
 
     if(this.prevSearchToken == event.target.value || !this.isSearchTokenValid()) return;
-
+    
     this.searching = true;
     this.showingSection = false;
     this.prevSearchToken = event.target.value;

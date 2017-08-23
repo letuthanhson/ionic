@@ -15,8 +15,12 @@ import { InstaService } from '../services/insta-service';
 import { ChartModalPage } from '../pages/chart-modal/chart-modal';
 import { BubbleChartComponent } from '../components/bubble-chart/bubble-chart';
 import { HighchartsChartComponent } from '../components/highcharts-chart/highcharts-chart';
-
+import { BrowserModule } from '@angular/platform-browser';
 import { TabsPage } from '../pages/tabs/tabs';
+import { HttpModule } from '@angular/http';
+import { IonicStorageModule } from '@ionic/storage';
+
+
 @NgModule({
   declarations: [
     MyApp,
@@ -35,8 +39,11 @@ import { TabsPage } from '../pages/tabs/tabs';
     
   ],
   imports: [
-    IonicModule.forRoot(MyApp),
-    NgIdleKeepaliveModule.forRoot()
+    IonicModule.forRoot(MyApp, { scrollAssist: false, autoFocusAssist: false, mode: 'md'/*, tabsHideOnSubPages:true*/ }),
+    BrowserModule,
+    HttpModule,
+    NgIdleKeepaliveModule.forRoot(),
+     IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [

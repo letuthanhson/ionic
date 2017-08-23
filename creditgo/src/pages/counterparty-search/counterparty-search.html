@@ -30,7 +30,7 @@
         <ion-spinner></ion-spinner>
     </div>
 
-    <ion-list [virtualScroll]="counterparties" [hidden]="!showingSection" approxItemHeight="'40px'">
+    <ion-list [virtualScroll]="counterparties" [hidden]="!showingSection">
         <ion-item [style.margin-left]="(counterparty.rank - 1) + 'em' " [ngClass]="{ 'ultimate-parent': counterparty.rank===1 } " *virtualItem="let counterparty " (click)="itemTapped($event, counterparty) ">
             {{ counterparty.name }}
         </ion-item>
