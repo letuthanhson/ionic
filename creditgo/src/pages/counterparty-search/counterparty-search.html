@@ -4,31 +4,34 @@
             <span class="logo-sm-insta">Insta</span><span class="logo-sm-credit">Credit</span>
         </ion-title>
     </ion-navbar>
-    <ion-searchbar class="search-bar" placeholder="Search counterparties" debounce="700" [(ngModel)]="searchToken" (ionInput)="searchClick()">
-    </ion-searchbar>
+    <!--<ion-searchbar class="search-bar" placeholder="Search counterparties" debounce="700" [(ngModel)]="searchToken" (ionInput)="searchClick()">
+    </ion-searchbar>-->
+    <ion-searchbar [(ngModel)]="searchToken" placeholder="Search counterparties" [formControl]="searchControl" debounce="700" (ionInput)="searchClick($event)"></ion-searchbar>
+
 
 </ion-header>
 
 <ion-content>
-    <!--
- <ion-searchbar [(ngModel)]="searchToken" [formControl]="searchControl"></ion-searchbar>
--->
-    <!--
-  <ion-list>
-    <ion-item [style.margin-left]= "(counterparty.rank - 1) + 'em'"
-       [ngClass]="{'ultimate-parent': counterparty.rank === 1}"
-       *ngFor="let counterparty of counterparties" (click)="itemTapped($event, counterparty)">
-          {{ counterparty.name }}
-    </ion-item>
-  </ion-list>
 
--->
-    <!--<ion-refresher (ionRefresh)="refreshSearch($event)">
+
+    <!--
+    <ion-list>
+        <ion-item [style.margin-left]=" (counterparty.rank - 1) + 'em' " [ngClass]="{ 'ultimate-parent': counterparty.rank===1 } " *ngFor="let counterparty of counterparties " (click)="itemTapped($event, counterparty) ">
+            {{ counterparty.name }}
+        </ion-item>
+    </ion-list>
+
+    -->
+    <!--<ion-refresher (ionRefresh)="refreshSearch($event) ">
         <ion-refresher-content></ion-refresher-content>
     </ion-refresher>-->
 
+    <div *ngIf="searching" class="spinner-container ">
+        <ion-spinner></ion-spinner>
+    </div>
+
     <ion-list [virtualScroll]="counterparties" [hidden]="!showingSection">
-        <ion-item [style.margin-left]="(counterparty.rank - 1) + 'em'" [ngClass]="{'ultimate-parent': counterparty.rank === 1}" *virtualItem="let counterparty" (click)="itemTapped($event, counterparty)">
+        <ion-item [style.margin-left]="(counterparty.rank - 1) + 'em' " [ngClass]="{ 'ultimate-parent': counterparty.rank===1 } " *virtualItem="let counterparty " (click)="itemTapped($event, counterparty) ">
             {{ counterparty.name }}
         </ion-item>
     </ion-list>

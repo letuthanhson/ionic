@@ -108,6 +108,22 @@
             <highcharts-chart #chartLimitsAndExposures></highcharts-chart>
         </ion-card-content>
     </ion-card>
+
+    <ion-card>
+        <ion-card-content [hidden]="isHideForward">
+            <ion-fab right edge>
+                <button ion-fab (click)="zoomInChartForwardLimitsAndExposures()">
+                                <ion-icon name="expand"></ion-icon>
+                            </button>
+            </ion-fab>
+
+            <highcharts-chart #chartForwardLimitsAndExposures></highcharts-chart>
+            <div class="disclaimer">
+                *Forward Exposure is limited to Global Oil and IG only.
+            </div>
+        </ion-card-content>
+    </ion-card>
+
     <!--Sliding Scale-->
     <ion-card>
         <ion-card-content>

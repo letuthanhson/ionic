@@ -8,13 +8,11 @@ import { InstaService } from '../../services/insta-service';
 import { RankedCounterparty } from '../../models/ranked-counterparty';
 import { CounterpartyCaPage } from '../counterparty-ca/counterparty-ca';
 import { ChartModalPage } from '../chart-modal/chart-modal';
-//import { DashboardPage } from '../dashboard/dashboard';
-//import { ChartModalPage } from '../chart-modal/chart-modal';
-//import { OnlyChartPage } from '../only-chart/only-chart';
 import { CounterpartyEntity } from '../../models/counterparty-entity';
 import { CpLimitAndExposure, Limit, Exposure } from '../../models/cp-limits-and-exposures';
 import { HighchartsChartComponent } from '../../components/highcharts-chart/highcharts-chart';
 import { Observable } from 'rxjs/Observable';
+import * as _ from 'lodash';
 
 declare var $: any;
 
@@ -23,14 +21,17 @@ declare var $: any;
   providers: [CounterpartyService]
 })
 export class CounterpartyInfoPage implements OnInit {
-    @ViewChild('chartLimitsAndExposures') chartLimitsAndExposures: HighchartsChartComponent
+  @ViewChild('chartLimitsAndExposures') chartLimitsAndExposures: HighchartsChartComponent;
+  @ViewChild('chartForwardLimitsAndExposures') chartForwardLimitsAndExposures: HighchartsChartComponent;
 
   cpInfo: CounterpartyEntity;
   limitsAndExposures: any;
-
+  forwardLimitsAndExposures: any;
+  endDate: string;
   caFileList: any[];
-
+  isHideForward: boolean = false;
   chartLimitsAndExposureData: any;
+  chartForwardLimitsAndExposureData: any;
 
   constructor(private navCtrl: NavController,
               private app: App,
@@ -46,13 +47,21 @@ export class CounterpartyInfoPage implements OnInit {
 
     // If we navigated to this page, we will have an item available as a nav param
     this.cpInfo = navParams.get('counterpartyInfo');   
-    this.limitsAndExposures = navParams.get('limitsAndExposures');
-    console.log(this.cpInfo);
-    console.log(this.limitsAndExposures);   
+    this.limitsAndExposures = navParams.get('limitsAndExposures');  
+    this.forwardLimitsAndExposures = navParams.get('forwardLimitsAndExposures');   
   }
+
   ngOnInit() {
     this.showLimitsAndExposures();
+    this.showForwardLimitsAndExposures();
   }
+
+ toYYYYMMDD(date:Date){
+  var yyyy = date.getFullYear().toString();
+   var mm = (date.getMonth()+1).toString(); // getMonth() is zero-based
+   var dd  = date.getDate().toString();
+   return yyyy +"-"+ (mm[1]?mm:"0"+mm[0]) +"-"+ (dd[1]?dd:"0"+dd[0]); // padding
+ }
 
   // refresh handler
   refreshCounterpartyInfo(refresher)
@@ -60,12 +69,16 @@ export class CounterpartyInfoPage implements OnInit {
      Observable
      .forkJoin(
         this.instaService.getCounterpartyDetail(this.cpInfo.id),
-        this.instaService.getCounterpartyCurrentLimitsAndExposures(this.cpInfo.name))
+        this.instaService.getCounterpartyCurrentLimitsAndExposures(this.cpInfo.name),
+        this.instaService.getCounterpartyForwardLimitsAndExposures(this.cpInfo.id))
      .subscribe(
         data => {           
             this.cpInfo = data[0];
             this.limitsAndExposures = data[1];
+            this.forwardLimitsAndExposures = data[2];
+            
             this.showLimitsAndExposures();
+            this.showForwardLimitsAndExposures();
             refresher.complete();
       });
   }
@@ -73,7 +86,7 @@ export class CounterpartyInfoPage implements OnInit {
   showLimitsAndExposures()
   {
     if (this.limitsAndExposures === undefined) return;
-
+    
     let limitPoints: any[][] = this.limitsAndExposures.map(o=> { 
         return [(new Date(o.exposureDate)).getTime(), o.limit];
     });
@@ -83,6 +96,26 @@ export class CounterpartyInfoPage implements OnInit {
 
     this.chartLimitsAndExposureData = this.getLimitsExposuresChartData(limitPoints, exposurePoints);
     this.chartLimitsAndExposures.render(this.chartLimitsAndExposureData);
+  }
+
+   showForwardLimitsAndExposures()
+  {
+    if (this.forwardLimitsAndExposures === undefined) return;
+
+    // this will have to be implement from server 
+    //this.forwardLimitsAndExposures = _.filter(this.forwardLimitsAndExposures, c => c.exposure > 0);
+
+    this.isHideForward = this.forwardLimitsAndExposures.length == 0;
+
+    let limitPoints: any[][] = this.forwardLimitsAndExposures.map(o=> { 
+        return [(new Date(o.exposureDate)).getTime(), o.limit];
+    });
+    let exposurePoints: any[][] = this.forwardLimitsAndExposures.map(o=> { 
+        return [(new Date(o.exposureDate)).getTime(), o.exposure];
+    });
+
+    this.chartForwardLimitsAndExposureData = this.getForwardLimitsExposuresChartData(limitPoints, exposurePoints);
+    this.chartForwardLimitsAndExposures.render(this.chartForwardLimitsAndExposureData);
   }
  
   showCaFiles()
@@ -154,6 +187,7 @@ export class CounterpartyInfoPage implements OnInit {
 
     actionSheet.present();
   }
+
 	getLimitsExposuresChartData(limits: any[][], exposures: any[][]): any {
 
     return {
@@ -214,24 +248,87 @@ export class CounterpartyInfoPage implements OnInit {
       };
 
   }
+
+  	getForwardLimitsExposuresChartData(limits: any[][], exposures: any[][]): any {
+
+    return {
+          chart: {
+              plotBackgroundColor: null,
+              plotBorderWidth: null,
+              plotShadow: false
+          },
+          title: {
+              text: 'Forward Exposures & Limits'
+          },
+          subtitle: {
+              text: ''
+          },
+          xAxis: {
+              type: 'datetime',
+              dateTimeLabelFormats: {
+                day: '%e %b <br/> %Y',
+                month: '%e %b <br/> %Y',
+                year: '%e %b <br/> %Y'
+              },
+              title: {
+                  text: 'Date'
+              }
+          },
+          yAxis: {
+              title: {
+                  text: 'USD'
+              },
+              min: 0
+          },
+          credits: {
+             enabled: false
+          },
+          tooltip: {
+              headerFormat: '<b>{series.name}</b><br>',
+              pointFormat: '{point.x:%e-%b-%y}: {point.y:,.0f}'
+          },
+          plotOptions: {
+              spline: {
+                  marker: {
+                      enabled: true
+                  }
+              }
+          },
+
+          series: [{
+              //step: true,
+              color: '#006633',
+              name: 'Limits',
+              data: limits
+          }, {
+              //step: true,
+              color: '#FF6600', 
+              name: 'Exposures',
+              data: exposures
+          }]
+      };
+
+  }
   //open Chart in full screen
   zoomInChartLimitsAndExposures() {
 
-    // Get the same chart data on this page and set title
-/*
     let chartData = this.chartLimitsAndExposureData;
-    chartData.title = { text: this.cpInfo.name };
-    chartData.subtitle = { text: 'Limits & Exposures'};
-
-    this.app.getRootNav().push(OnlyChartPage, { "chartData": chartData });
-
-    */
-    let chartData = this.chartLimitsAndExposureData;
-    //let modal = this.modalCtrl.create(ChartModalPage, { "chartData": chartData, "title": this.cpInfo.name, "subtitle": "Limits  & Exposures" });
-    //modal.onDidDismiss(()=>{});
+   
     this.navCtrl.push(ChartModalPage, { "chartData": chartData, "title": this.cpInfo.name, "subtitle": "Limits  & Exposures" });
-    //modal.present();
-    
+  }
+
+    //open Chart in full screen
+  zoomInChartForwardLimitsAndExposures() {
+
+    let chartData = this.chartForwardLimitsAndExposureData;
+   
+    this.navCtrl.push(ChartModalPage, { "chartData": chartData, "title": this.cpInfo.name, "subtitle": "Forward Limits  & Exposures" });
+  }
+
+   renderAllCharts()
+  {
+    this.chartLimitsAndExposures.render(this.chartLimitsAndExposureData);
+    this.chartForwardLimitsAndExposures.render(this.chartForwardLimitsAndExposureData);
   }
 }
 
@@ -263,6 +360,5 @@ class PopoverMenu {
     this.navCtrl.push(DashboardPage).then(()=>{
       this.viewCtrl.dismiss();});
       */
-  }
-
+  } 
 }
